@@ -159,7 +159,7 @@
       </div>
 
       <!-- ARRIVAL -->
-      <div class="day d0">
+      <div class="day d0" id="day-0" data-day="0" data-label="Arrival — Mon Apr 21">
         <div class="day-header">
           <h2>Arrival — Mon Apr 21</h2>
           <p>Fly in, check in, settle</p>
@@ -197,7 +197,7 @@
       </div>
 
       <!-- DAY 1 -->
-      <div class="day d1">
+      <div class="day d1" id="day-1" data-day="1" data-label="Day 1 — Wed Apr 22">
         <div class="day-header">
           <h2>Day 1 — Wed Apr 22 &nbsp;|&nbsp; Chapultepec</h2>
           <p>Park, pyramids, bookshop café</p>
@@ -282,7 +282,7 @@
       </div>
 
       <!-- DAY 2 -->
-      <div class="day d2">
+      <div class="day d2" id="day-2" data-day="2" data-label="Day 2 — Thu Apr 23">
         <div class="day-header">
           <h2>Day 2 — Thu Apr 23 &nbsp;|&nbsp; Centro Histórico</h2>
           <p>Full walking tour — ruins, cathedral, murals, colonial architecture</p>
@@ -412,7 +412,7 @@
       </div>
 
       <!-- DAY 3 -->
-      <div class="day d3">
+      <div class="day d3" id="day-3" data-day="3" data-label="Day 3 — Fri Apr 24">
         <div class="day-header">
           <h2>Day 3 — Fri Apr 24 &nbsp;|&nbsp; Roma Norte + Lucha Libre</h2>
           <p>Neighbourhood wandering + wrestling</p>
@@ -452,7 +452,7 @@
       </div>
 
       <!-- DAY 4 -->
-      <div class="day d4">
+      <div class="day d4" id="day-4" data-day="4" data-label="Day 4 — Sat Apr 25">
         <div class="day-header">
           <h2>Day 4 — Sat Apr 25 &nbsp;|&nbsp; Teotihuacán + Coyoacán</h2>
           <p>Ancient pyramids in the morning, cobblestones in the afternoon</p>
@@ -492,7 +492,7 @@
       </div>
 
       <!-- DAY 5 -->
-      <div class="day d5">
+      <div class="day d5" id="day-5" data-day="5" data-label="Day 5 — Sun Apr 26">
         <div class="day-header">
           <h2>Day 5 — Sun Apr 26 &nbsp;|&nbsp; Free Day</h2>
           <p>No agenda. Just the city.</p>
@@ -520,7 +520,7 @@
       </div>
 
       <!-- DEPARTURE -->
-      <div class="day d6">
+      <div class="day d6" id="day-6" data-day="6" data-label="Departure — Mon Apr 27">
         <div class="day-header">
           <h2>Departure — Mon Apr 27</h2>
           <p>Early checkout, fly home</p>
@@ -638,6 +638,24 @@
 .fgb-2 { background:#FAEEDA;color:#633806; }
 .fgb-3 { background:#FAECE7;color:#712B13; }
 .fgb-4 { background:#FCEBEB;color:#791F1F; }
+
+.fg-item { cursor: grab; }
+.fg-item.dragging { opacity: 0.5; cursor: grabbing; }
+.day.drop-target { outline: 2px dashed #185FA5; outline-offset: 3px; }
+.day-body.drop-target { background: rgba(24,95,165,0.06) !important; }
+.dropped-stop { display: flex; gap: 12px; padding: 8px 16px; align-items: flex-start; background: rgba(24,95,165,0.04); border-left: 3px solid #185FA5; margin: 2px 0; }
+.dropped-stop .stop-name a { color: #185FA5; }
+.dropped-remove { font-size: 10px; color: #b4b2a9; background: none; border: none; cursor: pointer; margin-left: auto; flex-shrink: 0; padding: 2px 4px; }
+.dropped-remove:hover { color: #E24B4A; }
+.drag-ghost { position: fixed; pointer-events: none; z-index: 9999; background: #fff; border: 1px solid #185FA5; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: #185FA5; box-shadow: 0 4px 16px rgba(0,0,0,0.15); max-width: 200px; opacity: 0.9; }
+/* Mobile: add to day button */
+.fg-add-day-btn { font-size:10px;color:#185FA5;background:none;border:0.5px solid #185FA5;border-radius:99px;cursor:pointer;padding:2px 8px;margin-top:2px; }
+.day-picker-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:1000;display:flex;align-items:flex-end; }
+.day-picker-sheet { background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%; }
+.day-picker-sheet h3 { font-size:14px;font-weight:600;margin-bottom:16px;color:#2c2c2a; }
+.day-picker-option { display:block;width:100%;text-align:left;padding:12px 0;font-size:13px;color:#2c2c2a;background:none;border:none;border-bottom:0.5px solid #f0ede6;cursor:pointer; }
+.day-picker-option:last-child { border-bottom:none; }
+.day-picker-cancel { display:block;width:100%;text-align:center;padding:12px;font-size:13px;color:#888780;background:none;border:none;cursor:pointer;margin-top:8px; }
 </style>
 
 <script>
@@ -780,6 +798,14 @@ function render(){
       showNoteInput(s.name, div);
     });
 
+    // Drag and add to day
+    makeDraggable(div, s);
+    const addDayBtn = document.createElement('button');
+    addDayBtn.className = 'fg-add-day-btn';
+    addDayBtn.textContent = '+ add to day';
+    addDayBtn.addEventListener('click', function(e){ e.preventDefault(); showDayPicker(s); });
+    div.querySelector('.fg-user-note').appendChild(addDayBtn);
+
     list.appendChild(div);
   });
   none.style.display=n===0?'block':'none';
@@ -801,6 +827,141 @@ function render(){
 });
 
 render();
+
+// ── DRAG & DROP ──────────────────────────────────────────────────────────────
+
+function getDropped(){ try{ return JSON.parse(localStorage.getItem('cdmx_dropped')||'{}'); }catch(e){ return {}; } }
+function saveDropped(d){ try{ localStorage.setItem('cdmx_dropped', JSON.stringify(d)); }catch(e){} }
+
+function renderDroppedStops(){
+  const dropped = getDropped();
+  document.querySelectorAll('.day[id^="day-"]').forEach(function(dayEl){
+    const dayId = dayEl.id;
+    // Remove existing dropped stops container
+    const existing = dayEl.querySelector('.dropped-stops-container');
+    if(existing) existing.remove();
+    const stops = dropped[dayId];
+    if(!stops || stops.length === 0) return;
+    const container = document.createElement('div');
+    container.className = 'dropped-stops-container';
+    stops.forEach(function(stop, idx){
+      const div = document.createElement('div');
+      div.className = 'dropped-stop';
+      div.innerHTML = `<div class="stop-content">
+        <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:${stop.url}" target="_blank" style="color:#185FA5;text-decoration:none;border-bottom:1px dotted #185FA5;">${stop.name}</a></div>
+        <div class="stop-note" style="font-size:11px;color:#888780;">${stop.note || ''}</div>
+      </div>
+      <button class="dropped-remove" data-day="${dayId}" data-idx="${idx}" title="Remove">✕</button>`;
+      div.querySelector('.dropped-remove').addEventListener('click', function(){
+        removeDropped(dayId, idx);
+      });
+      container.appendChild(div);
+    });
+    const dayBody = dayEl.querySelector('.day-body');
+    if(dayBody) dayBody.appendChild(container);
+  });
+}
+
+function addToDay(dayId, spot){
+  const dropped = getDropped();
+  if(!dropped[dayId]) dropped[dayId] = [];
+  // Avoid duplicates
+  if(dropped[dayId].some(function(s){ return s.name === spot.name; })) return;
+  dropped[dayId].push({name: spot.name, url: spot.url, note: spot.note});
+  saveDropped(dropped);
+  renderDroppedStops();
+}
+
+function removeDropped(dayId, idx){
+  const dropped = getDropped();
+  if(dropped[dayId]) dropped[dayId].splice(idx, 1);
+  saveDropped(dropped);
+  renderDroppedStops();
+}
+
+const DAY_OPTIONS = [
+  {id:'day-0', label:'Arrival — Mon Apr 21'},
+  {id:'day-1', label:'Day 1 — Wed Apr 22 · Chapultepec'},
+  {id:'day-2', label:'Day 2 — Thu Apr 23 · Centro'},
+  {id:'day-3', label:'Day 3 — Fri Apr 24 · Roma Norte'},
+  {id:'day-4', label:'Day 4 — Sat Apr 25 · Pyramids + Coyoacán'},
+  {id:'day-5', label:'Day 5 — Sun Apr 26 · Free Day'},
+  {id:'day-6', label:'Departure — Mon Apr 27'},
+];
+
+function showDayPicker(spot){
+  const overlay = document.createElement('div');
+  overlay.className = 'day-picker-overlay';
+  const sheet = document.createElement('div');
+  sheet.className = 'day-picker-sheet';
+  sheet.innerHTML = `<h3>Add "${spot.name}" to...</h3>`;
+  DAY_OPTIONS.forEach(function(opt){
+    const btn = document.createElement('button');
+    btn.className = 'day-picker-option';
+    btn.textContent = opt.label;
+    btn.addEventListener('click', function(){
+      addToDay(opt.id, spot);
+      document.body.removeChild(overlay);
+    });
+    sheet.appendChild(btn);
+  });
+  const cancel = document.createElement('button');
+  cancel.className = 'day-picker-cancel';
+  cancel.textContent = 'Cancel';
+  cancel.addEventListener('click', function(){ document.body.removeChild(overlay); });
+  sheet.appendChild(cancel);
+  overlay.appendChild(sheet);
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) document.body.removeChild(overlay); });
+  document.body.appendChild(overlay);
+}
+
+// Desktop drag and drop
+let dragSpot = null;
+let ghostEl = null;
+
+function makeDraggable(div, spot){
+  div.setAttribute('draggable', 'true');
+  div.addEventListener('dragstart', function(e){
+    dragSpot = spot;
+    div.classList.add('dragging');
+    ghostEl = document.createElement('div');
+    ghostEl.className = 'drag-ghost';
+    ghostEl.textContent = spot.name;
+    document.body.appendChild(ghostEl);
+    e.dataTransfer.effectAllowed = 'copy';
+    e.dataTransfer.setDragImage(ghostEl, 0, 0);
+  });
+  div.addEventListener('dragend', function(){
+    dragSpot = null;
+    div.classList.remove('dragging');
+    if(ghostEl){ document.body.removeChild(ghostEl); ghostEl = null; }
+    document.querySelectorAll('.day.drop-target').forEach(function(el){ el.classList.remove('drop-target'); });
+    document.querySelectorAll('.day-body.drop-target').forEach(function(el){ el.classList.remove('drop-target'); });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Drop zones on day cards
+  document.querySelectorAll('.day[id^="day-"]').forEach(function(dayEl){
+    dayEl.addEventListener('dragover', function(e){
+      if(!dragSpot) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+      document.querySelectorAll('.day.drop-target').forEach(function(el){ el.classList.remove('drop-target'); });
+      dayEl.classList.add('drop-target');
+    });
+    dayEl.addEventListener('dragleave', function(e){
+      if(!dayEl.contains(e.relatedTarget)) dayEl.classList.remove('drop-target');
+    });
+    dayEl.addEventListener('drop', function(e){
+      e.preventDefault();
+      dayEl.classList.remove('drop-target');
+      if(dragSpot) addToDay(dayEl.id, dragSpot);
+    });
+  });
+  renderDroppedStops();
+});
+
 </script>
 
 <style>
