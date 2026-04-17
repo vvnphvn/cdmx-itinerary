@@ -147,15 +147,10 @@ function handleFiles(files, dayId){
   });
 }
 
-function doSearch(input, engine){
+function doSearch(input){
   var q = input.value.trim();
   if(!q){ input.focus(); return; }
-  var urls = {
-    pinterest: 'https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'),
-    google: 'https://www.google.com/search?tbm=shop&q='+encodeURIComponent(q),
-    depop: 'https://www.depop.com/search/?q='+encodeURIComponent(q),
-  };
-  window.open(urls[engine]||urls.pinterest, '_blank');
+  window.open('https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'), '_blank');
 }
 
 function renderDay(day){
@@ -179,11 +174,7 @@ function renderDay(day){
         '<input class="search-input" type="text" placeholder="Search for an item, e.g. linen trousers...">'+
         '<button class="search-btn">Search on Pinterest</button>'+
       '</div>'+
-      '<div class="search-options">'+
-        '<button class="search-opt" data-engine="pinterest">Pinterest</button>'+
-        '<button class="search-opt" data-engine="google">Google Shopping</button>'+
-        '<button class="search-opt" data-engine="depop">Depop</button>'+
-      '</div>'+
+      
       '<div class="note-lbl">Notes</div>'+
       '<textarea class="day-note" placeholder="Shoes, accessories, vibe...">'+(notes[day.id]||'')+'</textarea>'+
     '</div>';
@@ -198,8 +189,8 @@ function renderDay(day){
 
   // Search
   var sinput=div.querySelector('.search-input');
-  div.querySelector('.search-btn').onclick=function(){ doSearch(sinput,'pinterest'); };
-  sinput.addEventListener('keydown',function(e){ if(e.key==='Enter') doSearch(sinput,'pinterest'); });
+  div.querySelector('.search-btn').onclick=function(){ doSearch(sinput); };
+  sinput.addEventListener('keydown',function(e){ if(e.key==='Enter') doSearch(sinput); });
 
 
   // Note
