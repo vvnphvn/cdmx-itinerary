@@ -92,6 +92,20 @@
     .transport-text { background: white; }
     .col-bookings, .right { position: static; max-height: none; }
   }
+
+.col-outfit { flex: 1; min-width: 0; }
+.outfit-day { border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.outfit-day-header { padding: 12px 16px; }
+.outfit-day-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.outfit-day-sub { font-size: 11px; color: rgba(255,255,255,0.75); }
+.outfit-day-body { background: #fff; padding: 12px 14px; }
+.outfit-context { font-size: 11px; color: #888780; line-height: 1.5; margin-bottom: 10px; }
+.outfit-input { width: 100%; min-height: 80px; border: 0.5px solid #e8e6df; border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: inherit; color: #2c2c2a; resize: none; background: #fafaf8; line-height: 1.5; box-sizing: border-box; }
+.outfit-input:focus { outline: none; border-color: #b4b2a9; background: #fff; }
+.outfit-input::placeholder { color: #d3d1c7; }
+@media (max-width: 900px) {
+  .col-outfit { width: 100% !important; position: static !important; max-height: none !important; }
+}
 </style>
 </head>
 <body>
@@ -613,6 +627,91 @@
       </div>
     </div><!-- end right -->
 
+
+    <!-- OUTFIT TAB -->
+    <div class="col-outfit mob-hidden" id="tab-outfit">
+      <div style="padding:4px 0;">
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#444441;">
+            <div class="outfit-day-title">Arrival — Mon Apr 21</div>
+            <div class="outfit-day-sub">Late night · ~23:15 landing</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">✈️ Travel day. Comfortable layers for a 5hr flight + late arrival. Nothing needs to impress.</div>
+            <textarea class="outfit-input" data-day="outfit-0" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#0F6E56;">
+            <div class="outfit-day-title">Day 1 — Wed Apr 22 · Chapultepec</div>
+            <div class="outfit-day-sub">Park walk · museums · outdoor</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">☀️ Lots of walking outdoors. ~6km through the Bosque. Sun can be strong — hat recommended. Museum-appropriate.</div>
+            <textarea class="outfit-input" data-day="outfit-1" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#185FA5;">
+            <div class="outfit-day-title">Day 2 — Thu Apr 23 · Centro</div>
+            <div class="outfit-day-sub">Walking tour · cathedrals · bike</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">🚲 Full day on foot + Ecobici. Cobblestones — skip the heels. Mix of churches, palaces, rooftop bar at end.</div>
+            <textarea class="outfit-input" data-day="outfit-2" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#854F0B;">
+            <div class="outfit-day-title">Day 3 — Fri Apr 24 · Roma + Lucha Libre</div>
+            <div class="outfit-day-sub">Brunch · browse · evening event</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">🥊 Relaxed day → lively evening. Lucha Libre is festive and loud — dress to have fun. Arena gets hot and rowdy.</div>
+            <textarea class="outfit-input" data-day="outfit-3" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#993C1D;">
+            <div class="outfit-day-title">Day 4 — Sat Apr 25 · Pyramids + Coyoacán</div>
+            <div class="outfit-day-sub">Teotihuacán · cobblestone streets</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">🏛️ Early start, full sun, climbing pyramids. Most intense day physically — breathable fabrics, good shoes, sun protection essential. Coyoacán is charming after.</div>
+            <textarea class="outfit-input" data-day="outfit-4" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#534AB7;">
+            <div class="outfit-day-title">Day 5 — Sun Apr 26 · Free Day</div>
+            <div class="outfit-day-sub">Biblioteca · wander · no agenda</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">📚 Low-key. Dress for whatever mood you wake up in. Could be a café crawl, vintage browsing, or a park afternoon.</div>
+            <textarea class="outfit-input" data-day="outfit-5" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+        <div class="outfit-day">
+          <div class="outfit-day-header" style="background:#444441;">
+            <div class="outfit-day-title">Departure — Mon Apr 27</div>
+            <div class="outfit-day-sub">~4am checkout · 7am flight</div>
+          </div>
+          <div class="outfit-day-body">
+            <div class="outfit-context">✈️ 4am checkout — comfort over everything. Something you can sleep in on the flight home.</div>
+            <textarea class="outfit-input" data-day="outfit-6" placeholder="What are you wearing..."></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end outfit tab -->
+
   </div><!-- end layout -->
 </div>
 
@@ -883,6 +982,19 @@ document.getElementById('sort-f').querySelectorAll('.fc').forEach(btn=>{
 render();
 
 
+
+function initOutfitNotes(){
+  const saved = JSON.parse(localStorage.getItem('cdmx_outfits')||'{}');
+  document.querySelectorAll('.outfit-input').forEach(function(ta){
+    const key = ta.dataset.day;
+    if(saved[key]) ta.value = saved[key];
+    ta.addEventListener('input', function(){
+      saved[key] = ta.value;
+      localStorage.setItem('cdmx_outfits', JSON.stringify(saved));
+    });
+  });
+}
+
 function getItinNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_itin_notes')||'{}'); }catch(e){ return {}; } }
 function saveItinNotes(n){ try{ localStorage.setItem('cdmx_itin_notes', JSON.stringify(n)); }catch(e){} }
 
@@ -942,6 +1054,7 @@ function initItinNotes(){
 
 document.addEventListener('DOMContentLoaded', function(){
   initItinNotes();
+  initOutfitNotes();
 });
 
 // ── DRAG & DROP ──────────────────────────────────────────────────────────────
@@ -1131,22 +1244,24 @@ document.addEventListener('DOMContentLoaded', function(){
     nav.className = 'tab-nav';
     nav.innerHTML = '<button class="tab-btn mob-active" data-tab="itinerary">Itinerary</button>' +
                     '<button class="tab-btn" data-tab="bookings">Bookings</button>' +
-                    '<button class="tab-btn" data-tab="food">Food Guide</button>';
+                    '<button class="tab-btn" data-tab="food">Food</button>' +
+                    '<button class="tab-btn" data-tab="outfit">Outfits</button>';
     layout.parentNode.insertBefore(nav, layout);
 
     // Hide non-active by default (content already visible if JS fails)
     document.getElementById('tab-bookings').classList.add('mob-hidden');
     document.getElementById('tab-food').classList.add('mob-hidden');
+    document.getElementById('tab-outfit').classList.add('mob-hidden');
 
     nav.querySelectorAll('.tab-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
         nav.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('mob-active'); });
         btn.classList.add('mob-active');
-        ['tab-bookings','tab-itinerary','tab-food'].forEach(function(id){
+        ['tab-bookings','tab-itinerary','tab-food','tab-outfit'].forEach(function(id){
           var el = document.getElementById(id);
           if(el) el.classList.add('mob-hidden');
         });
-        var map = {itinerary:'tab-itinerary', bookings:'tab-bookings', food:'tab-food'};
+        var map = {itinerary:'tab-itinerary', bookings:'tab-bookings', food:'tab-food', outfit:'tab-outfit'};
         var target = document.getElementById(map[btn.dataset.tab]);
         if(target) target.classList.remove('mob-hidden');
         window.scrollTo(0,0);
