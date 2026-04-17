@@ -2,143 +2,175 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>CDMX Outfits — Apr 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-height:100vh;}
 
-.page{max-width:1100px;margin:0 auto;padding:28px 16px 60px;}
-.back-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#b4b2a9;text-decoration:none;margin-bottom:14px;}
+/* ── NAV ── */
+.nav{background:#f0ede6;padding:16px 16px 0;display:flex;align-items:center;justify-content:space-between;}
+.back-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#b4b2a9;text-decoration:none;font-weight:500;}
 .back-link:hover{color:#2c2c2a;}
-.hero{margin-bottom:24px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:#1a2e4a;white-space:nowrap;line-height:1.1;}
-.hero p{font-size:11px;color:#b4b2a9;margin-top:6px;}
 
-/* Layout */
-.layout{display:flex;gap:20px;align-items:flex-start;}
-.col-days{flex:1;min-width:0;}
-.col-luggage{width:260px;flex-shrink:0;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;}
+/* ── HERO ── */
+.hero{padding:14px 16px 18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:28px;font-style:italic;font-weight:700;color:#1a2e4a;white-space:nowrap;line-height:1.1;}
+.hero p{font-size:11px;color:#b4b2a9;margin-top:5px;}
 
-/* Luggage sidebar */
-.luggage-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
-.luggage-header{background:#2c2c2a;padding:14px 16px;}
-.luggage-header h2{font-size:13px;font-weight:600;color:#fff;margin-bottom:1px;}
-.luggage-header p{font-size:10px;color:rgba(255,255,255,0.6);}
-.luggage-body{padding:14px;}
-.luggage-upload{border:1.5px dashed #d3d1c7;border-radius:9px;padding:14px;text-align:center;cursor:pointer;background:#fafaf8;position:relative;overflow:hidden;margin-bottom:12px;transition:all 0.15s;}
-.luggage-upload:hover,.luggage-upload.drag-over{border-color:#2c2c2a;background:#f5f4f0;}
-.luggage-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.luggage-upload-txt{font-size:11px;color:#888780;}
-.luggage-upload-txt strong{color:#2c2c2a;font-weight:500;display:block;margin-bottom:2px;}
-.luggage-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;min-height:40px;}
-.luggage-item{position:relative;width:72px;height:90px;border-radius:8px;overflow:hidden;background:#f8f7f4;cursor:grab;border:2px solid transparent;transition:border-color 0.15s;}
-.luggage-item:hover{border-color:#d3d1c7;}
-.luggage-item.dragging{opacity:0.4;cursor:grabbing;}
+/* ── TAB BAR (mobile primary nav) ── */
+.tab-bar{display:flex;background:#fff;border-bottom:0.5px solid #e8e6df;position:sticky;top:0;z-index:100;}
+.tab-btn{flex:1;padding:13px 0;font-size:13px;font-weight:500;color:#b4b2a9;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.tab-btn.active{color:#2c2c2a;border-bottom-color:#2c2c2a;}
+
+/* ── PANES ── */
+.pane{display:none;padding:16px 16px 80px;}
+.pane.active{display:block;}
+
+/* ── LUGGAGE PANE ── */
+.upload-btn{width:100%;background:#2c2c2a;color:#fff;border:none;border-radius:12px;padding:16px;font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;position:relative;overflow:hidden;}
+.upload-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-btn:active{background:#1a1a18;}
+
+.luggage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.luggage-item{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:#e8e6df;}
 .luggage-item img{width:100%;height:100%;object-fit:cover;}
-.luggage-item .lrm{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(226,75,74,0.9);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;}
-.luggage-item .lday-tag{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);color:#fff;font-size:8px;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.luggage-empty{font-size:11px;color:#d3d1c7;text-align:center;padding:10px 0;}
+.luggage-item .lrm{position:absolute;top:6px;right:6px;width:24px;height:24px;background:rgba(226,75,74,0.92);color:#fff;border:none;border-radius:50%;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.luggage-item .lday-tag{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.6);color:#fff;font-size:9px;font-weight:500;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.luggage-item .assign-btn{position:absolute;bottom:0;left:0;right:0;background:rgba(44,44,42,0.82);color:#fff;border:none;font-size:10px;font-weight:500;padding:6px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:3px;display:none;}
+.luggage-item:hover .assign-btn,.luggage-item.show-assign .assign-btn{display:flex;}
+.luggage-empty{text-align:center;padding:32px 16px;color:#d3d1c7;font-size:13px;}
 
-/* Search in luggage */
-.search-row{display:flex;gap:6px;margin-top:4px;}
-.search-input{flex:1;border:0.5px solid #e8e6df;border-radius:7px;padding:7px 10px;font-size:11px;font-family:inherit;color:#2c2c2a;background:#fff;min-width:0;}
+/* Search */
+.search-wrap{display:flex;gap:8px;margin-bottom:6px;}
+.search-input{flex:1;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;color:#2c2c2a;background:#fff;}
 .search-input:focus{outline:none;border-color:#b4b2a9;}
 .search-input::placeholder{color:#d3d1c7;}
-.search-btn{background:#2c2c2a;color:#fff;border:none;border-radius:7px;padding:7px 11px;font-size:10px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;}
-.search-btn:hover{background:#1a1a18;}
+.search-pin-btn{background:#e60023;color:#fff;border:none;border-radius:10px;padding:12px 16px;font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;}
 
-/* Day cards */
-.day-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
-.day-hdr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;}
-.day-hdr-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
-.day-hdr-sub{font-size:10px;color:rgba(255,255,255,0.7);}
-.day-emoji{font-size:18px;}
-.day-bdy{padding:12px 14px 16px;}
-.day-ctx{font-size:11px;color:#888780;line-height:1.6;margin-bottom:10px;padding:8px 10px;background:#f8f7f4;border-radius:7px;}
+/* ── DAYS PANE ── */
+.day-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.day-hdr{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.day-hdr-left h2{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
+.day-hdr-left p{font-size:11px;color:rgba(255,255,255,0.7);}
+.day-toggle{font-size:11px;color:rgba(255,255,255,0.6);transition:transform 0.2s;}
+.day-toggle.open{transform:rotate(180deg);}
+.day-bdy{padding:12px 14px 16px;display:none;}
+.day-bdy.open{display:block;}
+.day-ctx{font-size:11px;color:#888780;line-height:1.6;padding:8px 10px;background:#f8f7f4;border-radius:7px;margin-bottom:12px;}
 
-/* Drop zone on day */
-.day-drop{min-height:68px;border:1.5px dashed #e8e6df;border-radius:9px;display:flex;flex-wrap:wrap;gap:8px;padding:8px;transition:all 0.15s;}
+/* Drop zone */
+.day-drop{min-height:90px;border:1.5px dashed #e8e6df;border-radius:10px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;transition:all 0.15s;}
 .day-drop.over{border-color:#185FA5;background:rgba(24,95,165,0.04);}
-.day-drop.over::after{content:'Drop here';font-size:11px;color:#185FA5;display:flex;align-items:center;justify-content:center;width:100%;pointer-events:none;}
-.day-drop:empty::before{content:'Drag items from luggage';font-size:10px;color:#d3d1c7;display:flex;align-items:center;justify-content:center;width:100%;height:52px;}
-.drop-item{position:relative;width:72px;height:90px;border-radius:8px;overflow:hidden;background:#f8f7f4;}
+.drop-placeholder{width:100%;font-size:11px;color:#d3d1c7;display:flex;align-items:center;justify-content:center;height:70px;}
+.drop-item{position:relative;width:72px;height:92px;border-radius:8px;overflow:hidden;background:#e8e6df;}
 .drop-item img{width:100%;height:100%;object-fit:cover;}
-.drop-item .drm{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(226,75,74,0.9);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;}
+.drop-item .drm{position:absolute;top:4px;right:4px;width:20px;height:20px;background:rgba(226,75,74,0.9);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
 
 /* Notes */
-.note-lbl{font-size:10px;color:#b4b2a9;margin-top:12px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
-.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:54px;line-height:1.5;}
+.note-lbl{font-size:10px;color:#b4b2a9;text-transform:uppercase;letter-spacing:0.4px;margin-top:12px;margin-bottom:4px;}
+.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:54px;line-height:1.5;}
 .day-note:focus{outline:none;border-color:#b4b2a9;}
 .day-note::placeholder{color:#d3d1c7;}
 
+/* Day colors */
 .d0{background:#444441;}.d1{background:#0F6E56;}.d2{background:#185FA5;}
 .d3{background:#854F0B;}.d4{background:#993C1D;}.d5{background:#534AB7;}.d6{background:#444441;}
 
-/* Mobile tabs */
-.mob-tabs{display:none;}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:8px 16px;border-radius:99px;font-size:11px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+/* ── DAY PICKER SHEET ── */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;display:none;align-items:flex-end;}
+.sheet-overlay.open{display:flex;}
+.sheet{background:#fff;border-radius:20px 20px 0 0;padding:16px 0 36px;width:100%;max-height:70vh;overflow-y:auto;}
+.sheet-handle{width:40px;height:4px;background:#e8e6df;border-radius:99px;margin:0 auto 16px;}
+.sheet-title{font-size:13px;font-weight:600;color:#2c2c2a;padding:0 20px 12px;border-bottom:0.5px solid #f0ede6;}
+.sheet-option{display:flex;align-items:center;gap:12px;padding:14px 20px;font-size:14px;color:#2c2c2a;cursor:pointer;border-bottom:0.5px solid #f8f7f4;}
+.sheet-option:last-child{border-bottom:none;}
+.sheet-option:active{background:#f8f7f4;}
+.sheet-option-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.sheet-option-right{margin-left:auto;font-size:11px;color:#b4b2a9;}
+.sheet-cancel{margin:12px 16px 0;padding:14px;text-align:center;font-size:14px;color:#888780;background:#f8f7f4;border:none;border-radius:10px;cursor:pointer;width:calc(100% - 32px);font-family:inherit;}
+
+/* Toast */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:10px 18px;border-radius:99px;font-size:12px;opacity:0;transition:opacity 0.25s;pointer-events:none;z-index:999;white-space:nowrap;}
 .toast.show{opacity:1;}
 
-@media(max-width:780px){
-  .layout{display:block;}
-  .col-luggage{width:100%;position:static;max-height:none;margin-bottom:20px;}
-  .col-days .day-card:first-child{margin-top:0;}
-  .mob-tabs{display:flex;gap:0;background:#fff;border-radius:10px;border:1px solid #e8e6df;overflow:hidden;margin-bottom:16px;}
-  .mob-tab{flex:1;padding:10px 4px;font-size:12px;font-weight:500;color:#888780;background:transparent;border:none;border-right:0.5px solid #e8e6df;cursor:pointer;}
-  .mob-tab:last-child{border-right:none;}
-  .mob-tab.active{color:#2c2c2a;background:#f5f4f0;font-weight:600;}
-  .col-luggage.mob-hidden,.col-days.mob-hidden{display:none;}
+/* Desktop overrides */
+@media(min-width:780px){
+  .page{max-width:1100px;margin:0 auto;}
+  .tab-bar{display:none;}
+  .pane{display:block!important;padding:0 16px 40px;}
+  .layout-desktop{display:flex;gap:20px;align-items:flex-start;padding:0 16px 60px;}
+  .col-luggage{width:280px;flex-shrink:0;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;}
+  .col-days{flex:1;min-width:0;}
+  .day-bdy{display:block!important;}
+  .day-toggle{display:none;}
+  .luggage-grid{grid-template-columns:repeat(3,1fr);}
+  .luggage-item .assign-btn{display:none!important;}
+  .hero{padding:20px 16px 16px;}
 }
 </style>
 </head>
 <body>
-<div class="page">
+
+<div class="nav">
   <a class="back-link" href="CDMX_Itinerary.html">
-    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
-    Back to itinerary
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+    Back
   </a>
-  <div class="hero">
-    <h1>What are you wearing?</h1>
-    <p>Add clothes to your luggage · drag to each day</p>
-  </div>
+</div>
 
-  <!-- Mobile tabs -->
-  <div class="mob-tabs">
-    <button class="mob-tab active" onclick="showMobTab('luggage',this)">🧳 Luggage</button>
-    <button class="mob-tab" onclick="showMobTab('days',this)">📅 Days</button>
-  </div>
+<div class="hero">
+  <h1>What are you wearing?</h1>
+  <p>Build your looks day by day</p>
+</div>
 
-  <div class="layout">
+<div class="tab-bar">
+  <button class="tab-btn active" data-pane="luggage">🧳 Luggage</button>
+  <button class="tab-btn" data-pane="days">📅 Days</button>
+</div>
 
-    <!-- LUGGAGE SIDEBAR -->
-    <div class="col-luggage" id="mob-luggage">
-      <div class="luggage-card">
-        <div class="luggage-header">
-          <h2>🧳 Luggage</h2>
-          <p>Upload items · drag to a day</p>
+<!-- Mobile: stacked panes / Desktop: side by side via layout-desktop -->
+<div class="layout-desktop">
+
+  <div class="col-luggage">
+    <div id="pane-luggage" class="pane active" style="padding:0;">
+      <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.07);">
+        <div style="background:#2c2c2a;padding:14px 16px;">
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:1px;">🧳 Luggage</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.55);">Tap item → assign to a day</div>
         </div>
-        <div class="luggage-body">
-          <div class="luggage-upload" id="luggage-zone">
+        <div style="padding:14px;">
+          <div class="upload-btn">
             <input type="file" accept="image/*" multiple id="luggage-input">
-            <div class="luggage-upload-txt"><strong>📷 Add clothing item</strong>Tap or drag a photo</div>
+            <span>📷</span><span>Add item</span>
           </div>
           <div class="luggage-grid" id="luggage-grid"></div>
           <div class="luggage-empty" id="luggage-empty">No items yet</div>
-          <div class="search-row">
-            <input class="search-input" id="search-input" type="text" placeholder="Find inspiration...">
-            <button class="search-btn" id="search-btn">Pinterest</button>
+          <div class="search-wrap">
+            <input class="search-input" id="search-input" type="text" placeholder="Search Pinterest...">
+            <button class="search-pin-btn" id="search-btn">Search</button>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- DAYS -->
-    <div class="col-days" id="mob-days">
+  <div class="col-days">
+    <div id="pane-days" class="pane" style="padding:0;">
       <div id="days-container"></div>
     </div>
+  </div>
 
+</div>
+
+<!-- Day picker sheet -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet(event)">
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-title" id="sheet-title">Add to day</div>
+    <div id="sheet-options"></div>
+    <button class="sheet-cancel" onclick="closeSheet()">Cancel</button>
   </div>
 </div>
 
@@ -147,107 +179,117 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-heigh
 <script>
 var DAYS = [
   {id:'d0',cls:'d0',title:'Arrival — Mon Apr 21',sub:'Late night · ~23:15 landing',emoji:'✈️',ctx:'Travel day. Comfortable layers for the flight and late arrival.'},
-  {id:'d1',cls:'d1',title:'Day 1 — Wed Apr 22',sub:'Chapultepec · park + museums',emoji:'☀️',ctx:'~6km walk outdoors through the Bosque. Strong sun, museum-appropriate. Hat and good shoes essential.'},
-  {id:'d2',cls:'d2',title:'Day 2 — Thu Apr 23',sub:'Centro · walking tour + Ecobici',emoji:'🚲',ctx:'Full day on foot and bike. Cobblestones — skip the heels. Churches, palaces, rooftop bar at sunset.'},
-  {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',ctx:'Relaxed daytime → festive evening. Lucha Libre is loud and electric — dress to have fun.'},
-  {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',ctx:'Early 6am start, full sun, climbing pyramids. Breathable fabrics, good grip, SPF everything.'},
+  {id:'d1',cls:'d1',title:'Day 1 — Wed Apr 22',sub:'Chapultepec · park + museums',emoji:'☀️',ctx:'~6km walk outdoors. Strong sun, museum-appropriate. Hat and good shoes essential.'},
+  {id:'d2',cls:'d2',title:'Day 2 — Thu Apr 23',sub:'Centro · walking tour + Ecobici',emoji:'🚲',ctx:'Full day on foot and bike. Cobblestones — skip the heels. Rooftop bar at sunset.'},
+  {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',ctx:'Relaxed daytime → festive evening. Lucha Libre is loud — dress to have fun.'},
+  {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',ctx:'6am start, full sun, climbing pyramids. Breathable fabrics, good grip, SPF everything.'},
   {id:'d5',cls:'d5',title:'Day 5 — Sun Apr 26',sub:'Free day · Biblioteca + wander',emoji:'📚',ctx:'No agenda. Dress for whatever mood you wake up in.'},
   {id:'d6',cls:'d6',title:'Departure — Mon Apr 27',sub:'~4am checkout · 7am flight',emoji:'🛫',ctx:'4am checkout — comfort over everything. Something to sleep in on the flight home.'},
 ];
+var DAY_COLORS = {d0:'#444441',d1:'#0F6E56',d2:'#185FA5',d3:'#854F0B',d4:'#993C1D',d5:'#534AB7',d6:'#444441'};
 
-var DAY_LABELS = {d0:'Arrival',d1:'Day 1',d2:'Day 2',d3:'Day 3',d4:'Day 4',d5:'Day 5',d6:'Departure'};
+var luggage=[], dayItems={}, pendingItemId=null;
 
-// Toast
-function showToast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2000); }
+// ── Toast ─────────────────────────────────────────────────────────────────
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2000); }
 
-// Notes
-function getNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_outfit_notes')||'{}'); }catch(e){ return {}; } }
+// ── Notes ─────────────────────────────────────────────────────────────────
+function getNotes(){ try{return JSON.parse(localStorage.getItem('cdmx_outfit_notes')||'{}');}catch(e){return {};} }
 function saveNote(k,v){ var n=getNotes(); n[k]=v; localStorage.setItem('cdmx_outfit_notes',JSON.stringify(n)); }
 
-// State
-var luggage = []; // [{id, dataURL}]
-var dayItems = {}; // {dayId: [luggageItemId, ...]}
-var dragItemId = null;
-
-// IndexedDB
-var DB_NAME='cdmx_outfits_v3', db=null;
+// ── IndexedDB ─────────────────────────────────────────────────────────────
+var db=null;
 function openDB(){
   return new Promise(function(res,rej){
-    var req=indexedDB.open(DB_NAME,1);
-    req.onupgradeneeded=function(e){
-      var s=e.target.result;
-      s.createObjectStore('luggage');
-      s.createObjectStore('days');
-    };
+    var req=indexedDB.open('cdmx_outfits_v4',1);
+    req.onupgradeneeded=function(e){ var s=e.target.result; s.createObjectStore('luggage'); s.createObjectStore('days'); };
     req.onsuccess=function(e){ db=e.target.result; res(); };
     req.onerror=rej;
   });
 }
 function dbGet(store,k){ return new Promise(function(res,rej){ var t=db.transaction(store,'readonly'),r=t.objectStore(store).get(k); r.onsuccess=function(){res(r.result);}; r.onerror=rej; }); }
 function dbSet(store,k,v){ return new Promise(function(res,rej){ var t=db.transaction(store,'readwrite'),r=t.objectStore(store).put(v,k); r.onsuccess=res; r.onerror=rej; }); }
-function dbDel(store,k){ return new Promise(function(res,rej){ var t=db.transaction(store,'readwrite'),r=t.objectStore(store).delete(k); r.onsuccess=res; r.onerror=rej; }); }
+function saveAll(){ return Promise.all([dbSet('luggage','items',luggage), dbSet('days','items',dayItems)]); }
 
-function saveAll(){
-  dbSet('luggage','items',luggage);
-  dbSet('days','items',dayItems);
+function fileToDataURL(f){ return new Promise(function(res){ var r=new FileReader(); r.onload=function(e){res(e.target.result);}; r.readAsDataURL(f); }); }
+
+// ── Day picker sheet ───────────────────────────────────────────────────────
+function openSheet(itemId){
+  pendingItemId=itemId;
+  var item=luggage.find(function(i){return i.id===itemId;});
+  document.getElementById('sheet-title').textContent='Assign "'+(item?item.label||'item':'')+'"';
+  var opts=document.getElementById('sheet-options');
+  opts.innerHTML='';
+  DAYS.forEach(function(day){
+    var assigned=(dayItems[day.id]||[]).includes(itemId);
+    var btn=document.createElement('div');
+    btn.className='sheet-option';
+    btn.innerHTML='<div class="sheet-option-dot" style="background:'+DAY_COLORS[day.id]+'"></div>'+
+      '<span>'+day.title+'</span>'+
+      (assigned?'<span class="sheet-option-right">✓ assigned</span>':'');
+    btn.onclick=function(){
+      if(!assigned){
+        if(!dayItems[day.id]) dayItems[day.id]=[];
+        dayItems[day.id].push(itemId);
+        saveAll(); renderAllDays(); renderLuggage();
+        toast('Added to '+day.title.split(' — ')[0]);
+      }
+      closeSheet();
+    };
+    opts.appendChild(btn);
+  });
+  document.getElementById('sheet-overlay').classList.add('open');
 }
+function closeSheet(e){ if(e && e.target!==document.getElementById('sheet-overlay')) return; document.getElementById('sheet-overlay').classList.remove('open'); pendingItemId=null; }
 
-// File → dataURL
-function fileToDataURL(file){ return new Promise(function(res){ var r=new FileReader(); r.onload=function(e){res(e.target.result);}; r.readAsDataURL(file); }); }
-
-// ── RENDER LUGGAGE ────────────────────────────────────────────────────────
+// ── Render luggage ────────────────────────────────────────────────────────
 function renderLuggage(){
   var grid=document.getElementById('luggage-grid');
   var empty=document.getElementById('luggage-empty');
   grid.innerHTML='';
   luggage.forEach(function(item){
-    // Find which day this item is assigned to
-    var assignedDay = null;
-    Object.keys(dayItems).forEach(function(dayId){
-      if((dayItems[dayId]||[]).indexOf(item.id)>=0) assignedDay=dayId;
-    });
+    var assignedDay=null;
+    Object.keys(dayItems).forEach(function(d){ if((dayItems[d]||[]).includes(item.id)) assignedDay=d; });
+    var assignedLabel=assignedDay?DAYS.find(function(d){return d.id===assignedDay;}) : null;
     var div=document.createElement('div');
     div.className='luggage-item';
-    div.dataset.id=item.id;
-    div.draggable=true;
     div.innerHTML='<img src="'+item.dataURL+'" alt="item">'+
-      '<button class="lrm">✕</button>'+
-      (assignedDay?'<div class="lday-tag">'+DAY_LABELS[assignedDay]+'</div>':'');
+      '<button class="lrm" title="Remove">✕</button>'+
+      (assignedLabel?'<div class="lday-tag">'+assignedLabel.title.split(' — ')[0]+'</div>':'')+
+      '<button class="assign-btn">+ Day</button>';
     div.querySelector('.lrm').onclick=function(e){
       e.stopPropagation();
       luggage=luggage.filter(function(i){return i.id!==item.id;});
-      Object.keys(dayItems).forEach(function(d){
-        dayItems[d]=(dayItems[d]||[]).filter(function(id){return id!==item.id;});
-      });
+      Object.keys(dayItems).forEach(function(d){ dayItems[d]=(dayItems[d]||[]).filter(function(id){return id!==item.id;}); });
       saveAll(); renderLuggage(); renderAllDays();
     };
-    div.addEventListener('dragstart',function(e){
-      dragItemId=item.id;
-      div.classList.add('dragging');
-      e.dataTransfer.effectAllowed='copy';
-      e.dataTransfer.setData('text/plain',item.id);
-    });
-    div.addEventListener('dragend',function(){ div.classList.remove('dragging'); dragItemId=null; });
-    // Touch drag (mobile)
-    div.addEventListener('touchstart',function(e){ dragItemId=item.id; div.style.opacity='0.5'; e.stopPropagation(); },{passive:true});
-    div.addEventListener('touchend',function(){ div.style.opacity=''; },{passive:true});
+    div.querySelector('.assign-btn').onclick=function(e){ e.stopPropagation(); openSheet(item.id); };
+    div.onclick=function(){ openSheet(item.id); };
+    // Desktop drag
+    div.draggable=true;
+    div.addEventListener('dragstart',function(e){ e.dataTransfer.setData('text/plain',item.id); div.style.opacity='0.4'; });
+    div.addEventListener('dragend',function(){ div.style.opacity=''; });
     grid.appendChild(div);
   });
   empty.style.display=luggage.length?'none':'block';
 }
 
-// ── RENDER DAY DROP ZONES ─────────────────────────────────────────────────
+// ── Render day drops ──────────────────────────────────────────────────────
 function renderDayDrop(dayId){
   var zone=document.getElementById('drop-'+dayId);
   if(!zone) return;
-  zone.innerHTML='';
   var ids=dayItems[dayId]||[];
-  ids.forEach(function(itemId,idx){
+  zone.innerHTML='';
+  if(!ids.length){
+    zone.innerHTML='<div class="drop-placeholder">Drag or tap items from luggage</div>';
+    return;
+  }
+  ids.forEach(function(itemId){
     var item=luggage.find(function(i){return i.id===itemId;});
     if(!item) return;
     var div=document.createElement('div');
     div.className='drop-item';
-    div.innerHTML='<img src="'+item.dataURL+'" alt="item"><button class="drm">✕</button>';
+    div.innerHTML='<img src="'+item.dataURL+'"><button class="drm">✕</button>';
     div.querySelector('.drm').onclick=function(){
       dayItems[dayId]=(dayItems[dayId]||[]).filter(function(id){return id!==itemId;});
       saveAll(); renderDayDrop(dayId); renderLuggage();
@@ -255,133 +297,98 @@ function renderDayDrop(dayId){
     zone.appendChild(div);
   });
 }
+function renderAllDays(){ DAYS.forEach(function(d){ renderDayDrop(d.id); }); }
 
-function renderAllDays(){ DAYS.forEach(function(d){renderDayDrop(d.id);}); }
-
-// ── DROP ZONE WIRING ──────────────────────────────────────────────────────
-function wireDropZone(zone, dayId){
-  zone.addEventListener('dragover',function(e){
-    e.preventDefault(); e.dataTransfer.dropEffect='copy'; zone.classList.add('over');
-  });
-  zone.addEventListener('dragleave',function(e){
-    if(!zone.contains(e.relatedTarget)) zone.classList.remove('over');
-  });
-  zone.addEventListener('drop',function(e){
-    e.preventDefault(); zone.classList.remove('over');
-    var id=e.dataTransfer.getData('text/plain')||dragItemId;
-    if(!id) return;
-    if(!(dayItems[dayId]||[]).includes(id)){
-      if(!dayItems[dayId]) dayItems[dayId]=[];
-      dayItems[dayId].push(id);
-      saveAll(); renderDayDrop(dayId); renderLuggage();
-      showToast('Added to '+DAY_LABELS[dayId]);
-    }
-  });
-  // Touch drop
-  zone.addEventListener('touchend',function(e){
-    if(!dragItemId) return;
-    var touch=e.changedTouches[0];
-    var el=document.elementFromPoint(touch.clientX,touch.clientY);
-    if(zone.contains(el)){
-      if(!(dayItems[dayId]||[]).includes(dragItemId)){
-        if(!dayItems[dayId]) dayItems[dayId]=[];
-        dayItems[dayId].push(dragItemId);
-        saveAll(); renderDayDrop(dayId); renderLuggage();
-        showToast('Added to '+DAY_LABELS[dayId]);
-      }
-      dragItemId=null;
-    }
-  },{passive:true});
-}
-
-// ── BUILD DAY CARDS ───────────────────────────────────────────────────────
-function renderDay(day){
+// ── Build day cards ───────────────────────────────────────────────────────
+function buildDayCards(){
+  var container=document.getElementById('days-container');
   var notes=getNotes();
-  var div=document.createElement('div');
-  div.className='day-card';
-  div.innerHTML=
-    '<div class="day-hdr '+day.cls+'">'+
-      '<div><div class="day-hdr-title">'+day.title+'</div><div class="day-hdr-sub">'+day.sub+'</div></div>'+
-      '<div class="day-emoji">'+day.emoji+'</div>'+
-    '</div>'+
-    '<div class="day-bdy">'+
-      '<div class="day-ctx">'+day.ctx+'</div>'+
-      '<div class="day-drop" id="drop-'+day.id+'"></div>'+
-      '<div class="note-lbl">Notes</div>'+
-      '<textarea class="day-note" placeholder="Shoes, accessories, vibe...">'+(notes[day.id]||'')+'</textarea>'+
-    '</div>';
-  div.querySelector('.day-note').oninput=function(){ saveNote(day.id,this.value); };
-  return div;
-}
-
-// ── SEARCH ────────────────────────────────────────────────────────────────
-document.getElementById('search-btn').onclick=function(){
-  var q=document.getElementById('search-input').value.trim();
-  if(!q){ document.getElementById('search-input').focus(); return; }
-  window.open('https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'),'_blank');
-};
-document.getElementById('search-input').onkeydown=function(e){
-  if(e.key==='Enter'){ document.getElementById('search-btn').click(); }
-};
-
-// ── LUGGAGE UPLOAD ────────────────────────────────────────────────────────
-function handleUpload(files){
-  var promises=Array.from(files).filter(function(f){return f.type.startsWith('image/');}).map(function(f){
-    return fileToDataURL(f).then(function(dataURL){
-      luggage.push({id:'item_'+Date.now()+'_'+Math.random().toString(36).slice(2,6), dataURL:dataURL});
+  DAYS.forEach(function(day){
+    var card=document.createElement('div');
+    card.className='day-card';
+    card.innerHTML=
+      '<div class="day-hdr '+day.cls+'">'+
+        '<div class="day-hdr-left"><h2>'+day.title+'</h2><p>'+day.sub+'</p></div>'+
+        '<span class="day-toggle">▲</span>'+
+      '</div>'+
+      '<div class="day-bdy" id="body-'+day.id+'">'+
+        '<div class="day-ctx">'+day.ctx+'</div>'+
+        '<div class="day-drop" id="drop-'+day.id+'"><div class="drop-placeholder">Drag or tap items from luggage</div></div>'+
+        '<div class="note-lbl">Notes</div>'+
+        '<textarea class="day-note" placeholder="Shoes, accessories, vibe...">'+(notes[day.id]||'')+'</textarea>'+
+      '</div>';
+    // Toggle collapse on mobile
+    var hdr=card.querySelector('.day-hdr');
+    var bdy=card.querySelector('.day-bdy');
+    var tog=card.querySelector('.day-toggle');
+    hdr.onclick=function(){
+      if(window.innerWidth>=780) return;
+      bdy.classList.toggle('open');
+      tog.classList.toggle('open');
+    };
+    // Desktop drag-over
+    var zone=card.querySelector('.day-drop');
+    zone.addEventListener('dragover',function(e){ e.preventDefault(); zone.classList.add('over'); });
+    zone.addEventListener('dragleave',function(e){ if(!zone.contains(e.relatedTarget)) zone.classList.remove('over'); });
+    zone.addEventListener('drop',function(e){
+      e.preventDefault(); zone.classList.remove('over');
+      var id=e.dataTransfer.getData('text/plain');
+      if(id && !(dayItems[day.id]||[]).includes(id)){
+        if(!dayItems[day.id]) dayItems[day.id]=[];
+        dayItems[day.id].push(id);
+        saveAll(); renderDayDrop(day.id); renderLuggage();
+        toast('Added to '+day.title.split(' — ')[0]);
+      }
     });
+    card.querySelector('.day-note').oninput=function(){ saveNote(day.id,this.value); };
+    container.appendChild(card);
   });
-  Promise.all(promises).then(function(){ saveAll(); renderLuggage(); showToast('✓ Added to luggage'); });
 }
-var luggageInput=document.getElementById('luggage-input');
-var luggageZone=document.getElementById('luggage-zone');
-luggageInput.onchange=function(e){ handleUpload(e.target.files); luggageInput.value=''; };
-luggageZone.addEventListener('dragover',function(e){e.preventDefault();luggageZone.classList.add('drag-over');});
-luggageZone.addEventListener('dragleave',function(){luggageZone.classList.remove('drag-over');});
-luggageZone.addEventListener('drop',function(e){
-  e.preventDefault();luggageZone.classList.remove('drag-over');
-  if(e.dataTransfer.files.length) handleUpload(e.dataTransfer.files);
+
+// ── Tab bar ───────────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(function(btn){
+  btn.onclick=function(){
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    var pane=btn.dataset.pane;
+    document.getElementById('pane-luggage').classList.toggle('active', pane==='luggage');
+    document.getElementById('pane-days').classList.toggle('active', pane==='days');
+  };
 });
 
-// ── MOBILE TABS ───────────────────────────────────────────────────────────
-function showMobTab(tab, btn){
-  document.querySelectorAll('.mob-tab').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  var l=document.getElementById('mob-luggage'), d=document.getElementById('mob-days');
-  if(tab==='luggage'){ l.classList.remove('mob-hidden'); d.classList.add('mob-hidden'); }
-  else { d.classList.remove('mob-hidden'); l.classList.add('mob-hidden'); }
-}
-if(window.innerWidth<=780){
-  document.getElementById('mob-days').classList.add('mob-hidden');
-}
-
-// ── INIT ──────────────────────────────────────────────────────────────────
-function init(){
-  var container=document.getElementById('days-container');
-  openDB().then(function(){
-    return Promise.all([
-      dbGet('luggage','items').then(function(d){ luggage=d||[]; }),
-      dbGet('days','items').then(function(d){ dayItems=d||{}; }),
-    ]);
-  }).then(function(){
-    DAYS.forEach(function(day){
-      var card=renderDay(day);
-      container.appendChild(card);
-      wireDropZone(document.getElementById('drop-'+day.id), day.id);
-      renderDayDrop(day.id);
+// ── Upload ────────────────────────────────────────────────────────────────
+document.getElementById('luggage-input').onchange=function(e){
+  var files=Array.from(e.target.files).filter(function(f){return f.type.startsWith('image/');});
+  Promise.all(files.map(function(f){
+    return fileToDataURL(f).then(function(d){
+      luggage.push({id:'i'+Date.now()+'_'+Math.random().toString(36).slice(2,5), dataURL:d});
     });
-    renderLuggage();
-  }).catch(function(){
-    DAYS.forEach(function(day){
-      var card=renderDay(day);
-      container.appendChild(card);
-      wireDropZone(document.getElementById('drop-'+day.id), day.id);
-    });
-    renderLuggage();
-  });
-}
+  })).then(function(){ saveAll(); renderLuggage(); toast('✓ Added to luggage'); });
+  this.value='';
+};
 
-if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',init); } else { init(); }
+// ── Pinterest search ──────────────────────────────────────────────────────
+document.getElementById('search-btn').onclick=function(){
+  var q=document.getElementById('search-input').value.trim();
+  if(!q){document.getElementById('search-input').focus();return;}
+  window.open('https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'),'_blank');
+};
+document.getElementById('search-input').onkeydown=function(e){ if(e.key==='Enter') document.getElementById('search-btn').click(); };
+
+// ── Init ──────────────────────────────────────────────────────────────────
+openDB().then(function(){
+  return Promise.all([
+    dbGet('luggage','items').then(function(d){ luggage=d||[]; }),
+    dbGet('days','items').then(function(d){ dayItems=d||{}; }),
+  ]);
+}).then(function(){
+  buildDayCards();
+  renderLuggage();
+  renderAllDays();
+}).catch(function(){
+  buildDayCards();
+  renderLuggage();
+});
 </script>
 </body>
 </html>
