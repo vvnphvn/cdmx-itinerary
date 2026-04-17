@@ -8,56 +8,89 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-height:100vh;}
-.page{max-width:780px;margin:0 auto;padding:28px 16px 80px;}
+
+.page{max-width:1100px;margin:0 auto;padding:28px 16px 60px;}
 .back-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#b4b2a9;text-decoration:none;margin-bottom:14px;}
 .back-link:hover{color:#2c2c2a;}
-.hero{margin-bottom:28px;}
+.hero{margin-bottom:24px;}
 .hero h1{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:#1a2e4a;white-space:nowrap;line-height:1.1;}
 .hero p{font-size:11px;color:#b4b2a9;margin-top:6px;}
 
-.day-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
-.day-hdr{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-.day-hdr-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
-.day-hdr-sub{font-size:10px;color:rgba(255,255,255,0.7);}
-.day-emoji{font-size:20px;}
-.day-bdy{padding:14px 16px 18px;}
-.day-ctx{font-size:11px;color:#888780;line-height:1.6;margin-bottom:14px;padding:9px 11px;background:#f8f7f4;border-radius:7px;}
+/* Layout */
+.layout{display:flex;gap:20px;align-items:flex-start;}
+.col-days{flex:1;min-width:0;}
+.col-luggage{width:260px;flex-shrink:0;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;}
 
-/* Photo grid */
-.photo-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;min-height:0;}
-.photo-item{position:relative;width:105px;height:135px;flex-shrink:0;background:#f8f7f4;border-radius:10px;overflow:hidden;}
-.photo-item img{width:100%;height:100%;object-fit:cover;display:block;}
-.photo-item .rm{position:absolute;top:6px;right:6px;width:22px;height:22px;background:rgba(226,75,74,0.92);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;backdrop-filter:blur(2px);}
+/* Luggage sidebar */
+.luggage-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
+.luggage-header{background:#2c2c2a;padding:14px 16px;}
+.luggage-header h2{font-size:13px;font-weight:600;color:#fff;margin-bottom:1px;}
+.luggage-header p{font-size:10px;color:rgba(255,255,255,0.6);}
+.luggage-body{padding:14px;}
+.luggage-upload{border:1.5px dashed #d3d1c7;border-radius:9px;padding:14px;text-align:center;cursor:pointer;background:#fafaf8;position:relative;overflow:hidden;margin-bottom:12px;transition:all 0.15s;}
+.luggage-upload:hover,.luggage-upload.drag-over{border-color:#2c2c2a;background:#f5f4f0;}
+.luggage-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.luggage-upload-txt{font-size:11px;color:#888780;}
+.luggage-upload-txt strong{color:#2c2c2a;font-weight:500;display:block;margin-bottom:2px;}
+.luggage-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;min-height:40px;}
+.luggage-item{position:relative;width:72px;height:90px;border-radius:8px;overflow:hidden;background:#f8f7f4;cursor:grab;border:2px solid transparent;transition:border-color 0.15s;}
+.luggage-item:hover{border-color:#d3d1c7;}
+.luggage-item.dragging{opacity:0.4;cursor:grabbing;}
+.luggage-item img{width:100%;height:100%;object-fit:cover;}
+.luggage-item .lrm{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(226,75,74,0.9);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;}
+.luggage-item .lday-tag{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.55);color:#fff;font-size:8px;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.luggage-empty{font-size:11px;color:#d3d1c7;text-align:center;padding:10px 0;}
 
-/* Upload zone */
-.upload-zone{border:1.5px dashed #d3d1c7;border-radius:9px;padding:16px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fafaf8;position:relative;overflow:hidden;}
-.upload-zone:hover,.upload-zone.drag-over{border-color:#2c2c2a;background:#f5f4f0;}
-.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.upload-ico{font-size:20px;margin-bottom:5px;}
-.upload-txt{font-size:11px;color:#888780;line-height:1.5;}
-.upload-txt strong{color:#2c2c2a;font-weight:500;}
-
-/* Search row */
-.search-row{display:flex;gap:6px;margin-top:10px;}
-.search-input{flex:1;border:0.5px solid #e8e6df;border-radius:7px;padding:8px 11px;font-size:12px;font-family:inherit;color:#2c2c2a;background:#fff;}
+/* Search in luggage */
+.search-row{display:flex;gap:6px;margin-top:4px;}
+.search-input{flex:1;border:0.5px solid #e8e6df;border-radius:7px;padding:7px 10px;font-size:11px;font-family:inherit;color:#2c2c2a;background:#fff;min-width:0;}
 .search-input:focus{outline:none;border-color:#b4b2a9;}
 .search-input::placeholder{color:#d3d1c7;}
-.search-btn{display:flex;align-items:center;gap:5px;background:#2c2c2a;color:#fff;border:none;border-radius:7px;padding:8px 13px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.search-btn{background:#2c2c2a;color:#fff;border:none;border-radius:7px;padding:7px 11px;font-size:10px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;}
 .search-btn:hover{background:#1a1a18;}
 
+/* Day cards */
+.day-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
+.day-hdr{padding:13px 16px;display:flex;align-items:center;justify-content:space-between;}
+.day-hdr-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.day-hdr-sub{font-size:10px;color:rgba(255,255,255,0.7);}
+.day-emoji{font-size:18px;}
+.day-bdy{padding:12px 14px 16px;}
+.day-ctx{font-size:11px;color:#888780;line-height:1.6;margin-bottom:10px;padding:8px 10px;background:#f8f7f4;border-radius:7px;}
+
+/* Drop zone on day */
+.day-drop{min-height:68px;border:1.5px dashed #e8e6df;border-radius:9px;display:flex;flex-wrap:wrap;gap:8px;padding:8px;transition:all 0.15s;}
+.day-drop.over{border-color:#185FA5;background:rgba(24,95,165,0.04);}
+.day-drop.over::after{content:'Drop here';font-size:11px;color:#185FA5;display:flex;align-items:center;justify-content:center;width:100%;pointer-events:none;}
+.day-drop:empty::before{content:'Drag items from luggage';font-size:10px;color:#d3d1c7;display:flex;align-items:center;justify-content:center;width:100%;height:52px;}
+.drop-item{position:relative;width:72px;height:90px;border-radius:8px;overflow:hidden;background:#f8f7f4;}
+.drop-item img{width:100%;height:100%;object-fit:cover;}
+.drop-item .drm{position:absolute;top:4px;right:4px;width:18px;height:18px;background:rgba(226,75,74,0.9);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;}
 
 /* Notes */
-.note-lbl{font-size:10px;color:#b4b2a9;margin-top:14px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
-.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:58px;line-height:1.5;}
+.note-lbl{font-size:10px;color:#b4b2a9;margin-top:12px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
+.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:7px;padding:8px 10px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:54px;line-height:1.5;}
 .day-note:focus{outline:none;border-color:#b4b2a9;}
 .day-note::placeholder{color:#d3d1c7;}
 
 .d0{background:#444441;}.d1{background:#0F6E56;}.d2{background:#185FA5;}
 .d3{background:#854F0B;}.d4{background:#993C1D;}.d5{background:#534AB7;}.d6{background:#444441;}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:9px 16px;border-radius:99px;font-size:11px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+/* Mobile tabs */
+.mob-tabs{display:none;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:8px 16px;border-radius:99px;font-size:11px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
 .toast.show{opacity:1;}
-@media(max-width:600px){.photo-item{width:85px;height:110px;}}
+
+@media(max-width:780px){
+  .layout{display:block;}
+  .col-luggage{width:100%;position:static;max-height:none;margin-bottom:20px;}
+  .col-days .day-card:first-child{margin-top:0;}
+  .mob-tabs{display:flex;gap:0;background:#fff;border-radius:10px;border:1px solid #e8e6df;overflow:hidden;margin-bottom:16px;}
+  .mob-tab{flex:1;padding:10px 4px;font-size:12px;font-weight:500;color:#888780;background:transparent;border:none;border-right:0.5px solid #e8e6df;cursor:pointer;}
+  .mob-tab:last-child{border-right:none;}
+  .mob-tab.active{color:#2c2c2a;background:#f5f4f0;font-weight:600;}
+  .col-luggage.mob-hidden,.col-days.mob-hidden{display:none;}
+}
 </style>
 </head>
 <body>
@@ -68,9 +101,45 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-heigh
   </a>
   <div class="hero">
     <h1>What are you wearing?</h1>
-    <p>Upload photos · search items online · build your looks</p>
+    <p>Add clothes to your luggage · drag to each day</p>
   </div>
-  <div id="days-container"></div>
+
+  <!-- Mobile tabs -->
+  <div class="mob-tabs">
+    <button class="mob-tab active" onclick="showMobTab('luggage',this)">🧳 Luggage</button>
+    <button class="mob-tab" onclick="showMobTab('days',this)">📅 Days</button>
+  </div>
+
+  <div class="layout">
+
+    <!-- LUGGAGE SIDEBAR -->
+    <div class="col-luggage" id="mob-luggage">
+      <div class="luggage-card">
+        <div class="luggage-header">
+          <h2>🧳 Luggage</h2>
+          <p>Upload items · drag to a day</p>
+        </div>
+        <div class="luggage-body">
+          <div class="luggage-upload" id="luggage-zone">
+            <input type="file" accept="image/*" multiple id="luggage-input">
+            <div class="luggage-upload-txt"><strong>📷 Add clothing item</strong>Tap or drag a photo</div>
+          </div>
+          <div class="luggage-grid" id="luggage-grid"></div>
+          <div class="luggage-empty" id="luggage-empty">No items yet</div>
+          <div class="search-row">
+            <input class="search-input" id="search-input" type="text" placeholder="Find inspiration...">
+            <button class="search-btn" id="search-btn">Pinterest</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAYS -->
+    <div class="col-days" id="mob-days">
+      <div id="days-container"></div>
+    </div>
+
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -80,79 +149,152 @@ var DAYS = [
   {id:'d0',cls:'d0',title:'Arrival — Mon Apr 21',sub:'Late night · ~23:15 landing',emoji:'✈️',ctx:'Travel day. Comfortable layers for the flight and late arrival.'},
   {id:'d1',cls:'d1',title:'Day 1 — Wed Apr 22',sub:'Chapultepec · park + museums',emoji:'☀️',ctx:'~6km walk outdoors through the Bosque. Strong sun, museum-appropriate. Hat and good shoes essential.'},
   {id:'d2',cls:'d2',title:'Day 2 — Thu Apr 23',sub:'Centro · walking tour + Ecobici',emoji:'🚲',ctx:'Full day on foot and bike. Cobblestones — skip the heels. Churches, palaces, rooftop bar at sunset.'},
-  {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',ctx:'Relaxed daytime → festive evening. Lucha Libre is loud and electric — dress to have fun. Arena gets hot.'},
+  {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',ctx:'Relaxed daytime → festive evening. Lucha Libre is loud and electric — dress to have fun.'},
   {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',ctx:'Early 6am start, full sun, climbing pyramids. Breathable fabrics, good grip, SPF everything.'},
   {id:'d5',cls:'d5',title:'Day 5 — Sun Apr 26',sub:'Free day · Biblioteca + wander',emoji:'📚',ctx:'No agenda. Dress for whatever mood you wake up in.'},
-  {id:'d6',cls:'d6',title:'Departure — Mon Apr 27',sub:'~4am checkout · 7am flight',emoji:'🛫',ctx:'4am checkout — comfort over everything. Something you can sleep in on the flight home.'},
+  {id:'d6',cls:'d6',title:'Departure — Mon Apr 27',sub:'~4am checkout · 7am flight',emoji:'🛫',ctx:'4am checkout — comfort over everything. Something to sleep in on the flight home.'},
 ];
 
-function showToast(msg){
-  var t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2200);
-}
+var DAY_LABELS = {d0:'Arrival',d1:'Day 1',d2:'Day 2',d3:'Day 3',d4:'Day 4',d5:'Day 5',d6:'Departure'};
+
+// Toast
+function showToast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2000); }
 
 // Notes
 function getNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_outfit_notes')||'{}'); }catch(e){ return {}; } }
-function saveNote(dayId,val){ var n=getNotes(); n[dayId]=val; localStorage.setItem('cdmx_outfit_notes',JSON.stringify(n)); }
+function saveNote(k,v){ var n=getNotes(); n[k]=v; localStorage.setItem('cdmx_outfit_notes',JSON.stringify(n)); }
 
-// IndexedDB for photos
-var DB_NAME='cdmx_outfits_db2', DB_STORE='photos', db=null;
+// State
+var luggage = []; // [{id, dataURL}]
+var dayItems = {}; // {dayId: [luggageItemId, ...]}
+var dragItemId = null;
+
+// IndexedDB
+var DB_NAME='cdmx_outfits_v3', db=null;
 function openDB(){
   return new Promise(function(res,rej){
     var req=indexedDB.open(DB_NAME,1);
-    req.onupgradeneeded=function(e){ e.target.result.createObjectStore(DB_STORE); };
+    req.onupgradeneeded=function(e){
+      var s=e.target.result;
+      s.createObjectStore('luggage');
+      s.createObjectStore('days');
+    };
     req.onsuccess=function(e){ db=e.target.result; res(); };
     req.onerror=rej;
   });
 }
-function dbGet(k){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readonly'),r=t.objectStore(DB_STORE).get(k); r.onsuccess=function(){res(r.result);}; r.onerror=rej; }); }
-function dbSet(k,v){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readwrite'),r=t.objectStore(DB_STORE).put(v,k); r.onsuccess=res; r.onerror=rej; }); }
-var dayPhotos={};
+function dbGet(store,k){ return new Promise(function(res,rej){ var t=db.transaction(store,'readonly'),r=t.objectStore(store).get(k); r.onsuccess=function(){res(r.result);}; r.onerror=rej; }); }
+function dbSet(store,k,v){ return new Promise(function(res,rej){ var t=db.transaction(store,'readwrite'),r=t.objectStore(store).put(v,k); r.onsuccess=res; r.onerror=rej; }); }
+function dbDel(store,k){ return new Promise(function(res,rej){ var t=db.transaction(store,'readwrite'),r=t.objectStore(store).delete(k); r.onsuccess=res; r.onerror=rej; }); }
 
-function fileToDataURL(file){
-  return new Promise(function(res){
-    var r=new FileReader(); r.onload=function(e){res(e.target.result);}; r.readAsDataURL(file);
-  });
+function saveAll(){
+  dbSet('luggage','items',luggage);
+  dbSet('days','items',dayItems);
 }
 
-function renderGrid(dayId){
-  var grid=document.getElementById('grid-'+dayId);
-  if(!grid) return;
+// File → dataURL
+function fileToDataURL(file){ return new Promise(function(res){ var r=new FileReader(); r.onload=function(e){res(e.target.result);}; r.readAsDataURL(file); }); }
+
+// ── RENDER LUGGAGE ────────────────────────────────────────────────────────
+function renderLuggage(){
+  var grid=document.getElementById('luggage-grid');
+  var empty=document.getElementById('luggage-empty');
   grid.innerHTML='';
-  (dayPhotos[dayId]||[]).forEach(function(dataURL,idx){
-    var item=document.createElement('div');
-    item.className='photo-item';
-    item.innerHTML='<img src="'+dataURL+'" alt="outfit"><button class="rm" title="Remove">✕</button>';
-    item.querySelector('.rm').onclick=function(){
-      dayPhotos[dayId].splice(idx,1);
-      dbSet(dayId,dayPhotos[dayId]).then(function(){ renderGrid(dayId); });
-    };
-    grid.appendChild(item);
-  });
-}
-
-function handleFiles(files, dayId){
-  var promises = Array.from(files).filter(function(f){ return f.type.startsWith('image/'); }).map(function(f){
-    return fileToDataURL(f).then(function(dataURL){
-      if(!dayPhotos[dayId]) dayPhotos[dayId]=[];
-      dayPhotos[dayId].push(dataURL);
+  luggage.forEach(function(item){
+    // Find which day this item is assigned to
+    var assignedDay = null;
+    Object.keys(dayItems).forEach(function(dayId){
+      if((dayItems[dayId]||[]).indexOf(item.id)>=0) assignedDay=dayId;
     });
+    var div=document.createElement('div');
+    div.className='luggage-item';
+    div.dataset.id=item.id;
+    div.draggable=true;
+    div.innerHTML='<img src="'+item.dataURL+'" alt="item">'+
+      '<button class="lrm">✕</button>'+
+      (assignedDay?'<div class="lday-tag">'+DAY_LABELS[assignedDay]+'</div>':'');
+    div.querySelector('.lrm').onclick=function(e){
+      e.stopPropagation();
+      luggage=luggage.filter(function(i){return i.id!==item.id;});
+      Object.keys(dayItems).forEach(function(d){
+        dayItems[d]=(dayItems[d]||[]).filter(function(id){return id!==item.id;});
+      });
+      saveAll(); renderLuggage(); renderAllDays();
+    };
+    div.addEventListener('dragstart',function(e){
+      dragItemId=item.id;
+      div.classList.add('dragging');
+      e.dataTransfer.effectAllowed='copy';
+      e.dataTransfer.setData('text/plain',item.id);
+    });
+    div.addEventListener('dragend',function(){ div.classList.remove('dragging'); dragItemId=null; });
+    // Touch drag (mobile)
+    div.addEventListener('touchstart',function(e){ dragItemId=item.id; div.style.opacity='0.5'; e.stopPropagation(); },{passive:true});
+    div.addEventListener('touchend',function(){ div.style.opacity=''; },{passive:true});
+    grid.appendChild(div);
   });
-  Promise.all(promises).then(function(){
-    return dbSet(dayId, dayPhotos[dayId]);
-  }).then(function(){
-    renderGrid(dayId);
-    showToast('✓ Photo added');
+  empty.style.display=luggage.length?'none':'block';
+}
+
+// ── RENDER DAY DROP ZONES ─────────────────────────────────────────────────
+function renderDayDrop(dayId){
+  var zone=document.getElementById('drop-'+dayId);
+  if(!zone) return;
+  zone.innerHTML='';
+  var ids=dayItems[dayId]||[];
+  ids.forEach(function(itemId,idx){
+    var item=luggage.find(function(i){return i.id===itemId;});
+    if(!item) return;
+    var div=document.createElement('div');
+    div.className='drop-item';
+    div.innerHTML='<img src="'+item.dataURL+'" alt="item"><button class="drm">✕</button>';
+    div.querySelector('.drm').onclick=function(){
+      dayItems[dayId]=(dayItems[dayId]||[]).filter(function(id){return id!==itemId;});
+      saveAll(); renderDayDrop(dayId); renderLuggage();
+    };
+    zone.appendChild(div);
   });
 }
 
-function doSearch(input){
-  var q = input.value.trim();
-  if(!q){ input.focus(); return; }
-  window.open('https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'), '_blank');
+function renderAllDays(){ DAYS.forEach(function(d){renderDayDrop(d.id);}); }
+
+// ── DROP ZONE WIRING ──────────────────────────────────────────────────────
+function wireDropZone(zone, dayId){
+  zone.addEventListener('dragover',function(e){
+    e.preventDefault(); e.dataTransfer.dropEffect='copy'; zone.classList.add('over');
+  });
+  zone.addEventListener('dragleave',function(e){
+    if(!zone.contains(e.relatedTarget)) zone.classList.remove('over');
+  });
+  zone.addEventListener('drop',function(e){
+    e.preventDefault(); zone.classList.remove('over');
+    var id=e.dataTransfer.getData('text/plain')||dragItemId;
+    if(!id) return;
+    if(!(dayItems[dayId]||[]).includes(id)){
+      if(!dayItems[dayId]) dayItems[dayId]=[];
+      dayItems[dayId].push(id);
+      saveAll(); renderDayDrop(dayId); renderLuggage();
+      showToast('Added to '+DAY_LABELS[dayId]);
+    }
+  });
+  // Touch drop
+  zone.addEventListener('touchend',function(e){
+    if(!dragItemId) return;
+    var touch=e.changedTouches[0];
+    var el=document.elementFromPoint(touch.clientX,touch.clientY);
+    if(zone.contains(el)){
+      if(!(dayItems[dayId]||[]).includes(dragItemId)){
+        if(!dayItems[dayId]) dayItems[dayId]=[];
+        dayItems[dayId].push(dragItemId);
+        saveAll(); renderDayDrop(dayId); renderLuggage();
+        showToast('Added to '+DAY_LABELS[dayId]);
+      }
+      dragItemId=null;
+    }
+  },{passive:true});
 }
 
+// ── BUILD DAY CARDS ───────────────────────────────────────────────────────
 function renderDay(day){
   var notes=getNotes();
   var div=document.createElement('div');
@@ -164,55 +306,78 @@ function renderDay(day){
     '</div>'+
     '<div class="day-bdy">'+
       '<div class="day-ctx">'+day.ctx+'</div>'+
-      '<div class="photo-grid" id="grid-'+day.id+'"></div>'+
-      '<div class="upload-zone">'+
-        '<input type="file" accept="image/*" multiple>'+
-        '<div class="upload-ico">📷</div>'+
-        '<div class="upload-txt"><strong>Add photo</strong><br>Tap or drag an image</div>'+
-      '</div>'+
-      '<div class="search-row">'+
-        '<input class="search-input" type="text" placeholder="Search for an item, e.g. linen trousers...">'+
-        '<button class="search-btn">Search on Pinterest</button>'+
-      '</div>'+
-      
+      '<div class="day-drop" id="drop-'+day.id+'"></div>'+
       '<div class="note-lbl">Notes</div>'+
       '<textarea class="day-note" placeholder="Shoes, accessories, vibe...">'+(notes[day.id]||'')+'</textarea>'+
     '</div>';
-
-  // Upload
-  var input=div.querySelector('input[type=file]');
-  var zone=div.querySelector('.upload-zone');
-  input.onchange=function(e){ handleFiles(e.target.files, day.id); input.value=''; };
-  zone.addEventListener('dragover',function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
-  zone.addEventListener('dragleave',function(){ zone.classList.remove('drag-over'); });
-  zone.addEventListener('drop',function(e){ e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files,day.id); });
-
-  // Search
-  var sinput=div.querySelector('.search-input');
-  div.querySelector('.search-btn').onclick=function(){ doSearch(sinput); };
-  sinput.addEventListener('keydown',function(e){ if(e.key==='Enter') doSearch(sinput); });
-
-
-  // Note
   div.querySelector('.day-note').oninput=function(){ saveNote(day.id,this.value); };
-
   return div;
 }
 
+// ── SEARCH ────────────────────────────────────────────────────────────────
+document.getElementById('search-btn').onclick=function(){
+  var q=document.getElementById('search-input').value.trim();
+  if(!q){ document.getElementById('search-input').focus(); return; }
+  window.open('https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'),'_blank');
+};
+document.getElementById('search-input').onkeydown=function(e){
+  if(e.key==='Enter'){ document.getElementById('search-btn').click(); }
+};
+
+// ── LUGGAGE UPLOAD ────────────────────────────────────────────────────────
+function handleUpload(files){
+  var promises=Array.from(files).filter(function(f){return f.type.startsWith('image/');}).map(function(f){
+    return fileToDataURL(f).then(function(dataURL){
+      luggage.push({id:'item_'+Date.now()+'_'+Math.random().toString(36).slice(2,6), dataURL:dataURL});
+    });
+  });
+  Promise.all(promises).then(function(){ saveAll(); renderLuggage(); showToast('✓ Added to luggage'); });
+}
+var luggageInput=document.getElementById('luggage-input');
+var luggageZone=document.getElementById('luggage-zone');
+luggageInput.onchange=function(e){ handleUpload(e.target.files); luggageInput.value=''; };
+luggageZone.addEventListener('dragover',function(e){e.preventDefault();luggageZone.classList.add('drag-over');});
+luggageZone.addEventListener('dragleave',function(){luggageZone.classList.remove('drag-over');});
+luggageZone.addEventListener('drop',function(e){
+  e.preventDefault();luggageZone.classList.remove('drag-over');
+  if(e.dataTransfer.files.length) handleUpload(e.dataTransfer.files);
+});
+
+// ── MOBILE TABS ───────────────────────────────────────────────────────────
+function showMobTab(tab, btn){
+  document.querySelectorAll('.mob-tab').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  var l=document.getElementById('mob-luggage'), d=document.getElementById('mob-days');
+  if(tab==='luggage'){ l.classList.remove('mob-hidden'); d.classList.add('mob-hidden'); }
+  else { d.classList.remove('mob-hidden'); l.classList.add('mob-hidden'); }
+}
+if(window.innerWidth<=780){
+  document.getElementById('mob-days').classList.add('mob-hidden');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
 function init(){
   var container=document.getElementById('days-container');
   openDB().then(function(){
-    return Promise.all(DAYS.map(function(day){
-      return dbGet(day.id).then(function(p){ dayPhotos[day.id]=p||[]; });
-    }));
+    return Promise.all([
+      dbGet('luggage','items').then(function(d){ luggage=d||[]; }),
+      dbGet('days','items').then(function(d){ dayItems=d||{}; }),
+    ]);
   }).then(function(){
     DAYS.forEach(function(day){
       var card=renderDay(day);
       container.appendChild(card);
-      renderGrid(day.id);
+      wireDropZone(document.getElementById('drop-'+day.id), day.id);
+      renderDayDrop(day.id);
     });
+    renderLuggage();
   }).catch(function(){
-    DAYS.forEach(function(day){ container.appendChild(renderDay(day)); });
+    DAYS.forEach(function(day){
+      var card=renderDay(day);
+      container.appendChild(card);
+      wireDropZone(document.getElementById('drop-'+day.id), day.id);
+    });
+    renderLuggage();
   });
 }
 
