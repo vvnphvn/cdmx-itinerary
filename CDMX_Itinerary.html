@@ -706,16 +706,8 @@
 .day-picker-option:last-child { border-bottom:none; }
 .day-picker-cancel { display:block;width:100%;text-align:center;padding:12px;font-size:13px;color:#888780;background:none;border:none;cursor:pointer;margin-top:8px; }
 
-.itin-note-wrap { padding: 4px 16px 8px; }
-.itin-note-text { font-size: 11px; color: #888780; font-style: italic; background: #f8f7f4; border-radius: 6px; padding: 5px 8px; line-height: 1.4; }
-.itin-note-input { font-size: 11px; width: 100%; border: 0.5px solid #d3d1c7; border-radius: 6px; padding: 5px 8px; background: #fff; color: #2c2c2a; resize: none; font-family: inherit; line-height: 1.4; box-sizing: border-box; }
-.itin-note-btn { font-size: 9px; color: #b4b2a9; background: none; border: none; cursor: pointer; padding: 0; }
-.itin-note-btn:hover { color: #888780; }
-.stop-note-wrap { margin-top: 2px; }
 .stop-note-text { font-size: 10px; color: #b4b2a9; font-style: italic; }
-.stop-note-inp { font-size: 10px; width: 100%; border: 0.5px solid #d3d1c7; border-radius: 4px; padding: 3px 6px; background: #fff; color: #2c2c2a; resize: none; font-family: inherit; box-sizing: border-box; }
-.stop-add-note { font-size: 9px; color: #d3d1c7; background: none; border: none; cursor: pointer; padding: 0; }
-.stop-add-note:hover { color: #888780; }
+
 </style>
 
 <script>
@@ -931,65 +923,7 @@ function initOutfitNotes(){
   });
 }
 
-function getItinNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_itin_notes')||'{}'); }catch(e){ return {}; } }
-function saveItinNotes(n){ try{ localStorage.setItem('cdmx_itin_notes', JSON.stringify(n)); }catch(e){} }
-
-function makeNoteWidget(key, placeholder, wrapClass, textClass, inputClass, btnClass){
-  const notes = getItinNotes();
-  const val = notes[key] || '';
-  const wrap = document.createElement('div');
-  wrap.className = wrapClass;
-  function renderNote(){
-    if(notes[key]){
-      wrap.innerHTML = `<span class="${textClass}">${notes[key]}</span> <button class="${btnClass}">edit</button>`;
-      wrap.querySelector('button').onclick = showInput;
-    } else {
-      wrap.innerHTML = `<button class="${btnClass}">${placeholder}</button>`;
-      wrap.querySelector('button').onclick = showInput;
-    }
-  }
-  function showInput(){
-    const ta = document.createElement('textarea');
-    ta.className = inputClass;
-    ta.value = notes[key] || '';
-    ta.rows = 2;
-    wrap.innerHTML = '';
-    wrap.appendChild(ta);
-    ta.focus();
-    ta.onblur = function(){
-      const v = ta.value.trim();
-      if(v) notes[key] = v; else delete notes[key];
-      saveItinNotes(notes);
-      renderNote();
-    };
-  }
-  renderNote();
-  return wrap;
-}
-
-function initItinNotes(){
-  // Day notes — inject after each day-header
-  document.querySelectorAll('.day[id^="day-"]').forEach(function(dayEl){
-    const dayId = dayEl.id;
-    const header = dayEl.querySelector('.day-header');
-    if(!header) return;
-    const w = makeNoteWidget('day_'+dayId, '+ day note', 'itin-note-wrap', 'itin-note-text', 'itin-note-input', 'itin-note-btn');
-    header.after(w);
-  });
-
-  // Stop notes — inject after each .stop-note div
-  document.querySelectorAll('.stop').forEach(function(stopEl, i){
-    const stopName = stopEl.querySelector('.stop-name');
-    const nameText = stopName ? stopName.textContent.trim().slice(0,40) : 'stop'+i;
-    const key = 'stop_'+nameText.replace(/[^a-zA-Z0-9]/g,'_').slice(0,30);
-    const w = makeNoteWidget(key, '+ note', 'stop-note-wrap', 'stop-note-text', 'stop-note-inp', 'stop-add-note');
-    const stopNote = stopEl.querySelector('.stop-note');
-    if(stopNote) stopNote.after(w); else stopEl.querySelector('.stop-content').appendChild(w);
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function(){
-  initItinNotes();
   initOutfitNotes();
 });
 
