@@ -27,7 +27,7 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-heigh
 .photo-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;min-height:0;}
 .photo-item{position:relative;width:105px;height:135px;flex-shrink:0;background:#f8f7f4;border-radius:10px;overflow:hidden;}
 .photo-item img{width:100%;height:100%;object-fit:cover;display:block;}
-.photo-item .rm{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#E24B4A;color:#fff;border:2px solid #f0ede6;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;}
+.photo-item .rm{position:absolute;top:6px;right:6px;width:22px;height:22px;background:rgba(226,75,74,0.92);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;backdrop-filter:blur(2px);}
 
 /* Upload zone */
 .upload-zone{border:1.5px dashed #d3d1c7;border-radius:9px;padding:16px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fafaf8;position:relative;overflow:hidden;}
@@ -44,9 +44,7 @@ body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-heigh
 .search-input::placeholder{color:#d3d1c7;}
 .search-btn{display:flex;align-items:center;gap:5px;background:#2c2c2a;color:#fff;border:none;border-radius:7px;padding:8px 13px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;}
 .search-btn:hover{background:#1a1a18;}
-.search-options{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
-.search-opt{font-size:10px;color:#888780;background:none;border:0.5px solid #d3d1c7;border-radius:99px;padding:3px 10px;cursor:pointer;font-family:inherit;}
-.search-opt:hover{border-color:#888780;color:#2c2c2a;}
+
 
 /* Notes */
 .note-lbl{font-size:10px;color:#b4b2a9;margin-top:14px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
@@ -179,7 +177,7 @@ function renderDay(day){
       '</div>'+
       '<div class="search-row">'+
         '<input class="search-input" type="text" placeholder="Search for an item, e.g. linen trousers...">'+
-        '<button class="search-btn">Search</button>'+
+        '<button class="search-btn">Search on Pinterest</button>'+
       '</div>'+
       '<div class="search-options">'+
         '<button class="search-opt" data-engine="pinterest">Pinterest</button>'+
@@ -202,9 +200,7 @@ function renderDay(day){
   var sinput=div.querySelector('.search-input');
   div.querySelector('.search-btn').onclick=function(){ doSearch(sinput,'pinterest'); };
   sinput.addEventListener('keydown',function(e){ if(e.key==='Enter') doSearch(sinput,'pinterest'); });
-  div.querySelectorAll('.search-opt').forEach(function(btn){
-    btn.onclick=function(){ doSearch(sinput, btn.dataset.engine); };
-  });
+
 
   // Note
   div.querySelector('.day-note').oninput=function(){ saveNote(day.id,this.value); };
