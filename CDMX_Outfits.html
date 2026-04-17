@@ -8,73 +8,53 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;}
-
-/* NAV */
-.nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:0.5px solid #e8e6df;padding:0 20px;display:flex;align-items:center;height:52px;gap:16px;}
-.nav-back{display:flex;align-items:center;gap:6px;font-size:12px;color:#888780;text-decoration:none;font-weight:500;}
-.nav-back svg{width:16px;height:16px;}
+.nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:0.5px solid #e8e6df;padding:0 20px;display:flex;align-items:center;height:52px;gap:12px;}
+.nav-back{display:flex;align-items:center;gap:5px;font-size:12px;color:#888780;text-decoration:none;font-weight:500;}
 .nav-back:hover{color:#2c2c2a;}
-.nav-title{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#2c2c2a;margin-left:auto;}
-.nav-city{font-size:10px;color:#b4b2a9;margin-left:auto;}
-
-/* LAYOUT */
-.page{max-width:900px;margin:0 auto;padding:24px 16px 60px;}
-.hero{padding:12px 0 24px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:32px;font-style:italic;color:#1a2e4a;line-height:1.2;}
-.hero p{font-size:12px;color:#b4b2a9;margin-top:4px;}
-
-/* DAY CARDS */
-.day-card{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
-.day-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;}
-.day-header-left h2{font-size:14px;font-weight:600;color:#fff;margin-bottom:2px;}
-.day-header-left p{font-size:10px;color:rgba(255,255,255,0.7);}
-.day-temp{font-size:22px;}
-.day-body{padding:16px 20px 20px;}
-.day-context{font-size:11px;color:#888780;line-height:1.6;margin-bottom:14px;padding:10px 12px;background:#f8f7f4;border-radius:8px;}
-
-/* PHOTO GRID */
-.photo-grid{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;min-height:0;}
-.photo-item{position:relative;width:110px;height:140px;flex-shrink:0;}
-.photo-item img{width:100%;height:100%;object-fit:contain;border-radius:8px;}
-.photo-item .remove-btn{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#E24B4A;color:#fff;border:2px solid #fff;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
-.photo-item .processing{position:absolute;inset:0;background:rgba(245,244,240,0.9);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;}
-.spinner{width:24px;height:24px;border:2px solid #e8e6df;border-top-color:#2c2c2a;border-radius:50%;animation:spin 0.8s linear infinite;}
+.nav-title{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#2c2c2a;flex:1;text-align:center;}
+.nav-city{font-size:10px;color:#b4b2a9;}
+.page{max-width:860px;margin:0 auto;padding:24px 16px 80px;}
+.hero{padding:8px 0 24px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:#1a2e4a;line-height:1.2;}
+.hero p{font-size:11px;color:#b4b2a9;margin-top:5px;}
+.day-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
+.day-hdr{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
+.day-hdr-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
+.day-hdr-sub{font-size:10px;color:rgba(255,255,255,0.7);}
+.day-emoji{font-size:20px;}
+.day-bdy{padding:14px 16px 18px;}
+.day-ctx{font-size:11px;color:#888780;line-height:1.6;margin-bottom:12px;padding:9px 11px;background:#f8f7f4;border-radius:7px;}
+.photo-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.photo-item{position:relative;width:105px;height:135px;flex-shrink:0;}
+.photo-item img{width:100%;height:100%;object-fit:contain;display:block;}
+.photo-item .rm{position:absolute;top:-7px;right:-7px;width:20px;height:20px;background:#E24B4A;color:#fff;border:2px solid #f5f4f0;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-weight:700;}
+.photo-item .proc{position:absolute;inset:0;background:rgba(248,247,244,0.92);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
+.spin{width:22px;height:22px;border:2px solid #e8e6df;border-top-color:#2c2c2a;border-radius:50%;animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.processing-text{font-size:9px;color:#888780;}
-
-/* UPLOAD ZONE */
-.upload-zone{border:1.5px dashed #d3d1c7;border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fafaf8;position:relative;}
+.proc-txt{font-size:9px;color:#888780;}
+.upload-zone{border:1.5px dashed #d3d1c7;border-radius:9px;padding:18px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fafaf8;position:relative;overflow:hidden;}
 .upload-zone:hover,.upload-zone.drag-over{border-color:#2c2c2a;background:#f5f4f0;}
-.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.upload-icon{font-size:22px;margin-bottom:6px;}
-.upload-text{font-size:11px;color:#888780;line-height:1.5;}
-.upload-text strong{color:#2c2c2a;font-weight:500;}
-
-/* NOTE */
-.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:8px;padding:10px 12px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:64px;margin-top:12px;line-height:1.5;}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-ico{font-size:20px;margin-bottom:5px;}
+.upload-txt{font-size:11px;color:#888780;line-height:1.5;}
+.upload-txt strong{color:#2c2c2a;font-weight:500;}
+.note-lbl{font-size:10px;color:#b4b2a9;margin-top:12px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
+.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:60px;line-height:1.5;}
 .day-note:focus{outline:none;border-color:#b4b2a9;}
 .day-note::placeholder{color:#d3d1c7;}
-.note-label{font-size:10px;color:#b4b2a9;margin-top:12px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
-
-/* DAY COLORS */
 .d0{background:#444441;}.d1{background:#0F6E56;}.d2{background:#185FA5;}
 .d3{background:#854F0B;}.d4{background:#993C1D;}.d5{background:#534AB7;}.d6{background:#444441;}
-
-/* ERROR TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:10px 18px;border-radius:99px;font-size:12px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:9px 16px;border-radius:99px;font-size:11px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
 .toast.show{opacity:1;}
-
-@media(max-width:600px){
-  .photo-item{width:90px;height:115px;}
-  .hero h1{font-size:26px;}
-}
+.loading-msg{text-align:center;padding:40px 20px;color:#888780;font-size:13px;}
+@media(max-width:600px){.photo-item{width:85px;height:110px;}.hero h1{font-size:24px;}}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <a class="nav-back" href="CDMX_Itinerary.html">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3L5 8l5 5"/></svg>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
     Back
   </a>
   <span class="nav-title">Outfits</span>
@@ -84,199 +64,214 @@ body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#2c2c2a;min-heigh
 <div class="page">
   <div class="hero">
     <h1>What are you<br>wearing?</h1>
-    <p>Upload photos · tap to remove background · build your looks</p>
+    <p>Upload photos · background auto-removed · build your looks</p>
   </div>
-
-  <div id="days-container"></div>
+  <div id="days-container"><div class="loading-msg">Loading...</div></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script type="module">
-import { removeBackground } from 'https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm';
-
-const DAYS = [
-  {id:'d0',cls:'d0',title:'Arrival — Mon Apr 21',sub:'Late night · ~23:15 landing',emoji:'✈️',context:'Travel day. Comfortable layers for a 5hr flight and late arrival. Nothing needs to impress tonight.'},
-  {id:'d1',cls:'d1',title:'Day 1 — Wed Apr 22',sub:'Chapultepec · park + pyramids',emoji:'☀️',context:'Lots of walking outdoors — ~6km through the Bosque. Strong sun, museum-appropriate. Hat and comfortable shoes essential.'},
-  {id:'d2',cls:'d2',title:'Day 2 — Thu Apr 23',sub:'Centro Histórico · walking tour + bike',emoji:'🚲',context:'Full day on foot and Ecobici. Cobblestones — skip the heels. Mix of churches, palaces, and a rooftop bar at sunset.'},
-  {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',context:'Relaxed daytime in Roma → festive evening. Lucha Libre is loud and electric — dress to have fun. Arena gets hot.'},
-  {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',context:'Early 6am start, full direct sun, climbing the pyramids. Most physical day. Breathable fabrics, good grip shoes, SPF everything. Cobblestoned Coyoacán after.'},
-  {id:'d5',cls:'d5',title:'Day 5 — Sun Apr 26',sub:'Free day · Biblioteca + wander',emoji:'📚',context:'No agenda. Dress for whatever mood you wake up in — café crawl, vintage browsing, or just a park afternoon.'},
-  {id:'d6',cls:'d6',title:'Departure — Mon Apr 27',sub:'~4am checkout · 7am flight',emoji:'🛫',context:'4am checkout, comfort over everything. Something you can sleep in on the 6hr flight home.'},
+<script>
+var DAYS = [
+  {id:'d0',cls:'d0',title:'Arrival — Mon Apr 21',sub:'Late night · ~23:15 landing',emoji:'✈️',ctx:'Travel day. Comfortable layers for the flight and late arrival.'},
+  {id:'d1',cls:'d1',title:'Day 1 — Wed Apr 22',sub:'Chapultepec · park + museums',emoji:'☀️',ctx:'~6km walk outdoors through the Bosque. Strong sun, museum-appropriate. Hat and good shoes essential.'},
+  {id:'d2',cls:'d2',title:'Day 2 — Thu Apr 23',sub:'Centro · walking tour + Ecobici',emoji:'🚲',ctx:'Full day on foot and bike. Cobblestones — skip the heels. Churches, palaces, rooftop bar at sunset.'},
+  {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',ctx:'Relaxed daytime → festive evening. Lucha Libre is loud and electric — dress to have fun. Arena gets hot.'},
+  {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',ctx:'Early 6am start, full sun, climbing pyramids. Most physical day. Breathable fabrics, good grip, SPF everything.'},
+  {id:'d5',cls:'d5',title:'Day 5 — Sun Apr 26',sub:'Free day · Biblioteca + wander',emoji:'📚',ctx:'No agenda. Dress for whatever mood you wake up in.'},
+  {id:'d6',cls:'d6',title:'Departure — Mon Apr 27',sub:'~4am checkout · 7am flight',emoji:'🛫',ctx:'4am checkout — comfort over everything. Something you can sleep in on the flight home.'},
 ];
 
-// ── IndexedDB ──────────────────────────────────────────────────────────────
-const DB_NAME = 'cdmx_outfits_db';
-const STORE = 'photos';
-let db;
+// ── Toast ──────────────────────────────────────────────────────────────────
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer=setTimeout(function(){t.classList.remove('show');},2500);
+}
 
+// ── Notes ─────────────────────────────────────────────────────────────────
+function getNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_outfit_notes')||'{}'); }catch(e){ return {}; } }
+function saveNote(dayId,val){ var n=getNotes(); n[dayId]=val; localStorage.setItem('cdmx_outfit_notes',JSON.stringify(n)); }
+
+// ── IndexedDB ──────────────────────────────────────────────────────────────
+var DB_NAME='cdmx_outfits_db', DB_STORE='photos', db=null;
 function openDB(){
-  return new Promise((res,rej)=>{
-    const req = indexedDB.open(DB_NAME, 1);
-    req.onupgradeneeded = e => e.target.result.createObjectStore(STORE);
-    req.onsuccess = e => { db = e.target.result; res(db); };
-    req.onerror = e => rej(e);
+  return new Promise(function(res,rej){
+    var req=indexedDB.open(DB_NAME,1);
+    req.onupgradeneeded=function(e){ e.target.result.createObjectStore(DB_STORE); };
+    req.onsuccess=function(e){ db=e.target.result; res(db); };
+    req.onerror=function(e){ rej(e); };
   });
 }
-function dbGet(key){ return new Promise((res,rej)=>{ const t=db.transaction(STORE,'readonly'); const r=t.objectStore(STORE).get(key); r.onsuccess=()=>res(r.result); r.onerror=rej; }); }
-function dbSet(key,val){ return new Promise((res,rej)=>{ const t=db.transaction(STORE,'readwrite'); const r=t.objectStore(STORE).put(val,key); r.onsuccess=()=>res(); r.onerror=rej; }); }
-function dbDel(key){ return new Promise((res,rej)=>{ const t=db.transaction(STORE,'readwrite'); const r=t.objectStore(STORE).delete(key); r.onsuccess=()=>res(); r.onerror=rej; }); }
+function dbGet(key){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readonly'),r=t.objectStore(DB_STORE).get(key); r.onsuccess=function(){res(r.result);}; r.onerror=rej; }); }
+function dbSet(key,val){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readwrite'),r=t.objectStore(DB_STORE).put(val,key); r.onsuccess=function(){res();}; r.onerror=rej; }); }
 
-// ── Notes (localStorage) ──────────────────────────────────────────────────
-function getNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_outfit_notes')||'{}'); }catch(e){ return {}; } }
-function saveNote(dayId, val){ const n=getNotes(); n[dayId]=val; localStorage.setItem('cdmx_outfit_notes', JSON.stringify(n)); }
+// ── State ─────────────────────────────────────────────────────────────────
+var dayPhotos={};
 
-// ── Canvas border effect ───────────────────────────────────────────────────
-function addBorderToImage(imgEl, borderColor='#ffffff', borderSize=5){
-  return new Promise(res=>{
-    const canvas = document.createElement('canvas');
-    const pad = borderSize * 2;
-    canvas.width = imgEl.naturalWidth + pad;
-    canvas.height = imgEl.naturalHeight + pad;
-    const ctx = canvas.getContext('2d');
-    // Draw border by painting image in multiple offset positions with white tint
-    const steps = 24;
-    for(let i=0;i<steps;i++){
-      const angle = (i/steps) * Math.PI * 2;
-      ctx.drawImage(imgEl, Math.cos(angle)*borderSize+borderSize, Math.sin(angle)*borderSize+borderSize);
+// ── Border effect ─────────────────────────────────────────────────────────
+function addBorder(imgEl){
+  return new Promise(function(res){
+    var bs=6, canvas=document.createElement('canvas');
+    canvas.width=imgEl.naturalWidth+bs*2;
+    canvas.height=imgEl.naturalHeight+bs*2;
+    var ctx=canvas.getContext('2d');
+    var steps=32;
+    for(var i=0;i<steps;i++){
+      var a=(i/steps)*Math.PI*2;
+      ctx.drawImage(imgEl,Math.cos(a)*bs+bs,Math.sin(a)*bs+bs);
     }
-    // Tint all drawn pixels to border color
-    const rgb = hexToRgb(borderColor);
-    const d = ctx.getImageData(0,0,canvas.width,canvas.height);
-    for(let i=0;i<d.data.length;i+=4){
-      if(d.data[i+3]>10){ d.data[i]=rgb.r; d.data[i+1]=rgb.g; d.data[i+2]=rgb.b; d.data[i+3]=Math.min(255,d.data[i+3]*2); }
+    var d=ctx.getImageData(0,0,canvas.width,canvas.height);
+    for(var j=0;j<d.data.length;j+=4){
+      if(d.data[j+3]>10){ d.data[j]=255; d.data[j+1]=255; d.data[j+2]=255; d.data[j+3]=Math.min(255,d.data[j+3]+80); }
     }
     ctx.putImageData(d,0,0);
-    // Draw original on top
-    ctx.drawImage(imgEl, borderSize, borderSize);
+    ctx.drawImage(imgEl,bs,bs);
     res(canvas.toDataURL('image/png'));
   });
 }
 
-function hexToRgb(hex){ const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return{r,g,b}; }
+// ── Process file ─────────────────────────────────────────────────────────
+var removeBg=null;
 
-// ── Toast ──────────────────────────────────────────────────────────────────
-function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500); }
+function processFile(file, dayId){
+  var grid=document.getElementById('grid-'+dayId);
+  var ph=document.createElement('div');
+  ph.className='photo-item';
+  ph.innerHTML='<div class="proc"><div class="spin"></div><div class="proc-txt">Removing bg...</div></div>';
+  grid.appendChild(ph);
+  showToast('Processing...');
 
-// ── State per day ─────────────────────────────────────────────────────────
-const dayPhotos = {}; // {dayId: [dataURL, ...]}
-
-async function loadPhotos(dayId){
-  const stored = await dbGet(dayId);
-  return stored || [];
-}
-
-async function savePhotos(dayId, photos){
-  await dbSet(dayId, photos);
-}
-
-// ── Render a day card ──────────────────────────────────────────────────────
-function renderDay(day, container){
-  const notes = getNotes();
-  const div = document.createElement('div');
-  div.className = 'day-card';
-  div.id = 'card-'+day.id;
-  div.innerHTML = `
-    <div class="day-header ${day.cls}">
-      <div class="day-header-left">
-        <h2>${day.title}</h2>
-        <p>${day.sub}</p>
-      </div>
-      <div class="day-temp">${day.emoji}</div>
-    </div>
-    <div class="day-body">
-      <div class="day-context">${day.context}</div>
-      <div class="photo-grid" id="grid-${day.id}"></div>
-      <div class="upload-zone" id="zone-${day.id}">
-        <input type="file" accept="image/*" multiple id="input-${day.id}">
-        <div class="upload-icon">📷</div>
-        <div class="upload-text"><strong>Add outfit photo</strong><br>Tap or drag · background auto-removed</div>
-      </div>
-      <div class="note-label">Notes</div>
-      <textarea class="day-note" placeholder="Shoes, accessories, vibe..." data-day="${day.id}">${notes[day.id]||''}</textarea>
-    </div>`;
-  container.appendChild(div);
-
-  // Wire up upload
-  const input = div.querySelector('#input-'+day.id);
-  const zone = div.querySelector('#zone-'+day.id);
-  input.addEventListener('change', e => handleFiles(Array.from(e.target.files), day.id));
-  zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('drag-over'); });
-  zone.addEventListener('dragleave', ()=>zone.classList.remove('drag-over'));
-  zone.addEventListener('drop', e=>{ e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(Array.from(e.dataTransfer.files), day.id); });
-
-  // Wire up note
-  div.querySelector('.day-note').addEventListener('input', function(){ saveNote(day.id, this.value); });
-
-  // Load existing photos
-  loadPhotos(day.id).then(photos=>{
-    dayPhotos[day.id] = photos;
-    renderGrid(day.id);
-  });
-}
-
-// ── Process + add file ────────────────────────────────────────────────────
-async function handleFiles(files, dayId){
-  for(const file of files){
-    if(!file.type.startsWith('image/')) continue;
-    const grid = document.getElementById('grid-'+dayId);
-    // Show processing placeholder
-    const placeholder = document.createElement('div');
-    placeholder.className = 'photo-item';
-    placeholder.innerHTML = '<div class="processing"><div class="spinner"></div><div class="processing-text">Removing bg...</div></div>';
-    grid.appendChild(placeholder);
-
-    try {
-      showToast('Processing image...');
-      const blob = await removeBackground(file, {
-        output:{ format:'image/png', quality:0.9 },
-        debug: false,
+  function doProcess(){
+    removeBg(file,{output:{format:'image/png',quality:0.9},debug:false})
+      .then(function(blob){
+        var url=URL.createObjectURL(blob);
+        var img=new Image();
+        img.onload=function(){
+          addBorder(img).then(function(dataURL){
+            URL.revokeObjectURL(url);
+            if(!dayPhotos[dayId]) dayPhotos[dayId]=[];
+            dayPhotos[dayId].push(dataURL);
+            dbSet(dayId,dayPhotos[dayId]).then(function(){
+              ph.remove();
+              renderGrid(dayId);
+              showToast('✓ Added!');
+            });
+          });
+        };
+        img.src=url;
+      })
+      .catch(function(err){
+        console.error('BG removal error',err);
+        ph.remove();
+        showToast('Could not remove background — try another photo');
       });
-      const imgURL = URL.createObjectURL(blob);
-      // Add border
-      const tmpImg = new Image();
-      tmpImg.src = imgURL;
-      await new Promise(r=>tmpImg.onload=r);
-      const dataURL = await addBorderToImage(tmpImg, '#ffffff', 5);
-      URL.revokeObjectURL(imgURL);
+  }
 
-      if(!dayPhotos[dayId]) dayPhotos[dayId]=[];
-      dayPhotos[dayId].push(dataURL);
-      await savePhotos(dayId, dayPhotos[dayId]);
-      placeholder.remove();
-      renderGrid(dayId);
-      showToast('✓ Added to '+dayId.replace('d','Day '));
-    } catch(err){
-      console.error(err);
-      placeholder.remove();
-      showToast('Background removal failed — try another image');
-    }
+  if(removeBg){
+    doProcess();
+  } else {
+    ph.querySelector('.proc-txt').textContent='Loading model...';
+    import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm')
+      .then(function(mod){
+        removeBg=mod.removeBackground;
+        doProcess();
+      })
+      .catch(function(err){
+        console.error('Module load error',err);
+        ph.remove();
+        showToast('Background removal unavailable in this browser');
+      });
   }
 }
 
 // ── Render grid ───────────────────────────────────────────────────────────
 function renderGrid(dayId){
-  const grid = document.getElementById('grid-'+dayId);
+  var grid=document.getElementById('grid-'+dayId);
   if(!grid) return;
   grid.innerHTML='';
-  const photos = dayPhotos[dayId]||[];
-  photos.forEach((dataURL, idx)=>{
-    const item = document.createElement('div');
+  var photos=dayPhotos[dayId]||[];
+  photos.forEach(function(dataURL,idx){
+    var item=document.createElement('div');
     item.className='photo-item';
-    item.innerHTML=`<img src="${dataURL}" alt="outfit item"><button class="remove-btn" title="Remove">✕</button>`;
-    item.querySelector('.remove-btn').addEventListener('click', async()=>{
+    item.innerHTML='<img src="'+dataURL+'" alt="outfit item"><button class="rm" title="Remove">✕</button>';
+    item.querySelector('.rm').addEventListener('click',function(){
       dayPhotos[dayId].splice(idx,1);
-      await savePhotos(dayId, dayPhotos[dayId]);
-      renderGrid(dayId);
+      dbSet(dayId,dayPhotos[dayId]).then(function(){ renderGrid(dayId); });
     });
     grid.appendChild(item);
   });
 }
 
+// ── Render day card ───────────────────────────────────────────────────────
+function renderDay(day){
+  var notes=getNotes();
+  var div=document.createElement('div');
+  div.className='day-card';
+  div.id='card-'+day.id;
+  div.innerHTML=
+    '<div class="day-hdr '+day.cls+'">'+
+      '<div><div class="day-hdr-title">'+day.title+'</div><div class="day-hdr-sub">'+day.sub+'</div></div>'+
+      '<div class="day-emoji">'+day.emoji+'</div>'+
+    '</div>'+
+    '<div class="day-bdy">'+
+      '<div class="day-ctx">'+day.ctx+'</div>'+
+      '<div class="photo-grid" id="grid-'+day.id+'"></div>'+
+      '<div class="upload-zone" id="zone-'+day.id+'">'+
+        '<input type="file" accept="image/*" multiple>'+
+        '<div class="upload-ico">📷</div>'+
+        '<div class="upload-txt"><strong>Add item</strong><br>Tap or drag · background removed automatically</div>'+
+      '</div>'+
+      '<div class="note-lbl">Notes</div>'+
+      '<textarea class="day-note" placeholder="Shoes, accessories, vibe...">'+(notes[day.id]||'')+'</textarea>'+
+    '</div>';
+  return div;
+}
+
 // ── Init ──────────────────────────────────────────────────────────────────
-await openDB();
-const container = document.getElementById('days-container');
-DAYS.forEach(day => renderDay(day, container));
+function init(){
+  var container=document.getElementById('days-container');
+  container.innerHTML='';
+  openDB().then(function(){
+    var promises=DAYS.map(function(day){
+      return dbGet(day.id).then(function(photos){
+        dayPhotos[day.id]=photos||[];
+      });
+    });
+    Promise.all(promises).then(function(){
+      DAYS.forEach(function(day){
+        var card=renderDay(day);
+        container.appendChild(card);
+        renderGrid(day.id);
+        // Upload input
+        var input=card.querySelector('input[type=file]');
+        var zone=card.querySelector('#zone-'+day.id);
+        input.addEventListener('change',function(e){
+          Array.from(e.target.files).forEach(function(f){ if(f.type.startsWith('image/')) processFile(f,day.id); });
+          input.value='';
+        });
+        zone.addEventListener('dragover',function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave',function(){ zone.classList.remove('drag-over'); });
+        zone.addEventListener('drop',function(e){
+          e.preventDefault(); zone.classList.remove('drag-over');
+          Array.from(e.dataTransfer.files).forEach(function(f){ if(f.type.startsWith('image/')) processFile(f,day.id); });
+        });
+        // Note
+        card.querySelector('.day-note').addEventListener('input',function(){ saveNote(day.id,this.value); });
+      });
+    });
+  }).catch(function(err){
+    console.error('DB open failed',err);
+    container.innerHTML='<div class="loading-msg">Storage unavailable. Try opening in Safari or Chrome directly.</div>';
+  });
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
