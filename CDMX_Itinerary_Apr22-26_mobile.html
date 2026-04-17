@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mexico City Itinerary — Apr 21–27, 2026</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #2c2c2a; padding: 24px 16px; }
+  .page { max-width: 1440px; margin: 0 auto; }
+  .layout { display: flex; gap: 20px; align-items: flex-start; }
+  .col-bookings { width: 240px; flex-shrink: 0; position: sticky; top: 24px; max-height: 100vh; overflow-y: auto; }
+  .col-itinerary { flex: 1; min-width: 0; }
+  .right { width: 300px; flex-shrink: 0; position: sticky; top: 24px; max-height: 100vh; overflow-y: auto; }
+  h1 { font-size: 28px; font-weight: 600; color: #1a2e4a; margin-bottom: 4px; }
+  .meta { font-size: 13px; color: #888780; margin-bottom: 20px; }
+
+  /* Day cards */
+  .day { border-radius: 12px; overflow: hidden; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .day-header { padding: 12px 16px; }
+  .day-header h2 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .day-header p { font-size: 11px; color: rgba(255,255,255,0.8); }
+  .day-body { padding: 4px 0; }
+  .stop { display: flex; gap: 12px; padding: 9px 16px; }
+  .stop:hover { background: rgba(0,0,0,0.03); }
+  .time { font-size: 10px; color: #aaa99a; min-width: 50px; padding-top: 2px; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .stop-content { flex: 1; }
+  .stop-name { font-size: 13px; font-weight: 600; color: #2c2c2a; margin-bottom: 2px; }
+  .stop-note { font-size: 11px; color: #888780; line-height: 1.45; margin-bottom: 3px; }
+  .hours { font-size: 10px; color: #b4b2a9; font-style: italic; }
+  .tags { display: flex; gap: 4px; margin-bottom: 3px; flex-wrap: wrap; }
+  .tag { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 99px; letter-spacing: 0.3px; text-transform: uppercase; }
+  .tag-ticket { background: #dbeafe; color: #1e40af; }
+  .tag-cash { background: #fef3c7; color: #92400e; }
+  .tag-free { background: #dcfce7; color: #166534; }
+  .tag-food { background: #f1efe8; color: #5f5e5a; }
+  .transport { display: flex; align-items: center; gap: 8px; padding: 3px 16px; }
+  .transport-line { flex: 1; height: 1px; background: #e8e6df; }
+  .transport-text { font-size: 10px; color: #aaa99a; font-style: italic; white-space: nowrap; background: #f5f4f0; padding: 0 6px; }
+  .divider { height: 1px; background: #f0ede6; margin: 0 16px; }
+
+  /* Day colors */
+  .d0 .day-header { background: #444441; }
+  .d0 .day-body { background: #f8f7f4; }
+  .d1 .day-header { background: #0F6E56; }
+  .d1 .day-body { background: #f0faf6; }
+  .d2 .day-header { background: #185FA5; }
+  .d2 .day-body { background: #eff6ff; }
+  .d3 .day-header { background: #854F0B; }
+  .d3 .day-body { background: #fffbf0; }
+  .d4 .day-header { background: #993C1D; }
+  .d4 .day-body { background: #fff7f4; }
+  .d5 .day-header { background: #534AB7; }
+  .d5 .day-body { background: #f5f4ff; }
+  .d6 .day-header { background: #444441; }
+  .d6 .day-body { background: #f8f7f4; }
+
+  /* Legend */
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #888780; }
+
+  /* Sidebar */
+  .sidebar-card { background: #fff; border-radius: 12px; border: 1px solid #e8e6df; margin-bottom: 12px; overflow: hidden; }
+  .sidebar-card-header { padding: 10px 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #fff; }
+  .sidebar-card-body { padding: 12px 14px; }
+  .sb-flight { background: #1a2e4a; }
+  .sb-hotel { background: #0F6E56; }
+  .sb-lucha { background: #993C1D; }
+  .sb-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 3px 0; border-bottom: 1px solid #f0ede6; }
+  .sb-row:last-child { border-bottom: none; }
+  .sb-label { font-size: 10px; color: #888780; flex-shrink: 0; }
+  .sb-value { font-size: 11px; color: #2c2c2a; font-weight: 500; text-align: right; }
+  .sb-ref { font-size: 10px; color: #b4b2a9; margin-top: 6px; padding-top: 6px; border-top: 1px solid #f0ede6; }
+  .sb-flight-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px solid #f0ede6; }
+  .sb-flight-row:last-child { border-bottom: none; }
+  .sb-airport { font-size: 13px; font-weight: 700; color: #2c2c2a; }
+  .sb-time { font-size: 10px; color: #888780; }
+  .sb-arrow { color: #b4b2a9; font-size: 12px; flex: 1; text-align: center; }
+  .sb-flight-meta { font-size: 10px; color: #888780; display: flex; justify-content: space-between; padding-top: 2px; }
+
+  /* Footer */
+  .footer { background: #fff; border-radius: 10px; padding: 14px 16px; font-size: 11px; color: #888780; line-height: 1.7; border: 1px solid #e8e6df; margin-top: 4px; }
+  .footer strong { color: #2c2c2a; font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .col-bookings, .right { width: 100%; position: static; max-height: none; }
+  }
+  @media print {
+    body { background: white; padding: 0; }
+    .day { box-shadow: none; border: 1px solid #e0ded6; page-break-inside: avoid; }
+    .transport-text { background: white; }
+    .col-bookings, .right { position: static; max-height: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>Mexico City</h1>
+  <p class="meta">Apr 21–27, 2026 &nbsp;·&nbsp; 6 nights &nbsp;·&nbsp; Apapacho Hostel, Centro Histórico</p>
+
+  <div class="layout">
+
+    <!-- LEFT: BOOKINGS -->
+    <div class="col-bookings" id="tab-bookings">
+
+      <div class="sidebar-card" style="margin-bottom:12px;">
+        <div class="sidebar-card-header sb-flight">Flights</div>
+        <div class="sidebar-card-body">
+          <div style="font-size:10px;color:#888780;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">Outbound · Tue Apr 21</div>
+          <div class="sb-flight-row"><div><div class="sb-airport">YVR</div><div class="sb-time">16:50</div></div><div class="sb-arrow">——✈——</div><div style="text-align:right;"><div class="sb-airport">MEX</div><div class="sb-time">23:15</div></div></div>
+          <div class="sb-flight-meta"><span>AC 996 · Economy</span><span>Non-stop · 5h 25m</span></div>
+          <div style="height:8px;"></div>
+          <div style="font-size:10px;color:#888780;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">Return · Mon Apr 27</div>
+          <div class="sb-flight-row"><div><div class="sb-airport">MEX</div><div class="sb-time">07:00</div></div><div class="sb-arrow">——✈——</div><div style="text-align:right;"><div class="sb-airport">YVR</div><div class="sb-time">11:50</div></div></div>
+          <div class="sb-flight-meta"><span>AC 2097 · Economy</span><span>Non-stop · 5h 50m</span></div>
+          <div class="sb-ref">Ref: <strong>B38ID9</strong></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card" style="margin-bottom:12px;">
+        <div class="sidebar-card-header sb-hotel">Accommodation</div>
+        <div class="sidebar-card-body">
+          <div style="font-size:12px;font-weight:700;color:#2c2c2a;margin-bottom:8px;"><a href="https://www.google.com/maps/place/?q=place_id:ChIJQfrpdgD_0YURrVFUZELEykg" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Apapacho Hostel</a></div>
+          <div class="sb-row"><span class="sb-label">Check-in</span><span class="sb-value">Mon Apr 21</span></div>
+          <div class="sb-row"><span class="sb-label">Check-out</span><span class="sb-value">Mon Apr 27</span></div>
+          <div class="sb-row"><span class="sb-label">Duration</span><span class="sb-value">6 nights · 1 guest</span></div>
+          <div class="sb-row"><span class="sb-label">Address</span><span class="sb-value">Calle 5 de Febrero 41</span></div>
+          <div class="sb-row"><span class="sb-label">Phone</span><span class="sb-value">+52 419 210 2741</span></div>
+          <div class="sb-row"><span class="sb-label">Email</span><span class="sb-value">hola@apapachohostel.com</span></div>
+          <div class="sb-ref">Ref: <strong>323772-576724337</strong></div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-header sb-lucha">Lucha Libre</div>
+        <div class="sidebar-card-body">
+          <div style="font-size:11px;font-weight:700;color:#2c2c2a;margin-bottom:8px;">70 Aniversario Arena México</div>
+          <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Fri Apr 24</span></div>
+          <div class="sb-row"><span class="sb-label">Show</span><span class="sb-value">8:30 PM</span></div>
+          <div class="sb-row"><span class="sb-label">Doors</span><span class="sb-value">7:00 PM</span></div>
+          <div class="sb-row"><span class="sb-label">Seat</span><span class="sb-value">PRECR1 · Row H</span></div>
+          <div class="sb-row"><span class="sb-label">Paid</span><span class="sb-value">MX$650.00</span></div>
+          <div class="sb-ref">Order: <strong>#13-39544/MXC</strong></div>
+        </div>
+      </div>
+
+    </div><!-- end col-bookings -->
+
+    <!-- MIDDLE: ITINERARY -->
+    <div class="col-itinerary" id="tab-itinerary">
+
+      <div class="legend">
+        <div class="legend-item"><span class="tag tag-ticket">ticket</span> buy in advance</div>
+        <div class="legend-item"><span class="tag tag-cash">cash</span> cash only</div>
+        <div class="legend-item"><span class="tag tag-free">free</span> free entry</div>
+        <div class="legend-item"><span class="tag tag-food">food</span> food stop</div>
+      </div>
+
+      <!-- ARRIVAL -->
+      <div class="day d0">
+        <div class="day-header">
+          <h2>Arrival — Mon Apr 21</h2>
+          <p>Fly in, check in, settle</p>
+        </div>
+        <div class="day-body">
+          <div class="stop">
+            <span class="time">4:50pm</span>
+            <div class="stop-content">
+              <div class="stop-name">Depart Vancouver YVR</div>
+              <div class="stop-note">AC 996 · Non-stop · 5h 25m</div>
+              <div class="hours">Check in at YVR at least 2.5hrs before — by 2:15pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Non-stop flight 5h 25m</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">11:15pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJnyKTvXf80YURRNK6YfV-0AI" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Arrive Mexico City MEX</a></div>
+              <div class="stop-note">Immigration, baggage, then straight to Uber — never a street taxi from the airport.</div>
+              <div class="hours">Book Uber inside the terminal before stepping outside</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber MEX airport → Apapacho ~35 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">~midnight</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJQfrpdgD_0YURrVFUZELEykg" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Check in — Apapacho Hostel</a></div>
+              <div class="stop-note">Let them know in advance about late arrival. Rooftop bar may still be open — grab a mezcalita if you're not too tired.</div>
+              <div class="hours">Calle 5 de Febrero 41, Centro Histórico · 24hr reception</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 1 -->
+      <div class="day d1">
+        <div class="day-header">
+          <h2>Day 1 — Wed Apr 22 &nbsp;|&nbsp; Chapultepec</h2>
+          <p>Park, pyramids, bookshop café</p>
+        </div>
+        <div class="day-body">
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~20 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">7:30am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ-_GNczr_0YURLJgHYS8ZPMg" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Panadería Rosetta</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#f1efe8;color:#5f5e5a;text-transform:uppercase;">food</span></div>
+              <div class="stop-note">Rol de guayaba. Arrive early, queue moves fast.</div>
+              <div class="hours">Mon–Tue 7am–9pm · Wed–Sat 7am–10pm · Sun 7:30am–9:30pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber ~15 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">11:00am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJScjIILQB0oURJMVub-MaI4Q" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Museo Nacional de Antropología</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dbeafe;color:#1e40af;text-transform:uppercase;">ticket</span></div>
+              <div class="stop-note">~210 pesos. Budget 3hrs. Don't miss the Aztec Sun Stone.</div>
+              <div class="hours">Tue–Sun 9am–5pm · Closed Mon</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk through the Bosque ~1hr 26min · 6.2km · <a href="https://maps.app.goo.gl/kGvmQD4Wg6LxAkYs8" style="color:#185FA5;">open route ↗</a></span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">1:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJF1Vb4Yf_0YURwBQPkqdpGrk" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Comal Oculto — Itacate</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#f1efe8;color:#5f5e5a;text-transform:uppercase;">food</span> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#fef3c7;color:#92400e;text-transform:uppercase;">cash</span></div>
+              <div class="stop-note">Takeout gorditas/flautas. Order and go — eating at Librería Porrúa. Closes 3:50pm.</div>
+              <div class="hours">Tue–Sat 10am–3:50pm · Closed Mon & Sun</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk back north through western Bosque ~30 min · different route than coming down</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">2:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJOz2hr1b_0YURAtgfdwUgtco" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Librería Porrúa</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Eat your Comal Oculto takeout here. Coffee with lake views, tree growing through the ceiling. Your second coffee — worth the wait.</div>
+              <div class="hours">Tue–Sun 9am–6pm · Closed Mon</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~10 min uphill</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">3:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJI4_tR83-0YURMouBJIUA4KY" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Chapultepec Castle / National Museum of History</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dbeafe;color:#1e40af;text-transform:uppercase;">ticket</span></div>
+              <div class="stop-note">~100 pesos. Golden hour light, sweeping city views. Last entry before 5pm.</div>
+              <div class="hours">Tue–Sun 9am–5pm · Closed Mon</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber back to Apapacho ~20 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">~5:30pm</span>
+            <div class="stop-content">
+              <div class="stop-name">Rest at Apapacho</div>
+              <div class="stop-note">You've done 6km+ on your feet — freshen up, recharge. Head back out for dinner and a bar.</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk or Uber — TBD based on where you choose</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">~8:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name">Dinner — TBD</div>
+              <div class="stop-note">Centro Histórico has plenty of options close to the hostel. Add when you decide.</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="stop">
+            <span class="time">~10:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name">Bar — TBD</div>
+              <div class="stop-note">Good rooftop options nearby: Terraza Catedral (steps from Apapacho), or Apapacho's own rooftop bar. Add when you decide.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day d2">
+        <div class="day-header">
+          <h2>Day 2 — Thu Apr 23 &nbsp;|&nbsp; Centro Histórico</h2>
+          <p>Full walking tour — ruins, cathedral, murals, colonial architecture</p>
+        </div>
+        <div class="day-body">
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~5 min from Apapacho</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">9:00am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ_6pkSM3-0YURDDaRslwM_0w" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">El Zócalo</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">One of the world's largest squares. Good to orient yourself before the walking tour.</div>
+              <div class="hours">Open 24hrs</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~1 min — north side of the Zócalo</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">9:10am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ4a8nxjL50YURJ19RJ_A9T5E" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Mexico City Metropolitan Cathedral</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Built on top of Aztec ruins. Ornate gold interior, soaring ceilings. Go inside.</div>
+              <div class="hours">Daily 9am–5:30pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Meet at Cathedral entrance</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">9:30am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ1SRG8kH50YURuQk8cazSax0" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Free Walking Tour — Centro Histórico</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Tip-based, ~2hrs. Covers the historic centre. No booking needed, just show up.</div>
+              <div class="hours">Daily 9:30am · Meet at Metropolitan Cathedral entrance</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~3 min — around the corner from the Zócalo</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">11:30am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ1X6S_TL50YUR8GZXRArmWes" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Ventana Arqueológica</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Underground window into Aztec ruins — ball court & Ehécatl shrine. ~20 min. Bring ID.</div>
+              <div class="hours">República de Argentina 18 · Hours vary, check on arrival</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~2 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">12:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ3dGBci350YURsDYUZcq-kIw" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Templo Mayor</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dbeafe;color:#1e40af;text-transform:uppercase;">ticket</span></div>
+              <div class="stop-note">~210 pesos. Aztec ruins discovered under the city in 1978. Budget 1.5hrs.</div>
+              <div class="hours">Tue–Sun 9am–5pm · Closed Mon</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~5 min west along Madero</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">1:45pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ84bgWyv50YURvpSDdG6xYVg" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Walk Madero Street</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">700m pedestrian promenade lined with vendors, street performers, colonial buildings.</div>
+              <div class="hours">Open 24hrs</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Stop midway along Madero</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">2:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJL0UaXyv50YURNyz05p6HsQg" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Casa de los Azulejos (House of Tiles)</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">16th-century palace covered in Talavera tiles. Stunning staircase and courtyard inside.</div>
+              <div class="hours">Daily 7am–12am · Free to enter and look around</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Continue west to end of Madero</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">2:20pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJUe0iPyv50YUR7ud0AFNdGTY" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Sears 8th floor café</a></div>
+              <div class="stop-note">Best rooftop view of Bellas Artes. Coffee break. Weekday = no queue.</div>
+              <div class="hours">Daily 10am–9pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~1 min — right next door</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">2:45pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJd0hrfCv50YURp28yMz76fUs" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Palacio Postal</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Most ornate building in CDMX — marble stairs, golden details. Also a working post office. Send a postcard!</div>
+              <div class="hours">Tue–Sun 10am–5pm · Closed Mon</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~2 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">3:15pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ_eNHfSz50YUR_PeSZhaiYF0" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Plaza Manuel Tolsá</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Beautiful square with the El Caballito bronze horse. Peek inside MUNAL lobby for free.</div>
+              <div class="hours">Open 24hrs</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~2 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">3:30pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJTQGqdSv50YURz-imDdIQ2Bc" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Palacio de Bellas Artes</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dbeafe;color:#1e40af;text-transform:uppercase;">ticket</span></div>
+              <div class="stop-note">~95 pesos. Diego Rivera murals, breathtaking art nouveau architecture. Budget 1hr.</div>
+              <div class="hours">Mon–Sat 11am–6pm · Sun 8am–6pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Ecobici west along Reforma ~20 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">5:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJYxW99TX_0YUR9y_gLQ5vNmw" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Ángel de la Independencia</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Iconic golden monument. Great evening light for photos.</div>
+              <div class="hours">Open 24hrs · Ecobici bikes available 24hrs</div>
+            </div>
+          </div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber back to Centro ~15 min</span><div class="transport-line"></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day d3">
+        <div class="day-header">
+          <h2>Day 3 — Fri Apr 24 &nbsp;|&nbsp; Roma Norte + Lucha Libre</h2>
+          <p>Neighbourhood wandering + wrestling</p>
+        </div>
+        <div class="day-body">
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~15 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">9:00am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJUYDQNgL_0YURYhvNnCzntYY" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Expendio de Maiz</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#f1efe8;color:#5f5e5a;text-transform:uppercase;">food</span> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#fef3c7;color:#92400e;text-transform:uppercase;">cash</span></div>
+              <div class="stop-note">Arrive at opening. Corn omakase, no menu. Budget 2–3hrs total.</div>
+              <div class="hours">Fri 9am–8:30pm · Closed Mon</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk — already in Roma Norte</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">~1:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name">Wander Roma Norte</div>
+              <div class="stop-note">REvolver Vintage, Medellín Market, cafés, cobblestone streets.</div>
+              <div class="hours">Neighbourhood open all day</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber ~15 min — never taxi at night</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">7:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJxa1_2i7_0YURgd4u9aNEAiY" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Arena México — 70th Anniversary Show</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dbeafe;color:#1e40af;text-transform:uppercase;">ticket</span></div>
+              <div class="stop-note">Doors 7pm, show 8:30pm, ~2hrs. Section PRECR1 Row H. Book Uber from inside before stepping out.</div>
+              <div class="hours">Fri Apr 24 only · Doors 7pm · Show 8:30pm</div>
+            </div>
+          </div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber back to Centro ~20 min</span><div class="transport-line"></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 4 -->
+      <div class="day d4">
+        <div class="day-header">
+          <h2>Day 4 — Sat Apr 25 &nbsp;|&nbsp; Teotihuacán + Coyoacán</h2>
+          <p>Ancient pyramids in the morning, cobblestones in the afternoon</p>
+        </div>
+        <div class="day-body">
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~20 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">6:30am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJPx2kRQf50YUReMtTU9J7Nwo" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Terminal del Norte → Bus to Teotihuacán</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#fef3c7;color:#92400e;text-transform:uppercase;">cash</span></div>
+              <div class="stop-note">Look for "Pirámides" sign. ~110–130 MXN return.</div>
+              <div class="hours">Buses from ~5am daily · Journey ~1hr</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Bus ~1hr</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">8:30am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ-Q-zXoTq0YUROAxtvosnhK0" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Teotihuacán Pyramids</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#fef3c7;color:#92400e;text-transform:uppercase;">cash</span></div>
+              <div class="stop-note">~210 pesos at gate. Pyramid of the Sun + Moon, Avenue of the Dead. ~3hrs.</div>
+              <div class="hours">Daily 8am–5pm · Last entry 3pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Bus back ~1hr → Uber to Coyoacán ~30 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">2:00pm</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJeYLOZMT_0YURFEhp2ubb43c" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Coyoacán Market + Cobblestone Streets</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Mercado, artesanías, central plaza with coyote fountain. Wander freely.</div>
+              <div class="hours">Market daily 7am onwards · Neighbourhood open all day</div>
+            </div>
+          </div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber back to Centro ~35 min</span><div class="transport-line"></div></div>
+        </div>
+      </div>
+
+      <!-- DAY 5 -->
+      <div class="day d5">
+        <div class="day-header">
+          <h2>Day 5 — Sun Apr 26 &nbsp;|&nbsp; Free Day</h2>
+          <p>No agenda. Just the city.</p>
+        </div>
+        <div class="day-body">
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~15 min</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">Morning</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJ6d9af9n40YURPUNrUN4aOKs" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Biblioteca Vasconcelos</a> <span style="display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px;background:#dcfce7;color:#166534;text-transform:uppercase;">free</span></div>
+              <div class="stop-note">Suspended bookshelves, architectural wonder. ~45 min. Uber in/out — area is sketchy.</div>
+              <div class="hours">Daily 8:30am–7:30pm</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber wherever you feel like going</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">All day</span>
+            <div class="stop-content">
+              <div class="stop-name">Wander wherever calls you</div>
+              <div class="stop-note">Revisit a neighbourhood, browse vintage, find a park. No plan needed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DEPARTURE -->
+      <div class="day d6">
+        <div class="day-header">
+          <h2>Departure — Mon Apr 27</h2>
+          <p>Early checkout, fly home</p>
+        </div>
+        <div class="day-body">
+          <div class="stop">
+            <span class="time">~4:00am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJQfrpdgD_0YURrVFUZELEykg" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Check out — Apapacho Hostel</a></div>
+              <div class="stop-note">Ask about luggage storage if you want to sleep a bit first. Book Uber from inside before stepping out.</div>
+              <div class="hours">Store luggage if needed · 24hr reception</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber → MEX airport ~35 min · Be there by 5:00am</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">7:00am</span>
+            <div class="stop-content">
+              <div class="stop-name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJnyKTvXf80YURRNK6YfV-0AI" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1px dotted #b4b2a9;">Depart Mexico City MEX</a></div>
+              <div class="stop-note">AC 2097 · Non-stop · 5h 50m</div>
+              <div class="hours">Check in at MEX by 5:00am for a 7:00am departure</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="transport"><div class="transport-line"></div><span class="transport-text">Non-stop flight 5h 50m</span><div class="transport-line"></div></div>
+          <div class="stop">
+            <span class="time">11:50am</span>
+            <div class="stop-content">
+              <div class="stop-name">Arrive Vancouver YVR</div>
+              <div class="stop-note">Welcome home! 🇨🇦</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div><!-- end col-itinerary -->
+
+    <!-- RIGHT: FOOD GUIDE -->
+    <div class="right" id="tab-food">
+      <div style="background:#fff;border-radius:12px;border:1px solid #e8e6df;padding:14px 16px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#888780;margin-bottom:12px;">Food &amp; Drink Guide</div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;" id="cat-f">
+          <button class="fc active" data-f="cat" data-v="all">All</button>
+          <button class="fc" data-f="cat" data-v="cafe">Café</button>
+          <button class="fc" data-f="cat" data-v="breakfast">Breakfast</button>
+          <button class="fc" data-f="cat" data-v="tacos">Tacos</button>
+          <button class="fc" data-f="cat" data-v="lunch">Lunch</button>
+          <button class="fc" data-f="cat" data-v="dinner">Dinner</button>
+          <button class="fc" data-f="cat" data-v="bar">Bar</button>
+          <button class="fc" data-f="cat" data-v="rooftop">Rooftop</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;" id="price-f">
+          <button class="fc active" data-f="price" data-v="all">All</button>
+          <button class="fc" data-f="price" data-v="1">$</button>
+          <button class="fc" data-f="price" data-v="2">$$</button>
+          <button class="fc" data-f="price" data-v="3">$$$</button>
+          <button class="fc" data-f="price" data-v="4">$$$$</button>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;" id="area-f">
+          <button class="fc active" data-f="area" data-v="all">All areas</button>
+          <button class="fc" data-f="area" data-v="centro">Centro</button>
+          <button class="fc" data-f="area" data-v="roma">Roma</button>
+          <button class="fc" data-f="area" data-v="condesa">Condesa</button>
+          <button class="fc" data-f="area" data-v="coyoacan">Coyoacán</button>
+          <button class="fc" data-f="area" data-v="juarez">Juárez</button>
+          <button class="fc" data-f="area" data-v="polanco">Polanco</button>
+          <button class="fc" data-f="area" data-v="other">Other</button>
+        </div>
+
+        <div style="font-size:10px;color:#888780;margin-bottom:8px;" id="fg-count">42 spots · tap name for Google Maps</div>
+
+        <div id="fg-list" style="display:flex;flex-direction:column;gap:1px;"></div>
+        <div id="fg-none" style="font-size:12px;color:#888780;padding:12px 0;text-align:center;display:none;">No spots match.</div>
+      </div>
+    </div><!-- end right -->
+
+  </div><!-- end layout -->
+</div>
+
+<style>
+.fc { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
+.fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
+.fg-item { display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid #f0ede6; }
+.fg-item:last-child { border-bottom:none; }
+.fg-name { font-size:11px;font-weight:500;color:#2c2c2a;text-decoration:none;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.fg-name:hover { text-decoration:underline;color:#185FA5; }
+.fg-right { display:flex;align-items:center;gap:5px;flex-shrink:0; }
+.fg-stars { color:#BA7517;font-size:10px; }
+.fg-rating { font-size:10px;color:#2c2c2a;font-weight:500; }
+.fg-badges { display:flex;gap:3px; }
+.fgb { font-size:8px;font-weight:600;padding:1px 5px;border-radius:99px; }
+.fgb-cafe { background:#E1F5EE;color:#085041; }
+.fgb-breakfast { background:#FAEEDA;color:#633806; }
+.fgb-tacos { background:#FAECE7;color:#712B13; }
+.fgb-lunch { background:#EAF3DE;color:#27500A; }
+.fgb-dinner { background:#EEEDFE;color:#3C3489; }
+.fgb-bar { background:#F1EFE8;color:#444441; }
+.fgb-rooftop { background:#E6F1FB;color:#0C447C; }
+.fgb-1 { background:#EAF3DE;color:#27500A; }
+.fgb-2 { background:#FAEEDA;color:#633806; }
+.fgb-3 { background:#FAECE7;color:#712B13; }
+.fgb-4 { background:#FCEBEB;color:#791F1F; }
+</style>
+
+<script>
+const spots = [
+  {name:"Panadería Rosetta",url:"ChIJ-_GNczr_0YURLJgHYS8ZPMg",cat:"breakfast cafe",price:"2",area:"roma",rating:"4.5",badge:"breakfast"},
+  {name:"Café Nin",url:"ChIJuXSKaDH_0YURxdPlN4QO4uc",cat:"breakfast cafe",price:"2",area:"juarez",rating:"4.4",badge:"café"},
+  {name:"Madre Café",url:"ChIJX0Uy-sf_0YURofjmzQbKACc",cat:"breakfast cafe",price:"2",area:"roma",rating:"4.1",badge:"café"},
+  {name:"Sonāmbulo Café",url:"ChIJgfx6V-D_0YURFLF3nC48tV8",cat:"cafe",price:"2",area:"condesa",rating:"4.7",badge:"café"},
+  {name:"ODETTE Condesa",url:"ChIJGWCZ8wX_0YUR15jLYo0xv08",cat:"cafe breakfast",price:"2",area:"condesa",rating:"4.3",badge:"café"},
+  {name:"Maque Café",url:"ChIJySOlOQD_0YURAWDLToI3KvQ",cat:"cafe breakfast",price:"2",area:"condesa",rating:"4.0",badge:"café"},
+  {name:"Blend Station",url:"ChIJb-XZp4T50YURHOXqji_7Ask",cat:"cafe",price:"2",area:"polanco",rating:"4.5",badge:"café"},
+  {name:"Camino a Comala",url:"ChIJsb0jbND40YURqGXQnLNHEV4",cat:"cafe",price:"2",area:"other",rating:"4.4",badge:"café"},
+  {name:"Librería Porrúa",url:"ChIJOz2hr1b_0YURAtgfdwUgtco",cat:"cafe",price:"2",area:"polanco",rating:"4.3",badge:"café"},
+  {name:"SAN Matcha",url:"ChIJd6IyC9T_0YUR58IvvJzfrEc",cat:"cafe",price:"2",area:"roma",rating:"4.4",badge:"café"},
+  {name:"Churrería El Moro",url:"ChIJwQNPQCT50YURd0rOhlLTvH4",cat:"breakfast cafe",price:"2",area:"centro",rating:"4.5",badge:"breakfast"},
+  {name:"El Cardenal",url:"ChIJh3D2US350YURVW0T-_DRdsA",cat:"breakfast lunch",price:"2",area:"centro",rating:"4.6",badge:"breakfast"},
+  {name:"Los Amantes Café",url:"ChIJX5uXv9z_0YURB6lVy_whSXY",cat:"breakfast cafe",price:"2",area:"coyoacan",rating:"4.2",badge:"café"},
+  {name:"Taquería Orinoco",url:"ChIJQ11IrDn_0YURx17mDNOe5bY",cat:"tacos",price:"2",area:"roma",rating:"4.6",badge:"tacos"},
+  {name:"La Esquina del Chilaquil",url:"ChIJo6Zhj0L_0YURRFnw4GR8dew",cat:"breakfast tacos",price:"1",area:"condesa",rating:"4.4",badge:"tacos"},
+  {name:"Tacos Charly Oficial",url:"ChIJV0pR-GAAzoURMgRxDR7U4GQ",cat:"tacos",price:"2",area:"other",rating:"4.3",badge:"tacos"},
+  {name:"Taquería El Califa",url:"ChIJ01vziUn_0YURyKoDt6Go4P4",cat:"tacos",price:"2",area:"juarez",rating:"4.3",badge:"tacos"},
+  {name:"El Califa de León",url:"ChIJDdgBq8_40YUReV5XNsJFMJE",cat:"tacos",price:"3",area:"other",rating:"3.9",badge:"tacos"},
+  {name:"Tacos del Valle",url:"ChIJE2QjOAD_0YURgYassGxtrpU",cat:"tacos",price:"2",area:"roma",rating:"4.4",badge:"tacos"},
+  {name:"Taquería San Luisito",url:"ChIJKVT3uvn_0YURDtZsUD2c6os",cat:"tacos",price:"2",area:"roma",rating:"4.5",badge:"tacos"},
+  {name:"El Compita Taquería",url:"ChIJ1_GgqE__0YURjfPLj5YlaCk",cat:"tacos",price:"2",area:"condesa",rating:"4.2",badge:"tacos"},
+  {name:"Carnitas El Chulo",url:"ChIJ6TfHY2L_0YURdHDhceqT4Xc",cat:"tacos",price:"1",area:"roma",rating:"4.3",badge:"tacos"},
+  {name:"Comal Oculto — Itacate",url:"ChIJF1Vb4Yf_0YURwBQPkqdpGrk",cat:"tacos",price:"2",area:"polanco",rating:"4.4",badge:"tacos"},
+  {name:"Tortas Al Fuego",url:"ChIJ9VTDx-96WhERauo8UL1tChk",cat:"tacos",price:"1",area:"condesa",rating:"4.4",badge:"tacos"},
+  {name:"Esquites de la Calle Nápoles",url:"ChIJm0nArxP_0YURIxtp9oDhS_A",cat:"tacos",price:"1",area:"juarez",rating:"4.6",badge:"tacos"},
+  {name:"El Hidalguense Barbacoa",url:"ChIJhZ_ytT__0YURRb-fzYtU7AQ",cat:"breakfast tacos",price:"2",area:"condesa",rating:"4.4",badge:"tacos"},
+  {name:"Expendio de Maiz",url:"ChIJUYDQNgL_0YURYhvNnCzntYY",cat:"lunch dinner",price:"2",area:"roma",rating:"4.2",badge:"lunch"},
+  {name:"El Parnita",url:"ChIJJdCJrD7_0YUR4Is1efl-ngE",cat:"lunch dinner",price:"2",area:"roma",rating:"4.3",badge:"lunch"},
+  {name:"La Once Mil — Roma",url:"ChIJ07ffWgD_0YURMOk1QAszUtY",cat:"lunch dinner",price:"3",area:"roma",rating:"4.8",badge:"dinner"},
+  {name:"El Remolkito del Sirloin",url:"ChIJN85FRgD_0YURN6UKy7HRm90",cat:"lunch dinner",price:"2",area:"roma",rating:"4.8",badge:"dinner"},
+  {name:"Tetetlán",url:"ChIJp2kqPvH_zYURzceQRjPKWyw",cat:"lunch dinner",price:"2",area:"other",rating:"4.5",badge:"dinner"},
+  {name:"Campobaja",url:"ChIJ-wf0njr_0YURewRsUhR94XE",cat:"lunch dinner",price:"2",area:"roma",rating:"4.3",badge:"lunch"},
+  {name:"Restaurante Rosetta",url:"ChIJdSGAWgP_0YURwNtY7rftf2E",cat:"dinner",price:"4",area:"roma",rating:"4.2",badge:"dinner"},
+  {name:"El Maldito de Jalisco",url:"ChIJGTtPbgD_0YUR1QVTgieqjL8",cat:"lunch dinner",price:"2",area:"juarez",rating:"4.7",badge:"dinner"},
+  {name:"La Casa de Toño",url:"ChIJ8x5PTwD90YURwf6LfROSKok",cat:"lunch",price:"2",area:"other",rating:"4.5",badge:"lunch"},
+  {name:"Handshake Speakeasy",url:"ChIJU_vg0kID0oUR37k2I3XazcM",cat:"bar",price:"3",area:"juarez",rating:"4.4",badge:"bar"},
+  {name:"Licorería Limantour",url:"ChIJX03s9zr_0YURHdcjFe9hbiE",cat:"bar",price:"3",area:"roma",rating:"4.4",badge:"bar"},
+  {name:"Tlecan",url:"ChIJRbtqqOX_0YURJkwQEFZd2cs",cat:"bar",price:"2",area:"roma",rating:"4.6",badge:"bar"},
+  {name:"Café de Nadie",url:"ChIJ_3DO2x7_0YURvIlJiTo6cds",cat:"bar",price:"2",area:"roma",rating:"4.0",badge:"bar"},
+  {name:"Cantina SieteSeis",url:"ChIJv7MnEFj_0YUR0SxqBOOoPRQ",cat:"bar",price:"2",area:"roma",rating:"4.5",badge:"bar"},
+  {name:"FORM + MATTER",url:"ChIJI_To_Iv_0YURznIW5r9HzjU",cat:"bar",price:"2",area:"roma",rating:"4.8",badge:"bar"},
+  {name:"Terraza Catedral",url:"ChIJ7S61ljL50YURziQ_2fiOUe4",cat:"bar rooftop",price:"2",area:"centro",rating:"4.5",badge:"rooftop"},
+  {name:"Supra Roma Rooftop",url:"ChIJSXJAOdz_0YUR1cl3Y4k-vLs",cat:"bar rooftop",price:"2",area:"roma",rating:"4.6",badge:"rooftop"},
+  {name:"Cabuya Rooftop",url:"ChIJnYvwmov_0YURucFuTwFl1sM",cat:"bar rooftop",price:"3",area:"condesa",rating:"4.1",badge:"rooftop"},
+];
+
+let fCat='all', fPrice='all', fArea='all';
+
+function badgeClass(b){
+  const m={cafe:'cafe',breakfast:'breakfast',tacos:'tacos',lunch:'lunch',dinner:'dinner',bar:'bar',rooftop:'rooftop'};
+  return 'fgb fgb-'+(m[b]||'lunch');
+}
+function priceClass(p){ return 'fgb fgb-'+p; }
+function priceLabel(p){ return ['','$','$$','$$$','$$$$'][+p]||''; }
+
+function render(){
+  const list = document.getElementById('fg-list');
+  const none = document.getElementById('fg-none');
+  const count = document.getElementById('fg-count');
+  list.innerHTML='';
+  let n=0;
+  spots.forEach(s=>{
+    const ok=(fCat==='all'||s.cat.includes(fCat))&&(fPrice==='all'||s.price===fPrice)&&(fArea==='all'||s.area===fArea);
+    if(!ok) return;
+    n++;
+    const div=document.createElement('div');
+    div.className='fg-item';
+    div.innerHTML=`<a class="fg-name" href="https://www.google.com/maps/place/?q=place_id:${s.url}" target="_blank">${s.name}</a><div class="fg-right"><span class="fg-stars">★</span><span class="fg-rating">${s.rating}</span><div class="fg-badges"><span class="${badgeClass(s.badge)}">${s.badge}</span><span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span></div></div>`;
+    list.appendChild(div);
+  });
+  none.style.display=n===0?'block':'none';
+  count.textContent=n===spots.length?`${spots.length} spots · tap name for Google Maps`:`${n} of ${spots.length} spots`;
+}
+
+['cat-f','price-f','area-f'].forEach(id=>{
+  document.getElementById(id).querySelectorAll('.fc').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.getElementById(id).querySelectorAll('.fc').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const v=btn.dataset.v;
+      if(id==='cat-f') fCat=v;
+      else if(id==='price-f') fPrice=v;
+      else fArea=v;
+      render();
+    });
+  });
+});
+
+render();
+</script>
+
+<style>
+.tab-nav { display: none; }
+@media (max-width: 900px) {
+  .layout { display: block !important; }
+  .col-bookings, .col-itinerary, .right {
+    width: 100% !important;
+    position: static !important;
+    max-height: none !important;
+    display: block !important;
+  }
+  .tab-nav {
+    display: flex;
+    margin-bottom: 16px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e8e6df;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 11px 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #888780;
+    background: #fff;
+    border: none;
+    border-right: 0.5px solid #e8e6df;
+    cursor: pointer;
+  }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.mob-active { color: #2c2c2a; background: #f5f4f0; font-weight: 600; }
+  .col-bookings.mob-hidden,
+  .col-itinerary.mob-hidden,
+  .right.mob-hidden { display: none !important; }
+}
+</style>
+
+<script>
+(function(){
+  function isMobile(){ return window.innerWidth <= 900; }
+
+  function initTabs(){
+    if(!isMobile()) return;
+    var layout = document.querySelector('.layout');
+    var nav = document.createElement('div');
+    nav.className = 'tab-nav';
+    nav.innerHTML = '<button class="tab-btn mob-active" data-tab="itinerary">Itinerary</button>' +
+                    '<button class="tab-btn" data-tab="bookings">Bookings</button>' +
+                    '<button class="tab-btn" data-tab="food">Food Guide</button>';
+    layout.parentNode.insertBefore(nav, layout);
+
+    // Hide non-active by default (content already visible if JS fails)
+    document.getElementById('tab-bookings').classList.add('mob-hidden');
+    document.getElementById('tab-food').classList.add('mob-hidden');
+
+    nav.querySelectorAll('.tab-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        nav.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('mob-active'); });
+        btn.classList.add('mob-active');
+        ['tab-bookings','tab-itinerary','tab-food'].forEach(function(id){
+          var el = document.getElementById(id);
+          if(el) el.classList.add('mob-hidden');
+        });
+        var map = {itinerary:'tab-itinerary', bookings:'tab-bookings', food:'tab-food'};
+        var target = document.getElementById(map[btn.dataset.tab]);
+        if(target) target.classList.remove('mob-hidden');
+        window.scrollTo(0,0);
+      });
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initTabs);
+  } else {
+    initTabs();
+  }
+})();
+</script>
+</body>
+</html>
