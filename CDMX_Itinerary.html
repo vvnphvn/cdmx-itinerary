@@ -125,6 +125,18 @@
   .sidebar-card-header.collapsed::after { transform:rotate(180deg); }
   .sidebar-card-body { transition:none; overflow:hidden; }
   .sidebar-card-body.collapsed { display:none; }
+
+  .day-header { cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; }
+  .day-header-content { flex: 1; }
+  .day-toggle { font-size: 10px; color: rgba(255,255,255,0.6); padding-left: 8px; transition: transform 0.2s; }
+  .day-toggle.collapsed { transform: rotate(180deg); }
+  .day-body.collapsed { display: none; }
+
+  .sb-tickets { background: #3d3270; }
+  .ticket-item { padding: 6px 0; }
+  .ticket-name { font-size: 12px; font-weight: 600; color: #2c2c2a; margin-bottom: 5px; }
+  .ticket-pending { color: #854F0B; }
+  .ticket-divider { height: 0.5px; background: #f0ede6; margin: 6px 0; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
@@ -173,15 +185,50 @@
       </div>
 
       <div class="sidebar-card">
-        <div class="sidebar-card-header sb-lucha">Lucha Libre</div>
+        <div class="sidebar-card-header sb-tickets">Tickets</div>
         <div class="sidebar-card-body">
-          <div style="font-size:11px;font-weight:700;color:#2c2c2a;margin-bottom:8px;">70 Aniversario Arena México</div>
-          <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Fri Apr 24</span></div>
-          <div class="sb-row"><span class="sb-label">Show</span><span class="sb-value">8:30 PM</span></div>
-          <div class="sb-row"><span class="sb-label">Doors</span><span class="sb-value">7:00 PM</span></div>
-          <div class="sb-row"><span class="sb-label">Seat</span><span class="sb-value">PRECR1 · Row H</span></div>
-          <div class="sb-row"><span class="sb-label">Paid</span><span class="sb-value">MX$650.00</span></div>
-          <div class="sb-ref">Order: <strong>#13-39544/MXC</strong></div>
+
+          <div class="ticket-item">
+            <div class="ticket-name">Lucha Libre — 70 Aniversario</div>
+            <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Fri Apr 24</span></div>
+            <div class="sb-row"><span class="sb-label">Show</span><span class="sb-value">8:30 PM · Doors 7:00 PM</span></div>
+            <div class="sb-row"><span class="sb-label">Seat</span><span class="sb-value">PRECR1 · Row H</span></div>
+            <div class="sb-row"><span class="sb-label">Paid</span><span class="sb-value">MX$650.00</span></div>
+            <div class="sb-ref">Order: <strong>#13-39544/MXC</strong></div>
+          </div>
+
+          <div class="ticket-divider"></div>
+
+          <div class="ticket-item">
+            <div class="ticket-name">Museo Nacional de Antropología</div>
+            <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Wed Apr 22</span></div>
+            <div class="sb-row"><span class="sb-label">Paid</span><span class="sb-value">MX$210.00</span></div>
+          </div>
+
+          <div class="ticket-divider"></div>
+
+          <div class="ticket-item">
+            <div class="ticket-name">Chapultepec Castle</div>
+            <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Wed Apr 22</span></div>
+            <div class="sb-row"><span class="sb-label">Paid</span><span class="sb-value">MX$210.00</span></div>
+          </div>
+
+          <div class="ticket-divider"></div>
+
+          <div class="ticket-item">
+            <div class="ticket-name">Templo Mayor</div>
+            <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Thu Apr 23</span></div>
+            <div class="sb-row"><span class="sb-label">Paid</span><span class="sb-value">MX$210.00</span></div>
+          </div>
+
+          <div class="ticket-divider"></div>
+
+          <div class="ticket-item">
+            <div class="ticket-name ticket-pending">Palacio de Bellas Artes</div>
+            <div class="sb-row"><span class="sb-label">Date</span><span class="sb-value">Thu Apr 23</span></div>
+            <div class="sb-row"><span class="sb-label">Status</span><span class="sb-value ticket-pending">⚠ Buy at palacio.inba.gob.mx</span></div>
+          </div>
+
         </div>
       </div>
 
@@ -200,8 +247,9 @@
       <!-- ARRIVAL -->
       <div class="day d0" id="day-0" data-day="0" data-label="Arrival — Mon Apr 21">
         <div class="day-header">
-          <h2>Arrival — Mon Apr 21</h2>
-          <p>Fly in, check in, settle</p>
+          <div class="day-header-content"><h2>Arrival — Mon Apr 21</h2>
+          <p>Fly in, check in, settle</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="stop">
@@ -238,8 +286,9 @@
       <!-- DAY 1 -->
       <div class="day d1" id="day-1" data-day="1" data-label="Day 1 — Wed Apr 22">
         <div class="day-header">
-          <h2>Day 1 — Wed Apr 22 &nbsp;|&nbsp; Chapultepec</h2>
-          <p>Park, pyramids, bookshop café</p>
+          <div class="day-header-content"><h2>Day 1 — Wed Apr 22 &nbsp;|&nbsp; Chapultepec</h2>
+          <p>Park, pyramids, bookshop café</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~20 min</span><div class="transport-line"></div></div>
@@ -323,8 +372,9 @@
       <!-- DAY 2 -->
       <div class="day d2" id="day-2" data-day="2" data-label="Day 2 — Thu Apr 23">
         <div class="day-header">
-          <h2>Day 2 — Thu Apr 23 &nbsp;|&nbsp; Centro Histórico</h2>
-          <p>Full walking tour — ruins, cathedral, murals, colonial architecture</p>
+          <div class="day-header-content"><h2>Day 2 — Thu Apr 23 &nbsp;|&nbsp; Centro Histórico</h2>
+          <p>Full walking tour — ruins, cathedral, murals, colonial architecture</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="transport"><div class="transport-line"></div><span class="transport-text">Walk ~5 min from Apapacho</span><div class="transport-line"></div></div>
@@ -453,8 +503,9 @@
       <!-- DAY 3 -->
       <div class="day d3" id="day-3" data-day="3" data-label="Day 3 — Fri Apr 24">
         <div class="day-header">
-          <h2>Day 3 — Fri Apr 24 &nbsp;|&nbsp; Roma Norte + Lucha Libre</h2>
-          <p>Neighbourhood wandering + wrestling</p>
+          <div class="day-header-content"><h2>Day 3 — Fri Apr 24 &nbsp;|&nbsp; Roma Norte + Lucha Libre</h2>
+          <p>Neighbourhood wandering + wrestling</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~15 min</span><div class="transport-line"></div></div>
@@ -493,8 +544,9 @@
       <!-- DAY 4 -->
       <div class="day d4" id="day-4" data-day="4" data-label="Day 4 — Sat Apr 25">
         <div class="day-header">
-          <h2>Day 4 — Sat Apr 25 &nbsp;|&nbsp; Teotihuacán + Coyoacán</h2>
-          <p>Ancient pyramids in the morning, cobblestones in the afternoon</p>
+          <div class="day-header-content"><h2>Day 4 — Sat Apr 25 &nbsp;|&nbsp; Teotihuacán + Coyoacán</h2>
+          <p>Ancient pyramids in the morning, cobblestones in the afternoon</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~20 min</span><div class="transport-line"></div></div>
@@ -533,8 +585,9 @@
       <!-- DAY 5 -->
       <div class="day d5" id="day-5" data-day="5" data-label="Day 5 — Sun Apr 26">
         <div class="day-header">
-          <h2>Day 5 — Sun Apr 26 &nbsp;|&nbsp; Free Day</h2>
-          <p>No agenda. Just the city.</p>
+          <div class="day-header-content"><h2>Day 5 — Sun Apr 26 &nbsp;|&nbsp; Free Day</h2>
+          <p>No agenda. Just the city.</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="transport"><div class="transport-line"></div><span class="transport-text">Uber from Apapacho ~15 min</span><div class="transport-line"></div></div>
@@ -561,8 +614,9 @@
       <!-- DEPARTURE -->
       <div class="day d6" id="day-6" data-day="6" data-label="Departure — Mon Apr 27">
         <div class="day-header">
-          <h2>Departure — Mon Apr 27</h2>
-          <p>Early checkout, fly home</p>
+          <div class="day-header-content"><h2>Departure — Mon Apr 27</h2>
+          <p>Early checkout, fly home</p></div>
+          <span class="day-toggle">▲</span>
         </div>
         <div class="day-body">
           <div class="stop">
@@ -1162,12 +1216,23 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
 <script>
+// Sidebar card collapse
 document.querySelectorAll('.sidebar-card-header').forEach(function(header){
   header.addEventListener('click', function(){
     var body = header.nextElementSibling;
     if(!body) return;
     header.classList.toggle('collapsed');
     body.classList.toggle('collapsed');
+  });
+});
+// Day card collapse
+document.querySelectorAll('.day-header').forEach(function(header){
+  header.addEventListener('click', function(){
+    var body = header.nextElementSibling;
+    if(!body || !body.classList.contains('day-body')) return;
+    var toggle = header.querySelector('.day-toggle');
+    body.classList.toggle('collapsed');
+    if(toggle) toggle.classList.toggle('collapsed');
   });
 });
 </script>
