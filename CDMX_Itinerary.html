@@ -611,7 +611,7 @@
 .fc { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
 .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
 #fav-f .fc.active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
-.fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px; }
+.fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px 28px 14px;display:flex;flex-direction:column;gap:6px;position:relative; }
 .fg-item.hearted { border-color:#E24B4A; }
 .fg-heart { background:none;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;color:#d3d1c7;flex-shrink:0;transition:color 0.15s; }
 .fg-heart.on { color:#E24B4A; }
@@ -651,7 +651,8 @@
 .dropped-remove:hover { color: #E24B4A; }
 .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; background: #fff; border: 1px solid #185FA5; border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 500; color: #185FA5; box-shadow: 0 4px 16px rgba(0,0,0,0.15); max-width: 200px; opacity: 0.9; }
 /* Mobile: add to day button */
-.fg-add-day-btn { font-size:10px;color:#185FA5;background:none;border:0.5px solid #185FA5;border-radius:99px;cursor:pointer;padding:2px 8px;margin-top:2px; }
+.fg-add-day-btn { position:absolute;bottom:8px;right:10px;font-size:9px;color:#185FA5;background:none;border:0.5px solid #b5d4f4;border-radius:99px;cursor:pointer;padding:2px 8px; }
+.fg-add-day-btn:hover { background:#E6F1FB; }
 .day-picker-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:1000;display:flex;align-items:flex-end; }
 .day-picker-sheet { background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%; }
 .day-picker-sheet h3 { font-size:14px;font-weight:600;margin-bottom:16px;color:#2c2c2a; }
@@ -805,7 +806,7 @@ function render(){
     addDayBtn.className = 'fg-add-day-btn';
     addDayBtn.textContent = '+ add to day';
     addDayBtn.addEventListener('click', function(e){ e.preventDefault(); showDayPicker(s); });
-    div.querySelector('.fg-user-note').appendChild(addDayBtn);
+    div.appendChild(addDayBtn);
 
     list.appendChild(div);
   });
