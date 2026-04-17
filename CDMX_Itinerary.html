@@ -592,9 +592,12 @@
           <button class="fc" data-f="area" data-v="polanco">Polanco</button>
           <button class="fc" data-f="area" data-v="other">Other</button>
         </div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;" id="fav-f">
+          <button class="fc active" data-f="fav" data-v="all">All</button>
+          <button class="fc" data-f="fav" data-v="must">♥ must visit</button>
+        </div>
 
         <div style="font-size:10px;color:#888780;margin-bottom:6px;" id="fg-count">42 spots · tap name for Google Maps</div>
-        <div class="fg-must-filter"><button class="fg-must-btn" id="fg-must-btn" onclick="showMustOnly=!showMustOnly;this.classList.toggle('active');render()">♥ must visit only</button></div>
 
         <div id="fg-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
         <div id="fg-none" style="font-size:12px;color:#888780;padding:12px 0;text-align:center;display:none;">No spots match.</div>
@@ -607,6 +610,7 @@
 <style>
 .fc { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
 .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
+#fav-f .fc.active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
 .fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px; }
 .fg-item.hearted { border-color:#E24B4A; }
 .fg-heart { background:none;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;color:#d3d1c7;flex-shrink:0;transition:color 0.15s; }
@@ -615,9 +619,7 @@
 .fg-note-input { font-size:11px;width:100%;border:0.5px solid #d3d1c7;border-radius:6px;padding:5px 8px;background:#fff;color:#2c2c2a;resize:none;font-family:inherit;line-height:1.4; }
 .fg-add-note { font-size:10px;color:#888780;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px; }
 .fg-add-note:hover { color:#2c2c2a; }
-.fg-must-filter { display:flex;align-items:center;gap:6px;margin-bottom:8px; }
-.fg-must-btn { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
-.fg-must-btn.active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
+.fav-active { background:#E24B4A !important;color:#fff !important;border-color:#E24B4A !important; }
 .fg-top { display:flex;justify-content:space-between;align-items:flex-start;gap:6px; }
 .fg-name { font-size:13px;font-weight:600;color:#2c2c2a;text-decoration:none;line-height:1.3; }
 .fg-name:hover { color:#185FA5; }
@@ -706,7 +708,7 @@ const spots = [
   {name:"Cabuya Rooftop",note:"Condesa · Andaz hotel rooftop · skyline views",url:"ChIJnYvwmov_0YURucFuTwFl1sM",cat:"bar rooftop",price:"3",area:"condesa",rating:"4.1",badge:"rooftop"},
 ];
 
-let fCat='all', fPrice='all', fArea='all';
+let fCat='all', fPrice='all', fArea='all', fFav='all';
 
 function badgeClass(b){
   const m={cafe:'cafe',breakfast:'breakfast',tacos:'tacos',lunch:'lunch',dinner:'dinner',bar:'bar',rooftop:'rooftop'};
@@ -719,7 +721,6 @@ function priceLabel(p){ return ['','$','$$','$$$','$$$$'][+p]||''; }
 function getState(){ try{ return JSON.parse(localStorage.getItem('cdmx_fg')||'{}'); }catch(e){ return {}; } }
 function saveState(st){ try{ localStorage.setItem('cdmx_fg', JSON.stringify(st)); }catch(e){} }
 
-let showMustOnly = false;
 
 function toggleHeart(name){
   const st = getState();
@@ -765,7 +766,7 @@ function render(){
     const ok=(fCat==='all'||s.cat.includes(fCat))&&(fPrice==='all'||s.price===fPrice)&&(fArea==='all'||s.area===fArea);
     if(!ok) return;
     const sst = st[s.name] || {};
-    if(showMustOnly && !sst.heart) return;
+    if(fFav === "must" && !sst.heart) return;
     n++;
     const allBadges = s.cat.split(' ').map(b=>`<span class="${badgeClass(b)} fgb">${b}</span>`).join('');
     const priceBadge = `<span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span>`;
@@ -812,7 +813,7 @@ function render(){
   count.textContent=n===spots.length?`${spots.length} spots · tap name for Google Maps`:`${n} of ${spots.length} spots`;
 }
 
-['cat-f','price-f','area-f'].forEach(id=>{
+['cat-f','price-f','area-f','fav-f'].forEach(id=>{
   document.getElementById(id).querySelectorAll('.fc').forEach(btn=>{
     btn.addEventListener('click',()=>{
       document.getElementById(id).querySelectorAll('.fc').forEach(b=>b.classList.remove('active'));
@@ -820,7 +821,8 @@ function render(){
       const v=btn.dataset.v;
       if(id==='cat-f') fCat=v;
       else if(id==='price-f') fPrice=v;
-      else fArea=v;
+      else if(id==='area-f') fArea=v;
+      else fFav=v;
       render();
     });
   });
