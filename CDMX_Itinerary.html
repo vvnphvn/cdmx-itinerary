@@ -106,6 +106,11 @@
 @media (max-width: 900px) {
   .col-outfit { width: 100% !important; position: static !important; max-height: none !important; }
 }
+
+.outfit-fab { position:fixed; bottom:24px; right:20px; z-index:200; background:#2c2c2a; color:#fff; border:none; border-radius:14px; padding:10px 16px; font-size:12px; font-weight:500; font-family:inherit; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:0 4px 16px rgba(0,0,0,0.18); text-decoration:none; }
+.outfit-fab:hover { background:#1a1a18; }
+.outfit-fab svg { width:15px; height:15px; }
+@media (min-width:901px) { .outfit-fab { display:none; } }
 </style>
 </head>
 <body>
@@ -1276,5 +1281,11 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 })();
 </script>
+
+<a class="outfit-fab" href="CDMX_Outfits.html">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+  Outfits
+</a>
+
 </body>
 </html>
