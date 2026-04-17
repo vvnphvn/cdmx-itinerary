@@ -115,8 +115,24 @@
   .site-nav { position:sticky; top:0; z-index:200; background:#fff; border-bottom:0.5px solid #e8e6df; display:flex; align-items:center; justify-content:space-between; padding:0 18px; height:50px; }
   .site-nav-title { font-size:15px; font-weight:600; color:#1a2e4a; letter-spacing:-0.2px; }
   .site-nav-meta { font-size:10px; color:#b4b2a9; }
-  .site-nav-outfit { display:flex; align-items:center; gap:5px; background:none; border:0.5px solid #d3d1c7; border-radius:99px; padding:5px 12px; font-size:11px; font-weight:500; color:#2c2c2a; cursor:pointer; text-decoration:none; font-family:inherit; white-space:nowrap; }
-  .site-nav-outfit:hover { background:#f5f4f0; }
+  .burger { display:flex; flex-direction:column; justify-content:center; gap:5px; width:36px; height:36px; background:none; border:none; cursor:pointer; padding:6px; border-radius:8px; text-decoration:none; }
+  .burger:hover { background:#f5f4f0; }
+  .burger span { display:block; width:20px; height:2px; background:#2c2c2a; border-radius:2px; transition:all 0.2s; }
+  /* Menu drawer */
+  .menu-drawer { position:fixed; top:0; right:-280px; width:260px; height:100vh; background:#fff; z-index:500; box-shadow:-4px 0 24px rgba(0,0,0,0.12); transition:right 0.28s cubic-bezier(0.4,0,0.2,1); display:flex; flex-direction:column; padding:0; }
+  .menu-drawer.open { right:0; }
+  .menu-overlay { position:fixed; inset:0; background:rgba(0,0,0,0); z-index:499; pointer-events:none; transition:background 0.28s; }
+  .menu-overlay.open { background:rgba(0,0,0,0.3); pointer-events:all; }
+  .menu-header { padding:18px 20px 14px; border-bottom:0.5px solid #f0ede6; display:flex; align-items:center; justify-content:space-between; }
+  .menu-header-title { font-size:12px; font-weight:600; color:#2c2c2a; text-transform:uppercase; letter-spacing:0.6px; }
+  .menu-close { background:none; border:none; cursor:pointer; font-size:18px; color:#888780; padding:2px 6px; border-radius:6px; }
+  .menu-close:hover { background:#f5f4f0; color:#2c2c2a; }
+  .menu-items { flex:1; padding:12px 0; }
+  .menu-item { display:flex; align-items:center; gap:12px; padding:13px 20px; font-size:13px; color:#2c2c2a; text-decoration:none; font-weight:500; }
+  .menu-item:hover { background:#f8f7f4; }
+  .menu-item-icon { font-size:18px; width:28px; text-align:center; }
+  .menu-item-sub { font-size:10px; color:#888780; margin-top:1px; font-weight:400; }
+  .menu-divider { height:0.5px; background:#f0ede6; margin:4px 0; }
   /* Remove standalone FAB on all screens now we have nav */
   .outfit-fab { display:none !important; }
 </style>
@@ -127,8 +143,32 @@
     <div class="site-nav-title">Mexico City</div>
     <div class="site-nav-meta">Apr 21–27, 2026 &nbsp;·&nbsp; Apapacho Hostel</div>
   </div>
-  <a class="site-nav-outfit" href="CDMX_Outfits.html">👗 Outfits</a>
+  <a class="burger" id="burger-btn" href="#" onclick="openMenu(event)">
+    <span></span><span></span><span></span>
+  </a>
 </nav>
+
+<!-- Overlay -->
+<div class="menu-overlay" id="menu-overlay" onclick="closeMenu()"></div>
+
+<!-- Drawer -->
+<div class="menu-drawer" id="menu-drawer">
+  <div class="menu-header">
+    <span class="menu-header-title">Menu</span>
+    <button class="menu-close" onclick="closeMenu()">✕</button>
+  </div>
+  <div class="menu-items">
+    <a class="menu-item" href="CDMX_Outfits.html">
+      <span class="menu-item-icon">👗</span>
+      <div><div>Outfits</div><div class="menu-item-sub">Plan your looks day by day</div></div>
+    </a>
+    <div class="menu-divider"></div>
+    <a class="menu-item" href="https://github.com/vvnphvn/cdmx-itinerary" target="_blank">
+      <span class="menu-item-icon">⚙︎</span>
+      <div><div>Source</div><div class="menu-item-sub">View on GitHub</div></div>
+    </a>
+  </div>
+</div>
 <div class="page">
 
 
@@ -1218,5 +1258,11 @@ document.addEventListener('DOMContentLoaded', function(){
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
   👗 Outfits
 </a>
+
+<script>
+function openMenu(e){ e.preventDefault(); document.getElementById('menu-drawer').classList.add('open'); document.getElementById('menu-overlay').classList.add('open'); }
+function closeMenu(){ document.getElementById('menu-drawer').classList.remove('open'); document.getElementById('menu-overlay').classList.remove('open'); }
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeMenu(); });
+</script>
 </body>
 </html>
