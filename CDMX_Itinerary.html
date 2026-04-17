@@ -111,13 +111,26 @@
 
 .outfit-fab { position:fixed; bottom:24px; right:20px; z-index:200; background:#2c2c2a; color:#fff; border:none; border-radius:14px; padding:10px 16px; font-size:12px; font-weight:500; font-family:inherit; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:0 4px 16px rgba(0,0,0,0.18); text-decoration:none; white-space:nowrap; }
 .outfit-fab:hover { background:#1a1a18; }
+
+  .site-nav { position:sticky; top:0; z-index:200; background:#fff; border-bottom:0.5px solid #e8e6df; display:flex; align-items:center; justify-content:space-between; padding:0 18px; height:50px; }
+  .site-nav-title { font-size:15px; font-weight:600; color:#1a2e4a; letter-spacing:-0.2px; }
+  .site-nav-meta { font-size:10px; color:#b4b2a9; }
+  .site-nav-outfit { display:flex; align-items:center; gap:5px; background:none; border:0.5px solid #d3d1c7; border-radius:99px; padding:5px 12px; font-size:11px; font-weight:500; color:#2c2c2a; cursor:pointer; text-decoration:none; font-family:inherit; white-space:nowrap; }
+  .site-nav-outfit:hover { background:#f5f4f0; }
+  /* Remove standalone FAB on all screens now we have nav */
+  .outfit-fab { display:none !important; }
 </style>
 </head>
 <body>
+<nav class="site-nav">
+  <div>
+    <div class="site-nav-title">Mexico City</div>
+    <div class="site-nav-meta">Apr 21–27, 2026 &nbsp;·&nbsp; Apapacho Hostel</div>
+  </div>
+  <a class="site-nav-outfit" href="CDMX_Outfits.html">👗 Outfits</a>
+</nav>
 <div class="page">
 
-  <h1>Mexico City</h1>
-  <p class="meta">Apr 21–27, 2026 &nbsp;·&nbsp; 6 nights &nbsp;·&nbsp; Apapacho Hostel, Centro Histórico</p>
 
   <div class="layout">
 
