@@ -8,11 +8,11 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;}
-.nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:0.5px solid #e8e6df;padding:0 20px;display:flex;align-items:center;height:52px;gap:12px;}
-.nav-back{display:flex;align-items:center;gap:5px;font-size:12px;color:#888780;text-decoration:none;font-weight:500;}
-.nav-back:hover{color:#2c2c2a;}
-.nav-title{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:#2c2c2a;flex:1;text-align:center;}
-.nav-city{font-size:10px;color:#b4b2a9;}
+
+
+
+
+
 .page{max-width:860px;margin:0 auto;padding:24px 16px 80px;}
 .hero{padding:8px 0 24px;}
 .hero h1{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:#1a2e4a;line-height:1.2;}
@@ -71,23 +71,17 @@ body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#2c2c2a;min-heigh
 .sidebar-footer{padding:14px 18px;border-top:0.5px solid #f0ede6;}
 .sidebar-footer a{font-size:12px;color:#888780;text-decoration:none;display:flex;align-items:center;gap:6px;}
 .sidebar-footer a:hover{color:#2c2c2a;}
+
+.back-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#b4b2a9;text-decoration:none;margin-bottom:10px;}
+.back-link:hover{color:#2c2c2a;}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a class="nav-back" href="CDMX_Itinerary.html">
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
-    Back
-  </a>
-  <span class="nav-title">Outfits</span>
-  <button class="burger" id="burger-btn" aria-label="Menu" onclick="toggleSidebar()">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
 
 <div class="page">
   <div class="hero">
+    <a class="back-link" href="CDMX_Itinerary.html"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg> Back to itinerary</a>
     <h1>What are you<br>wearing?</h1>
     <p>Upload photos · background auto-removed · build your looks</p>
   </div>
