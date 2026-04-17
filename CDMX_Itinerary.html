@@ -93,7 +93,7 @@
     .col-bookings, .right { position: static; max-height: none; }
   }
 
-.col-outfit { flex: 1; min-width: 0; }
+
 .outfit-day { border-radius: 12px; overflow: hidden; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 .outfit-day-header { padding: 12px 16px; }
 .outfit-day-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px; }
@@ -103,14 +103,14 @@
 .outfit-input { width: 100%; min-height: 80px; border: 0.5px solid #e8e6df; border-radius: 8px; padding: 10px 12px; font-size: 13px; font-family: inherit; color: #2c2c2a; resize: none; background: #fafaf8; line-height: 1.5; box-sizing: border-box; }
 .outfit-input:focus { outline: none; border-color: #b4b2a9; background: #fff; }
 .outfit-input::placeholder { color: #d3d1c7; }
-@media (max-width: 900px) {
-  .col-outfit { width: 100% !important; position: static !important; max-height: none !important; }
-}
 
-.outfit-fab { position:fixed; bottom:24px; right:20px; z-index:200; background:#2c2c2a; color:#fff; border:none; border-radius:14px; padding:10px 16px; font-size:12px; font-weight:500; font-family:inherit; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:0 4px 16px rgba(0,0,0,0.18); text-decoration:none; }
+
 .outfit-fab:hover { background:#1a1a18; }
 .outfit-fab svg { width:15px; height:15px; }
-@media (min-width:901px) { .outfit-fab { display:none; } }
+@media (min-width:901px) {  }
+
+.outfit-fab { position:fixed; bottom:24px; right:20px; z-index:200; background:#2c2c2a; color:#fff; border:none; border-radius:14px; padding:10px 16px; font-size:12px; font-weight:500; font-family:inherit; cursor:pointer; display:flex; align-items:center; gap:7px; box-shadow:0 4px 16px rgba(0,0,0,0.18); text-decoration:none; white-space:nowrap; }
+.outfit-fab:hover { background:#1a1a18; }
 </style>
 </head>
 <body>
@@ -633,89 +633,6 @@
     </div><!-- end right -->
 
 
-    <!-- OUTFIT TAB -->
-    <div class="col-outfit mob-hidden" id="tab-outfit">
-      <div style="padding:4px 0;">
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#444441;">
-            <div class="outfit-day-title">Arrival — Mon Apr 21</div>
-            <div class="outfit-day-sub">Late night · ~23:15 landing</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">✈️ Travel day. Comfortable layers for a 5hr flight + late arrival. Nothing needs to impress.</div>
-            <textarea class="outfit-input" data-day="outfit-0" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#0F6E56;">
-            <div class="outfit-day-title">Day 1 — Wed Apr 22 · Chapultepec</div>
-            <div class="outfit-day-sub">Park walk · museums · outdoor</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">☀️ Lots of walking outdoors. ~6km through the Bosque. Sun can be strong — hat recommended. Museum-appropriate.</div>
-            <textarea class="outfit-input" data-day="outfit-1" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#185FA5;">
-            <div class="outfit-day-title">Day 2 — Thu Apr 23 · Centro</div>
-            <div class="outfit-day-sub">Walking tour · cathedrals · bike</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">🚲 Full day on foot + Ecobici. Cobblestones — skip the heels. Mix of churches, palaces, rooftop bar at end.</div>
-            <textarea class="outfit-input" data-day="outfit-2" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#854F0B;">
-            <div class="outfit-day-title">Day 3 — Fri Apr 24 · Roma + Lucha Libre</div>
-            <div class="outfit-day-sub">Brunch · browse · evening event</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">🥊 Relaxed day → lively evening. Lucha Libre is festive and loud — dress to have fun. Arena gets hot and rowdy.</div>
-            <textarea class="outfit-input" data-day="outfit-3" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#993C1D;">
-            <div class="outfit-day-title">Day 4 — Sat Apr 25 · Pyramids + Coyoacán</div>
-            <div class="outfit-day-sub">Teotihuacán · cobblestone streets</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">🏛️ Early start, full sun, climbing pyramids. Most intense day physically — breathable fabrics, good shoes, sun protection essential. Coyoacán is charming after.</div>
-            <textarea class="outfit-input" data-day="outfit-4" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#534AB7;">
-            <div class="outfit-day-title">Day 5 — Sun Apr 26 · Free Day</div>
-            <div class="outfit-day-sub">Biblioteca · wander · no agenda</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">📚 Low-key. Dress for whatever mood you wake up in. Could be a café crawl, vintage browsing, or a park afternoon.</div>
-            <textarea class="outfit-input" data-day="outfit-5" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-        <div class="outfit-day">
-          <div class="outfit-day-header" style="background:#444441;">
-            <div class="outfit-day-title">Departure — Mon Apr 27</div>
-            <div class="outfit-day-sub">~4am checkout · 7am flight</div>
-          </div>
-          <div class="outfit-day-body">
-            <div class="outfit-context">✈️ 4am checkout — comfort over everything. Something you can sleep in on the flight home.</div>
-            <textarea class="outfit-input" data-day="outfit-6" placeholder="What are you wearing..."></textarea>
-          </div>
-        </div>
-
-      </div>
-    </div><!-- end outfit tab -->
 
   </div><!-- end layout -->
 </div>
@@ -1250,23 +1167,23 @@ document.addEventListener('DOMContentLoaded', function(){
     nav.innerHTML = '<button class="tab-btn mob-active" data-tab="itinerary">Itinerary</button>' +
                     '<button class="tab-btn" data-tab="bookings">Bookings</button>' +
                     '<button class="tab-btn" data-tab="food">Food</button>' +
-                    '<button class="tab-btn" data-tab="outfit">Outfits</button>';
+                    '';
     layout.parentNode.insertBefore(nav, layout);
 
     // Hide non-active by default (content already visible if JS fails)
     document.getElementById('tab-bookings').classList.add('mob-hidden');
     document.getElementById('tab-food').classList.add('mob-hidden');
-    document.getElementById('tab-outfit').classList.add('mob-hidden');
+
 
     nav.querySelectorAll('.tab-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
         nav.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('mob-active'); });
         btn.classList.add('mob-active');
-        ['tab-bookings','tab-itinerary','tab-food','tab-outfit'].forEach(function(id){
+        ['tab-bookings','tab-itinerary','tab-food'].forEach(function(id){
           var el = document.getElementById(id);
           if(el) el.classList.add('mob-hidden');
         });
-        var map = {itinerary:'tab-itinerary', bookings:'tab-bookings', food:'tab-food', outfit:'tab-outfit'};
+        var map = {itinerary:'tab-itinerary', bookings:'tab-bookings', food:'tab-food'};
         var target = document.getElementById(map[btn.dataset.tab]);
         if(target) target.classList.remove('mob-hidden');
         window.scrollTo(0,0);
@@ -1282,10 +1199,11 @@ document.addEventListener('DOMContentLoaded', function(){
 })();
 </script>
 
-<a class="outfit-fab" href="CDMX_Outfits.html">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
-  Outfits
-</a>
 
+
+<a class="outfit-fab" href="CDMX_Outfits.html">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.57a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.57a2 2 0 00-1.34-2.23z"/></svg>
+  👗 Outfits
+</a>
 </body>
 </html>
