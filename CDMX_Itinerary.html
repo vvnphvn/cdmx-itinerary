@@ -593,7 +593,8 @@
           <button class="fc" data-f="area" data-v="other">Other</button>
         </div>
 
-        <div style="font-size:10px;color:#888780;margin-bottom:8px;" id="fg-count">42 spots · tap name for Google Maps</div>
+        <div style="font-size:10px;color:#888780;margin-bottom:6px;" id="fg-count">42 spots · tap name for Google Maps</div>
+        <div class="fg-must-filter"><button class="fg-must-btn" id="fg-must-btn" onclick="showMustOnly=!showMustOnly;this.classList.toggle('active');render()">♥ must visit only</button></div>
 
         <div id="fg-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
         <div id="fg-none" style="font-size:12px;color:#888780;padding:12px 0;text-align:center;display:none;">No spots match.</div>
@@ -607,6 +608,16 @@
 .fc { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
 .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
 .fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px; }
+.fg-item.hearted { border-color:#E24B4A; }
+.fg-heart { background:none;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;color:#d3d1c7;flex-shrink:0;transition:color 0.15s; }
+.fg-heart.on { color:#E24B4A; }
+.fg-note-text { font-size:11px;color:#888780;font-style:italic;padding:4px 8px;background:#f8f7f4;border-radius:6px;line-height:1.4; }
+.fg-note-input { font-size:11px;width:100%;border:0.5px solid #d3d1c7;border-radius:6px;padding:5px 8px;background:#fff;color:#2c2c2a;resize:none;font-family:inherit;line-height:1.4; }
+.fg-add-note { font-size:10px;color:#888780;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px; }
+.fg-add-note:hover { color:#2c2c2a; }
+.fg-must-filter { display:flex;align-items:center;gap:6px;margin-bottom:8px; }
+.fg-must-btn { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
+.fg-must-btn.active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
 .fg-top { display:flex;justify-content:space-between;align-items:flex-start;gap:6px; }
 .fg-name { font-size:13px;font-weight:600;color:#2c2c2a;text-decoration:none;line-height:1.3; }
 .fg-name:hover { color:#185FA5; }
@@ -686,27 +697,89 @@ function badgeClass(b){
 function priceClass(p){ return 'fgb fgb-'+p; }
 function priceLabel(p){ return ['','$','$$','$$$','$$$$'][+p]||''; }
 
+// Heart + notes state in localStorage
+function getState(){ try{ return JSON.parse(localStorage.getItem('cdmx_fg')||'{}'); }catch(e){ return {}; } }
+function saveState(st){ try{ localStorage.setItem('cdmx_fg', JSON.stringify(st)); }catch(e){} }
+
+let showMustOnly = false;
+
+function toggleHeart(name){
+  const st = getState();
+  st[name] = st[name] || {};
+  st[name].heart = !st[name].heart;
+  saveState(st);
+  render();
+}
+
+function saveNote(name, val){
+  const st = getState();
+  st[name] = st[name] || {};
+  st[name].note = val;
+  saveState(st);
+}
+
+function showNoteInput(name, div){
+  const st = getState();
+  const existing = (st[name] && st[name].note) || '';
+  const noteArea = div.querySelector('.fg-user-note');
+  noteArea.innerHTML = `<textarea class="fg-note-input" rows="2" placeholder="Add your note...">${existing}</textarea>`;
+  const ta = noteArea.querySelector('textarea');
+  ta.focus();
+  ta.addEventListener('blur', function(){
+    const val = ta.value.trim();
+    saveNote(name, val);
+    if(val){
+      noteArea.innerHTML = `<span class="fg-note-text">${val}</span> <button class="fg-add-note" onclick="showNoteInput('${name.replace(/'/g,"\'")}', this.closest('.fg-item'))">edit</button>`;
+    } else {
+      noteArea.innerHTML = `<button class="fg-add-note" onclick="showNoteInput('${name.replace(/'/g,"\'")}', this.closest('.fg-item'))">+ add note</button>`;
+    }
+  });
+}
+
 function render(){
   const list = document.getElementById('fg-list');
   const none = document.getElementById('fg-none');
   const count = document.getElementById('fg-count');
+  const st = getState();
   list.innerHTML='';
   let n=0;
   spots.forEach(s=>{
     const ok=(fCat==='all'||s.cat.includes(fCat))&&(fPrice==='all'||s.price===fPrice)&&(fArea==='all'||s.area===fArea);
     if(!ok) return;
+    const sst = st[s.name] || {};
+    if(showMustOnly && !sst.heart) return;
     n++;
     const allBadges = s.cat.split(' ').map(b=>`<span class="${badgeClass(b)} fgb">${b}</span>`).join('');
     const priceBadge = `<span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span>`;
+    const isHearted = !!sst.heart;
+    const userNote = sst.note || '';
+    const noteHTML = userNote
+      ? `<span class="fg-note-text">${userNote}</span> <button class="fg-add-note">edit</button>`
+      : `<button class="fg-add-note">+ add note</button>`;
     const div=document.createElement('div');
-    div.className='fg-item';
+    div.className='fg-item' + (isHearted ? ' hearted' : '');
     div.innerHTML=`
       <div class="fg-top">
         <a class="fg-name" href="https://www.google.com/maps/place/?q=place_id:${s.url}" target="_blank">${s.name}</a>
-        <div class="fg-rating-wrap"><span class="fg-stars">★</span><span class="fg-rating">${s.rating}</span></div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div class="fg-rating-wrap"><span class="fg-stars">★</span><span class="fg-rating">${s.rating}</span></div>
+          <button class="fg-heart ${isHearted?'on':''}" title="Must visit">♥</button>
+        </div>
       </div>
       <div class="fg-note">${s.note||''}</div>
-      <div class="fg-badges">${allBadges}${priceBadge}</div>`;
+      <div class="fg-badges">${allBadges}${priceBadge}</div>
+      <div class="fg-user-note">${noteHTML}</div>`;
+
+    // Heart click
+    div.querySelector('.fg-heart').addEventListener('click', function(e){
+      e.preventDefault();
+      toggleHeart(s.name);
+    });
+    // Note button click
+    div.querySelector('.fg-add-note') && div.querySelector('.fg-add-note').addEventListener('click', function(){
+      showNoteInput(s.name, div);
+    });
+
     list.appendChild(div);
   });
   none.style.display=n===0?'block':'none';
