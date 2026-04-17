@@ -7,11 +7,11 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #2c2c2a; padding: 24px 16px; }
-  .page { max-width: 1200px; margin: 0 auto; }
+  .page { max-width: 1440px; margin: 0 auto; }
   .layout { display: flex; gap: 20px; align-items: flex-start; }
   .col-bookings { width: 240px; flex-shrink: 0; position: sticky; top: 24px; max-height: 100vh; overflow-y: auto; }
   .col-itinerary { flex: 1; min-width: 0; }
-  .right { width: 320px; flex-shrink: 0; position: sticky; top: 24px; max-height: 100vh; overflow-y: auto; }
+  .right { width: 560px; flex-shrink: 0; position: sticky; top: 24px; max-height: 100vh; overflow-y: auto; }
   h1 { font-size: 28px; font-weight: 600; color: #1a2e4a; margin-bottom: 4px; }
   .meta { font-size: 13px; color: #888780; margin-bottom: 20px; }
 
@@ -595,7 +595,7 @@
 
         <div style="font-size:10px;color:#888780;margin-bottom:8px;" id="fg-count">42 spots · tap name for Google Maps</div>
 
-        <div id="fg-list" style="display:flex;flex-direction:column;gap:1px;"></div>
+        <div id="fg-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
         <div id="fg-none" style="font-size:12px;color:#888780;padding:12px 0;text-align:center;display:none;">No spots match.</div>
       </div>
     </div><!-- end right -->
@@ -606,15 +606,16 @@
 <style>
 .fc { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
 .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
-.fg-item { display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid #f0ede6; }
-.fg-item:last-child { border-bottom:none; }
-.fg-name { font-size:11px;font-weight:500;color:#2c2c2a;text-decoration:none;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
-.fg-name:hover { text-decoration:underline;color:#185FA5; }
-.fg-right { display:flex;align-items:center;gap:5px;flex-shrink:0; }
-.fg-stars { color:#BA7517;font-size:10px; }
-.fg-rating { font-size:10px;color:#2c2c2a;font-weight:500; }
-.fg-badges { display:flex;gap:3px; }
-.fgb { font-size:8px;font-weight:600;padding:1px 5px;border-radius:99px; }
+.fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px; }
+.fg-top { display:flex;justify-content:space-between;align-items:flex-start;gap:6px; }
+.fg-name { font-size:13px;font-weight:600;color:#2c2c2a;text-decoration:none;line-height:1.3; }
+.fg-name:hover { color:#185FA5; }
+.fg-rating-wrap { display:flex;align-items:center;gap:3px;flex-shrink:0; }
+.fg-stars { color:#BA7517;font-size:11px; }
+.fg-rating { font-size:12px;font-weight:500;color:#2c2c2a; }
+.fg-note { font-size:11px;color:#888780;line-height:1.4; }
+.fg-badges { display:flex;flex-wrap:wrap;gap:4px; }
+.fgb { font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px; }
 .fgb-cafe { background:#E1F5EE;color:#085041; }
 .fgb-breakfast { background:#FAEEDA;color:#633806; }
 .fgb-tacos { background:#FAECE7;color:#712B13; }
@@ -630,50 +631,50 @@
 
 <script>
 const spots = [
-  {name:"Panadería Rosetta",url:"ChIJ-_GNczr_0YURLJgHYS8ZPMg",cat:"breakfast cafe",price:"2",area:"roma",rating:"4.5",badge:"breakfast"},
-  {name:"Café Nin",url:"ChIJuXSKaDH_0YURxdPlN4QO4uc",cat:"breakfast cafe",price:"2",area:"juarez",rating:"4.4",badge:"café"},
-  {name:"Madre Café",url:"ChIJX0Uy-sf_0YURofjmzQbKACc",cat:"breakfast cafe",price:"2",area:"roma",rating:"4.1",badge:"café"},
-  {name:"Sonāmbulo Café",url:"ChIJgfx6V-D_0YURFLF3nC48tV8",cat:"cafe",price:"2",area:"condesa",rating:"4.7",badge:"café"},
-  {name:"ODETTE Condesa",url:"ChIJGWCZ8wX_0YUR15jLYo0xv08",cat:"cafe breakfast",price:"2",area:"condesa",rating:"4.3",badge:"café"},
-  {name:"Maque Café",url:"ChIJySOlOQD_0YURAWDLToI3KvQ",cat:"cafe breakfast",price:"2",area:"condesa",rating:"4.0",badge:"café"},
-  {name:"Blend Station",url:"ChIJb-XZp4T50YURHOXqji_7Ask",cat:"cafe",price:"2",area:"polanco",rating:"4.5",badge:"café"},
-  {name:"Camino a Comala",url:"ChIJsb0jbND40YURqGXQnLNHEV4",cat:"cafe",price:"2",area:"other",rating:"4.4",badge:"café"},
-  {name:"Librería Porrúa",url:"ChIJOz2hr1b_0YURAtgfdwUgtco",cat:"cafe",price:"2",area:"polanco",rating:"4.3",badge:"café"},
-  {name:"SAN Matcha",url:"ChIJd6IyC9T_0YUR58IvvJzfrEc",cat:"cafe",price:"2",area:"roma",rating:"4.4",badge:"café"},
-  {name:"Churrería El Moro",url:"ChIJwQNPQCT50YURd0rOhlLTvH4",cat:"breakfast cafe",price:"2",area:"centro",rating:"4.5",badge:"breakfast"},
-  {name:"El Cardenal",url:"ChIJh3D2US350YURVW0T-_DRdsA",cat:"breakfast lunch",price:"2",area:"centro",rating:"4.6",badge:"breakfast"},
-  {name:"Los Amantes Café",url:"ChIJX5uXv9z_0YURB6lVy_whSXY",cat:"breakfast cafe",price:"2",area:"coyoacan",rating:"4.2",badge:"café"},
-  {name:"Taquería Orinoco",url:"ChIJQ11IrDn_0YURx17mDNOe5bY",cat:"tacos",price:"2",area:"roma",rating:"4.6",badge:"tacos"},
-  {name:"La Esquina del Chilaquil",url:"ChIJo6Zhj0L_0YURRFnw4GR8dew",cat:"breakfast tacos",price:"1",area:"condesa",rating:"4.4",badge:"tacos"},
-  {name:"Tacos Charly Oficial",url:"ChIJV0pR-GAAzoURMgRxDR7U4GQ",cat:"tacos",price:"2",area:"other",rating:"4.3",badge:"tacos"},
-  {name:"Taquería El Califa",url:"ChIJ01vziUn_0YURyKoDt6Go4P4",cat:"tacos",price:"2",area:"juarez",rating:"4.3",badge:"tacos"},
-  {name:"El Califa de León",url:"ChIJDdgBq8_40YUReV5XNsJFMJE",cat:"tacos",price:"3",area:"other",rating:"3.9",badge:"tacos"},
-  {name:"Tacos del Valle",url:"ChIJE2QjOAD_0YURgYassGxtrpU",cat:"tacos",price:"2",area:"roma",rating:"4.4",badge:"tacos"},
-  {name:"Taquería San Luisito",url:"ChIJKVT3uvn_0YURDtZsUD2c6os",cat:"tacos",price:"2",area:"roma",rating:"4.5",badge:"tacos"},
-  {name:"El Compita Taquería",url:"ChIJ1_GgqE__0YURjfPLj5YlaCk",cat:"tacos",price:"2",area:"condesa",rating:"4.2",badge:"tacos"},
-  {name:"Carnitas El Chulo",url:"ChIJ6TfHY2L_0YURdHDhceqT4Xc",cat:"tacos",price:"1",area:"roma",rating:"4.3",badge:"tacos"},
-  {name:"Comal Oculto — Itacate",url:"ChIJF1Vb4Yf_0YURwBQPkqdpGrk",cat:"tacos",price:"2",area:"polanco",rating:"4.4",badge:"tacos"},
-  {name:"Tortas Al Fuego",url:"ChIJ9VTDx-96WhERauo8UL1tChk",cat:"tacos",price:"1",area:"condesa",rating:"4.4",badge:"tacos"},
-  {name:"Esquites de la Calle Nápoles",url:"ChIJm0nArxP_0YURIxtp9oDhS_A",cat:"tacos",price:"1",area:"juarez",rating:"4.6",badge:"tacos"},
-  {name:"El Hidalguense Barbacoa",url:"ChIJhZ_ytT__0YURRb-fzYtU7AQ",cat:"breakfast tacos",price:"2",area:"condesa",rating:"4.4",badge:"tacos"},
-  {name:"Expendio de Maiz",url:"ChIJUYDQNgL_0YURYhvNnCzntYY",cat:"lunch dinner",price:"2",area:"roma",rating:"4.2",badge:"lunch"},
-  {name:"El Parnita",url:"ChIJJdCJrD7_0YUR4Is1efl-ngE",cat:"lunch dinner",price:"2",area:"roma",rating:"4.3",badge:"lunch"},
-  {name:"La Once Mil — Roma",url:"ChIJ07ffWgD_0YURMOk1QAszUtY",cat:"lunch dinner",price:"3",area:"roma",rating:"4.8",badge:"dinner"},
-  {name:"El Remolkito del Sirloin",url:"ChIJN85FRgD_0YURN6UKy7HRm90",cat:"lunch dinner",price:"2",area:"roma",rating:"4.8",badge:"dinner"},
-  {name:"Tetetlán",url:"ChIJp2kqPvH_zYURzceQRjPKWyw",cat:"lunch dinner",price:"2",area:"other",rating:"4.5",badge:"dinner"},
-  {name:"Campobaja",url:"ChIJ-wf0njr_0YURewRsUhR94XE",cat:"lunch dinner",price:"2",area:"roma",rating:"4.3",badge:"lunch"},
-  {name:"Restaurante Rosetta",url:"ChIJdSGAWgP_0YURwNtY7rftf2E",cat:"dinner",price:"4",area:"roma",rating:"4.2",badge:"dinner"},
-  {name:"El Maldito de Jalisco",url:"ChIJGTtPbgD_0YUR1QVTgieqjL8",cat:"lunch dinner",price:"2",area:"juarez",rating:"4.7",badge:"dinner"},
-  {name:"La Casa de Toño",url:"ChIJ8x5PTwD90YURwf6LfROSKok",cat:"lunch",price:"2",area:"other",rating:"4.5",badge:"lunch"},
-  {name:"Handshake Speakeasy",url:"ChIJU_vg0kID0oUR37k2I3XazcM",cat:"bar",price:"3",area:"juarez",rating:"4.4",badge:"bar"},
-  {name:"Licorería Limantour",url:"ChIJX03s9zr_0YURHdcjFe9hbiE",cat:"bar",price:"3",area:"roma",rating:"4.4",badge:"bar"},
-  {name:"Tlecan",url:"ChIJRbtqqOX_0YURJkwQEFZd2cs",cat:"bar",price:"2",area:"roma",rating:"4.6",badge:"bar"},
-  {name:"Café de Nadie",url:"ChIJ_3DO2x7_0YURvIlJiTo6cds",cat:"bar",price:"2",area:"roma",rating:"4.0",badge:"bar"},
-  {name:"Cantina SieteSeis",url:"ChIJv7MnEFj_0YUR0SxqBOOoPRQ",cat:"bar",price:"2",area:"roma",rating:"4.5",badge:"bar"},
-  {name:"FORM + MATTER",url:"ChIJI_To_Iv_0YURznIW5r9HzjU",cat:"bar",price:"2",area:"roma",rating:"4.8",badge:"bar"},
-  {name:"Terraza Catedral",url:"ChIJ7S61ljL50YURziQ_2fiOUe4",cat:"bar rooftop",price:"2",area:"centro",rating:"4.5",badge:"rooftop"},
-  {name:"Supra Roma Rooftop",url:"ChIJSXJAOdz_0YUR1cl3Y4k-vLs",cat:"bar rooftop",price:"2",area:"roma",rating:"4.6",badge:"rooftop"},
-  {name:"Cabuya Rooftop",url:"ChIJnYvwmov_0YURucFuTwFl1sM",cat:"bar rooftop",price:"3",area:"condesa",rating:"4.1",badge:"rooftop"},
+  {name:"Panadería Rosetta",note:"Roma Norte · bakery / café",url:"ChIJ-_GNczr_0YURLJgHYS8ZPMg",cat:"breakfast cafe",price:"2",area:"roma",rating:"4.5",badge:"breakfast"},
+  {name:"Café Nin",note:"Juárez · café / breakfast",url:"ChIJuXSKaDH_0YURxdPlN4QO4uc",cat:"breakfast cafe",price:"2",area:"juarez",rating:"4.4",badge:"café"},
+  {name:"Madre Café",note:"Roma Norte · café / brunch",url:"ChIJX0Uy-sf_0YURofjmzQbKACc",cat:"breakfast cafe",price:"2",area:"roma",rating:"4.1",badge:"café"},
+  {name:"Sonāmbulo Café",note:"Hipódromo · specialty coffee",url:"ChIJgfx6V-D_0YURFLF3nC48tV8",cat:"cafe",price:"2",area:"condesa",rating:"4.7",badge:"café"},
+  {name:"ODETTE Condesa",note:"Condesa · bakery / café",url:"ChIJGWCZ8wX_0YUR15jLYo0xv08",cat:"cafe breakfast",price:"2",area:"condesa",rating:"4.3",badge:"café"},
+  {name:"Maque Café",note:"Condesa · café / brunch",url:"ChIJySOlOQD_0YURAWDLToI3KvQ",cat:"cafe breakfast",price:"2",area:"condesa",rating:"4.0",badge:"café"},
+  {name:"Blend Station",note:"Polanco · specialty coffee",url:"ChIJb-XZp4T50YURHOXqji_7Ask",cat:"cafe",price:"2",area:"polanco",rating:"4.5",badge:"café"},
+  {name:"Camino a Comala",note:"Santa María la Ribera · specialty coffee",url:"ChIJsb0jbND40YURqGXQnLNHEV4",cat:"cafe",price:"2",area:"other",rating:"4.4",badge:"café"},
+  {name:"Librería Porrúa",note:"Chapultepec · café-bookshop · lake views",url:"ChIJOz2hr1b_0YURAtgfdwUgtco",cat:"cafe",price:"2",area:"polanco",rating:"4.3",badge:"café"},
+  {name:"SAN Matcha",note:"Roma Norte · matcha / Japanese coffee",url:"ChIJd6IyC9T_0YUR58IvvJzfrEc",cat:"cafe",price:"2",area:"roma",rating:"4.4",badge:"café"},
+  {name:"Churrería El Moro",note:"Centro · churros + hot chocolate · 24hrs",url:"ChIJwQNPQCT50YURd0rOhlLTvH4",cat:"breakfast cafe",price:"2",area:"centro",rating:"4.5",badge:"breakfast"},
+  {name:"El Cardenal",note:"Centro · legendary Mexican breakfast",url:"ChIJh3D2US350YURVW0T-_DRdsA",cat:"breakfast lunch",price:"2",area:"centro",rating:"4.6",badge:"breakfast"},
+  {name:"Los Amantes Café",note:"Coyoacán · café / bistro",url:"ChIJX5uXv9z_0YURB6lVy_whSXY",cat:"breakfast cafe",price:"2",area:"coyoacan",rating:"4.2",badge:"café"},
+  {name:"Taquería Orinoco",note:"Roma Norte · al pastor · open till 5:30am Fri",url:"ChIJQ11IrDn_0YURx17mDNOe5bY",cat:"tacos",price:"2",area:"roma",rating:"4.6",badge:"tacos"},
+  {name:"La Esquina del Chilaquil",note:"Hipódromo · morning chilaquil torta · cash",url:"ChIJo6Zhj0L_0YURRFnw4GR8dew",cat:"breakfast tacos",price:"1",area:"condesa",rating:"4.4",badge:"tacos"},
+  {name:"Tacos Charly Oficial",note:"Tlalpan · suadero specialist",url:"ChIJV0pR-GAAzoURMgRxDR7U4GQ",cat:"tacos",price:"2",area:"other",rating:"4.3",badge:"tacos"},
+  {name:"Taquería El Califa",note:"Reforma · classic tacos · open till 4am",url:"ChIJ01vziUn_0YURyKoDt6Go4P4",cat:"tacos",price:"2",area:"juarez",rating:"4.3",badge:"tacos"},
+  {name:"El Califa de León",note:"San Rafael · first Michelin-starred taco spot",url:"ChIJDdgBq8_40YUReV5XNsJFMJE",cat:"tacos",price:"3",area:"other",rating:"3.9",badge:"tacos"},
+  {name:"Tacos del Valle",note:"Roma Norte · worth the queue",url:"ChIJE2QjOAD_0YURgYassGxtrpU",cat:"tacos",price:"2",area:"roma",rating:"4.4",badge:"tacos"},
+  {name:"Taquería San Luisito",note:"Roma Norte · northern-style flour tortillas",url:"ChIJKVT3uvn_0YURDtZsUD2c6os",cat:"tacos",price:"2",area:"roma",rating:"4.5",badge:"tacos"},
+  {name:"El Compita Taquería",note:"Roma Sur · Tijuana-style tacos",url:"ChIJ1_GgqE__0YURjfPLj5YlaCk",cat:"tacos",price:"2",area:"condesa",rating:"4.2",badge:"tacos"},
+  {name:"Carnitas El Chulo",note:"Roma Norte · carnitas tacos · ~20 pesos",url:"ChIJ6TfHY2L_0YURdHDhceqT4Xc",cat:"tacos",price:"1",area:"roma",rating:"4.3",badge:"tacos"},
+  {name:"Comal Oculto — Itacate",note:"Chapultepec · takeout gorditas/flautas · cash",url:"ChIJF1Vb4Yf_0YURwBQPkqdpGrk",cat:"tacos",price:"2",area:"polanco",rating:"4.4",badge:"tacos"},
+  {name:"Tortas Al Fuego",note:"Hipódromo · tortas · open 24hrs",url:"ChIJ9VTDx-96WhERauo8UL1tChk",cat:"tacos",price:"1",area:"condesa",rating:"4.4",badge:"tacos"},
+  {name:"Esquites de la Calle Nápoles",note:"Juárez · street corn · evenings only · cash",url:"ChIJm0nArxP_0YURIxtp9oDhS_A",cat:"tacos",price:"1",area:"juarez",rating:"4.6",badge:"tacos"},
+  {name:"El Hidalguense Barbacoa",note:"Roma Sur · Fri–Sun only · lamb barbacoa",url:"ChIJhZ_ytT__0YURRb-fzYtU7AQ",cat:"breakfast tacos",price:"2",area:"condesa",rating:"4.4",badge:"tacos"},
+  {name:"Expendio de Maiz",note:"Roma Norte · corn omakase · cash · walk-in",url:"ChIJUYDQNgL_0YURYhvNnCzntYY",cat:"lunch dinner",price:"2",area:"roma",rating:"4.2",badge:"lunch"},
+  {name:"El Parnita",note:"Roma Norte · Mexican · great mezcalitas",url:"ChIJJdCJrD7_0YUR4Is1efl-ngE",cat:"lunch dinner",price:"2",area:"roma",rating:"4.3",badge:"lunch"},
+  {name:"La Once Mil — Roma",note:"Roma Norte · elevated tacos · ribeye / wagyu",url:"ChIJ07ffWgD_0YURMOk1QAszUtY",cat:"lunch dinner",price:"3",area:"roma",rating:"4.8",badge:"dinner"},
+  {name:"El Remolkito del Sirloin",note:"Roma Norte · sirloin DIY tacos at your table",url:"ChIJN85FRgD_0YURN6UKy7HRm90",cat:"lunch dinner",price:"2",area:"roma",rating:"4.8",badge:"dinner"},
+  {name:"Tetetlán",note:"Pedregal · Mexican restaurant in a cave setting",url:"ChIJp2kqPvH_zYURzceQRjPKWyw",cat:"lunch dinner",price:"2",area:"other",rating:"4.5",badge:"dinner"},
+  {name:"Campobaja",note:"Roma Norte · Baja seafood · Michelin recommended",url:"ChIJ-wf0njr_0YURewRsUhR94XE",cat:"lunch dinner",price:"2",area:"roma",rating:"4.3",badge:"lunch"},
+  {name:"Restaurante Rosetta",note:"Roma Norte · Michelin star · book weeks ahead · closed Sun",url:"ChIJdSGAWgP_0YURwNtY7rftf2E",cat:"dinner",price:"4",area:"roma",rating:"4.2",badge:"dinner"},
+  {name:"El Maldito de Jalisco",note:"Juárez · Guadalajaran cantina · carne en su jugo",url:"ChIJGTtPbgD_0YUR1QVTgieqjL8",cat:"lunch dinner",price:"2",area:"juarez",rating:"4.7",badge:"dinner"},
+  {name:"La Casa de Toño",note:"Airport Terminal 1 · Mexican pozole / comida",url:"ChIJ8x5PTwD90YURwf6LfROSKok",cat:"lunch",price:"2",area:"other",rating:"4.5",badge:"lunch"},
+  {name:"Handshake Speakeasy",note:"Juárez · world top 50 · 90-min slots · reservation required",url:"ChIJU_vg0kID0oUR37k2I3XazcM",cat:"bar",price:"3",area:"juarez",rating:"4.4",badge:"bar"},
+  {name:"Licorería Limantour",note:"Roma Norte · world top 50 · opens 3pm Fri/Sat/Sun",url:"ChIJX03s9zr_0YURHdcjFe9hbiE",cat:"bar",price:"3",area:"roma",rating:"4.4",badge:"bar"},
+  {name:"Tlecan",note:"Roma Norte · world top 50 · mezcal · no reservations",url:"ChIJRbtqqOX_0YURJkwQEFZd2cs",cat:"bar",price:"2",area:"roma",rating:"4.6",badge:"bar"},
+  {name:"Café de Nadie",note:"Roma Norte · vinyl bar · mezcal cocktails",url:"ChIJ_3DO2x7_0YURvIlJiTo6cds",cat:"bar",price:"2",area:"roma",rating:"4.0",badge:"bar"},
+  {name:"Cantina SieteSeis",note:"Roma Norte · retro VHS cantina · mezcalitas",url:"ChIJv7MnEFj_0YUR0SxqBOOoPRQ",cat:"bar",price:"2",area:"roma",rating:"4.5",badge:"bar"},
+  {name:"FORM + MATTER",note:"Roma Norte · creative cocktails · highly rated",url:"ChIJI_To_Iv_0YURznIW5r9HzjU",cat:"bar",price:"2",area:"roma",rating:"4.8",badge:"bar"},
+  {name:"Terraza Catedral",note:"Centro · rooftop · cathedral views · ~60 pesos cocktail",url:"ChIJ7S61ljL50YURziQ_2fiOUe4",cat:"bar rooftop",price:"2",area:"centro",rating:"4.5",badge:"rooftop"},
+  {name:"Supra Roma Rooftop",note:"Roma Norte · rooftop · DJ · sunset views",url:"ChIJSXJAOdz_0YUR1cl3Y4k-vLs",cat:"bar rooftop",price:"2",area:"roma",rating:"4.6",badge:"rooftop"},
+  {name:"Cabuya Rooftop",note:"Condesa · Andaz hotel rooftop · skyline views",url:"ChIJnYvwmov_0YURucFuTwFl1sM",cat:"bar rooftop",price:"3",area:"condesa",rating:"4.1",badge:"rooftop"},
 ];
 
 let fCat='all', fPrice='all', fArea='all';
@@ -695,9 +696,17 @@ function render(){
     const ok=(fCat==='all'||s.cat.includes(fCat))&&(fPrice==='all'||s.price===fPrice)&&(fArea==='all'||s.area===fArea);
     if(!ok) return;
     n++;
+    const allBadges = s.cat.split(' ').map(b=>`<span class="${badgeClass(b)} fgb">${b}</span>`).join('');
+    const priceBadge = `<span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span>`;
     const div=document.createElement('div');
     div.className='fg-item';
-    div.innerHTML=`<a class="fg-name" href="https://www.google.com/maps/place/?q=place_id:${s.url}" target="_blank">${s.name}</a><div class="fg-right"><span class="fg-stars">★</span><span class="fg-rating">${s.rating}</span><div class="fg-badges"><span class="${badgeClass(s.badge)}">${s.badge}</span><span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span></div></div>`;
+    div.innerHTML=`
+      <div class="fg-top">
+        <a class="fg-name" href="https://www.google.com/maps/place/?q=place_id:${s.url}" target="_blank">${s.name}</a>
+        <div class="fg-rating-wrap"><span class="fg-stars">★</span><span class="fg-rating">${s.rating}</span></div>
+      </div>
+      <div class="fg-note">${s.note||''}</div>
+      <div class="fg-badges">${allBadges}${priceBadge}</div>`;
     list.appendChild(div);
   });
   none.style.display=n===0?'block':'none';
