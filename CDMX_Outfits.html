@@ -7,85 +7,72 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:#f5f4f0;color:#2c2c2a;min-height:100vh;}
+body{font-family:'DM Sans',sans-serif;background:#f0ede6;color:#2c2c2a;min-height:100vh;}
+.page{max-width:780px;margin:0 auto;padding:28px 16px 80px;}
+.back-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#b4b2a9;text-decoration:none;margin-bottom:14px;}
+.back-link:hover{color:#2c2c2a;}
+.hero{margin-bottom:28px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:#1a2e4a;white-space:nowrap;line-height:1.1;}
+.hero p{font-size:11px;color:#b4b2a9;margin-top:6px;}
 
-
-
-
-
-.page{max-width:860px;margin:0 auto;padding:24px 16px 80px;}
-.hero{padding:8px 0 24px;}
-.hero h1{font-family:'Playfair Display',serif;font-size:30px;font-style:italic;color:#1a2e4a;line-height:1.2;}
-.hero p{font-size:11px;color:#b4b2a9;margin-top:5px;}
 .day-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:18px;box-shadow:0 1px 3px rgba(0,0,0,0.07);}
 .day-hdr{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
 .day-hdr-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:2px;}
 .day-hdr-sub{font-size:10px;color:rgba(255,255,255,0.7);}
 .day-emoji{font-size:20px;}
 .day-bdy{padding:14px 16px 18px;}
-.day-ctx{font-size:11px;color:#888780;line-height:1.6;margin-bottom:12px;padding:9px 11px;background:#f8f7f4;border-radius:7px;}
-.photo-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
-.photo-item{position:relative;width:105px;height:135px;flex-shrink:0;}
-.photo-item img{width:100%;height:100%;object-fit:contain;display:block;}
-.photo-item .rm{position:absolute;top:-7px;right:-7px;width:20px;height:20px;background:#E24B4A;color:#fff;border:2px solid #f5f4f0;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-weight:700;}
-.photo-item .proc{position:absolute;inset:0;background:rgba(248,247,244,0.92);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
-.spin{width:22px;height:22px;border:2px solid #e8e6df;border-top-color:#2c2c2a;border-radius:50%;animation:spin 0.8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.proc-txt{font-size:9px;color:#888780;}
-.upload-zone{border:1.5px dashed #d3d1c7;border-radius:9px;padding:18px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fafaf8;position:relative;overflow:hidden;}
+.day-ctx{font-size:11px;color:#888780;line-height:1.6;margin-bottom:14px;padding:9px 11px;background:#f8f7f4;border-radius:7px;}
+
+/* Photo grid */
+.photo-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;min-height:0;}
+.photo-item{position:relative;width:105px;height:135px;flex-shrink:0;background:#f8f7f4;border-radius:10px;overflow:hidden;}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-item .rm{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:#E24B4A;color:#fff;border:2px solid #f0ede6;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1;}
+
+/* Upload zone */
+.upload-zone{border:1.5px dashed #d3d1c7;border-radius:9px;padding:16px;text-align:center;cursor:pointer;transition:all 0.15s;background:#fafaf8;position:relative;overflow:hidden;}
 .upload-zone:hover,.upload-zone.drag-over{border-color:#2c2c2a;background:#f5f4f0;}
 .upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
 .upload-ico{font-size:20px;margin-bottom:5px;}
 .upload-txt{font-size:11px;color:#888780;line-height:1.5;}
 .upload-txt strong{color:#2c2c2a;font-weight:500;}
-.note-lbl{font-size:10px;color:#b4b2a9;margin-top:12px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
-.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:60px;line-height:1.5;}
+
+/* Search row */
+.search-row{display:flex;gap:6px;margin-top:10px;}
+.search-input{flex:1;border:0.5px solid #e8e6df;border-radius:7px;padding:8px 11px;font-size:12px;font-family:inherit;color:#2c2c2a;background:#fff;}
+.search-input:focus{outline:none;border-color:#b4b2a9;}
+.search-input::placeholder{color:#d3d1c7;}
+.search-btn{display:flex;align-items:center;gap:5px;background:#2c2c2a;color:#fff;border:none;border-radius:7px;padding:8px 13px;font-size:11px;font-weight:500;font-family:inherit;cursor:pointer;white-space:nowrap;}
+.search-btn:hover{background:#1a1a18;}
+.search-options{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;}
+.search-opt{font-size:10px;color:#888780;background:none;border:0.5px solid #d3d1c7;border-radius:99px;padding:3px 10px;cursor:pointer;font-family:inherit;}
+.search-opt:hover{border-color:#888780;color:#2c2c2a;}
+
+/* Notes */
+.note-lbl{font-size:10px;color:#b4b2a9;margin-top:14px;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px;}
+.day-note{width:100%;border:0.5px solid #e8e6df;border-radius:7px;padding:9px 11px;font-size:12px;font-family:inherit;color:#2c2c2a;resize:none;background:#fff;min-height:58px;line-height:1.5;}
 .day-note:focus{outline:none;border-color:#b4b2a9;}
 .day-note::placeholder{color:#d3d1c7;}
+
 .d0{background:#444441;}.d1{background:#0F6E56;}.d2{background:#185FA5;}
 .d3{background:#854F0B;}.d4{background:#993C1D;}.d5{background:#534AB7;}.d6{background:#444441;}
+
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2c2c2a;color:#fff;padding:9px 16px;border-radius:99px;font-size:11px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
 .toast.show{opacity:1;}
-.loading-msg{text-align:center;padding:40px 20px;color:#888780;font-size:13px;}
-@media(max-width:600px){.photo-item{width:85px;height:110px;}.hero h1{font-size:24px;}}
-
-.burger{background:none;border:none;cursor:pointer;padding:4px;display:flex;flex-direction:column;gap:4px;margin-left:auto;}
-.burger span{display:block;width:20px;height:2px;background:#2c2c2a;border-radius:2px;transition:all 0.25s;}
-.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
-.burger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:200;opacity:0;pointer-events:none;transition:opacity 0.25s;}
-.sidebar-overlay.open{opacity:1;pointer-events:all;}
-.sidebar{position:fixed;top:0;right:-280px;width:260px;height:100%;background:#fff;z-index:201;box-shadow:-4px 0 20px rgba(0,0,0,0.12);transition:right 0.28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;}
-.sidebar.open{right:0;}
-.sidebar-header{padding:16px 18px 12px;border-bottom:0.5px solid #f0ede6;display:flex;align-items:center;justify-content:space-between;}
-.sidebar-header-title{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:#2c2c2a;}
-.sidebar-close{background:none;border:none;cursor:pointer;font-size:18px;color:#888780;padding:2px;}
-.sidebar-links{flex:1;overflow-y:auto;padding:8px 0;}
-.sidebar-section{font-size:9px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:#b4b2a9;padding:12px 18px 4px;}
-.sidebar-link{display:flex;align-items:center;gap:10px;padding:11px 18px;text-decoration:none;color:#2c2c2a;font-size:13px;font-weight:400;transition:background 0.12s;border-left:3px solid transparent;}
-.sidebar-link:hover{background:#f5f4f0;}
-.sidebar-link.active{border-left-color:#2c2c2a;background:#f8f7f4;font-weight:500;}
-.sidebar-link .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.sidebar-link .link-sub{font-size:10px;color:#b4b2a9;display:block;margin-top:1px;}
-.sidebar-footer{padding:14px 18px;border-top:0.5px solid #f0ede6;}
-.sidebar-footer a{font-size:12px;color:#888780;text-decoration:none;display:flex;align-items:center;gap:6px;}
-.sidebar-footer a:hover{color:#2c2c2a;}
-
-.back-link{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#b4b2a9;text-decoration:none;margin-bottom:10px;}
-.back-link:hover{color:#2c2c2a;}
+@media(max-width:600px){.photo-item{width:85px;height:110px;}}
 </style>
 </head>
 <body>
-
-
 <div class="page">
+  <a class="back-link" href="CDMX_Itinerary.html">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
+    Back to itinerary
+  </a>
   <div class="hero">
-    <a class="back-link" href="CDMX_Itinerary.html"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg> Back to itinerary</a>
-    <h1>What are you<br>wearing?</h1>
-    <p>Upload photos · background auto-removed · build your looks</p>
+    <h1>What are you wearing?</h1>
+    <p>Upload photos · search items online · build your looks</p>
   </div>
-  <div id="days-container"><div class="loading-msg">Loading...</div></div>
+  <div id="days-container"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -96,139 +83,87 @@ var DAYS = [
   {id:'d1',cls:'d1',title:'Day 1 — Wed Apr 22',sub:'Chapultepec · park + museums',emoji:'☀️',ctx:'~6km walk outdoors through the Bosque. Strong sun, museum-appropriate. Hat and good shoes essential.'},
   {id:'d2',cls:'d2',title:'Day 2 — Thu Apr 23',sub:'Centro · walking tour + Ecobici',emoji:'🚲',ctx:'Full day on foot and bike. Cobblestones — skip the heels. Churches, palaces, rooftop bar at sunset.'},
   {id:'d3',cls:'d3',title:'Day 3 — Fri Apr 24',sub:'Roma Norte · brunch + Lucha Libre',emoji:'🥊',ctx:'Relaxed daytime → festive evening. Lucha Libre is loud and electric — dress to have fun. Arena gets hot.'},
-  {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',ctx:'Early 6am start, full sun, climbing pyramids. Most physical day. Breathable fabrics, good grip, SPF everything.'},
+  {id:'d4',cls:'d4',title:'Day 4 — Sat Apr 25',sub:'Teotihuacán + Coyoacán',emoji:'🏛️',ctx:'Early 6am start, full sun, climbing pyramids. Breathable fabrics, good grip, SPF everything.'},
   {id:'d5',cls:'d5',title:'Day 5 — Sun Apr 26',sub:'Free day · Biblioteca + wander',emoji:'📚',ctx:'No agenda. Dress for whatever mood you wake up in.'},
   {id:'d6',cls:'d6',title:'Departure — Mon Apr 27',sub:'~4am checkout · 7am flight',emoji:'🛫',ctx:'4am checkout — comfort over everything. Something you can sleep in on the flight home.'},
 ];
 
-// ── Toast ──────────────────────────────────────────────────────────────────
 function showToast(msg){
   var t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._timer);
-  t._timer=setTimeout(function(){t.classList.remove('show');},2500);
+  clearTimeout(t._t); t._t=setTimeout(function(){t.classList.remove('show');},2200);
 }
 
-// ── Notes ─────────────────────────────────────────────────────────────────
+// Notes
 function getNotes(){ try{ return JSON.parse(localStorage.getItem('cdmx_outfit_notes')||'{}'); }catch(e){ return {}; } }
 function saveNote(dayId,val){ var n=getNotes(); n[dayId]=val; localStorage.setItem('cdmx_outfit_notes',JSON.stringify(n)); }
 
-// ── IndexedDB ──────────────────────────────────────────────────────────────
-var DB_NAME='cdmx_outfits_db', DB_STORE='photos', db=null;
+// IndexedDB for photos
+var DB_NAME='cdmx_outfits_db2', DB_STORE='photos', db=null;
 function openDB(){
   return new Promise(function(res,rej){
     var req=indexedDB.open(DB_NAME,1);
     req.onupgradeneeded=function(e){ e.target.result.createObjectStore(DB_STORE); };
-    req.onsuccess=function(e){ db=e.target.result; res(db); };
-    req.onerror=function(e){ rej(e); };
+    req.onsuccess=function(e){ db=e.target.result; res(); };
+    req.onerror=rej;
   });
 }
-function dbGet(key){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readonly'),r=t.objectStore(DB_STORE).get(key); r.onsuccess=function(){res(r.result);}; r.onerror=rej; }); }
-function dbSet(key,val){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readwrite'),r=t.objectStore(DB_STORE).put(val,key); r.onsuccess=function(){res();}; r.onerror=rej; }); }
-
-// ── State ─────────────────────────────────────────────────────────────────
+function dbGet(k){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readonly'),r=t.objectStore(DB_STORE).get(k); r.onsuccess=function(){res(r.result);}; r.onerror=rej; }); }
+function dbSet(k,v){ return new Promise(function(res,rej){ var t=db.transaction(DB_STORE,'readwrite'),r=t.objectStore(DB_STORE).put(v,k); r.onsuccess=res; r.onerror=rej; }); }
 var dayPhotos={};
 
-// ── Border effect ─────────────────────────────────────────────────────────
-function addBorder(imgEl){
+function fileToDataURL(file){
   return new Promise(function(res){
-    var bs=6, canvas=document.createElement('canvas');
-    canvas.width=imgEl.naturalWidth+bs*2;
-    canvas.height=imgEl.naturalHeight+bs*2;
-    var ctx=canvas.getContext('2d');
-    var steps=32;
-    for(var i=0;i<steps;i++){
-      var a=(i/steps)*Math.PI*2;
-      ctx.drawImage(imgEl,Math.cos(a)*bs+bs,Math.sin(a)*bs+bs);
-    }
-    var d=ctx.getImageData(0,0,canvas.width,canvas.height);
-    for(var j=0;j<d.data.length;j+=4){
-      if(d.data[j+3]>10){ d.data[j]=255; d.data[j+1]=255; d.data[j+2]=255; d.data[j+3]=Math.min(255,d.data[j+3]+80); }
-    }
-    ctx.putImageData(d,0,0);
-    ctx.drawImage(imgEl,bs,bs);
-    res(canvas.toDataURL('image/png'));
+    var r=new FileReader(); r.onload=function(e){res(e.target.result);}; r.readAsDataURL(file);
   });
 }
 
-// ── Process file ─────────────────────────────────────────────────────────
-var removeBg=null;
-
-function processFile(file, dayId){
-  var grid=document.getElementById('grid-'+dayId);
-  var ph=document.createElement('div');
-  ph.className='photo-item';
-  ph.innerHTML='<div class="proc"><div class="spin"></div><div class="proc-txt">Removing bg...</div></div>';
-  grid.appendChild(ph);
-  showToast('Processing...');
-
-  function doProcess(){
-    removeBg(file,{output:{format:'image/png',quality:0.9},debug:false})
-      .then(function(blob){
-        var url=URL.createObjectURL(blob);
-        var img=new Image();
-        img.onload=function(){
-          addBorder(img).then(function(dataURL){
-            URL.revokeObjectURL(url);
-            if(!dayPhotos[dayId]) dayPhotos[dayId]=[];
-            dayPhotos[dayId].push(dataURL);
-            dbSet(dayId,dayPhotos[dayId]).then(function(){
-              ph.remove();
-              renderGrid(dayId);
-              showToast('✓ Added!');
-            });
-          });
-        };
-        img.src=url;
-      })
-      .catch(function(err){
-        console.error('BG removal error',err);
-        ph.remove();
-        showToast('Could not remove background — try another photo');
-      });
-  }
-
-  if(removeBg){
-    doProcess();
-  } else {
-    ph.querySelector('.proc-txt').textContent='Loading model...';
-    import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm')
-      .then(function(mod){
-        removeBg=mod.removeBackground;
-        doProcess();
-      })
-      .catch(function(err){
-        console.error('Module load error',err);
-        ph.remove();
-        showToast('Background removal unavailable in this browser');
-      });
-  }
-}
-
-// ── Render grid ───────────────────────────────────────────────────────────
 function renderGrid(dayId){
   var grid=document.getElementById('grid-'+dayId);
   if(!grid) return;
   grid.innerHTML='';
-  var photos=dayPhotos[dayId]||[];
-  photos.forEach(function(dataURL,idx){
+  (dayPhotos[dayId]||[]).forEach(function(dataURL,idx){
     var item=document.createElement('div');
     item.className='photo-item';
-    item.innerHTML='<img src="'+dataURL+'" alt="outfit item"><button class="rm" title="Remove">✕</button>';
-    item.querySelector('.rm').addEventListener('click',function(){
+    item.innerHTML='<img src="'+dataURL+'" alt="outfit"><button class="rm" title="Remove">✕</button>';
+    item.querySelector('.rm').onclick=function(){
       dayPhotos[dayId].splice(idx,1);
       dbSet(dayId,dayPhotos[dayId]).then(function(){ renderGrid(dayId); });
-    });
+    };
     grid.appendChild(item);
   });
 }
 
-// ── Render day card ───────────────────────────────────────────────────────
+function handleFiles(files, dayId){
+  var promises = Array.from(files).filter(function(f){ return f.type.startsWith('image/'); }).map(function(f){
+    return fileToDataURL(f).then(function(dataURL){
+      if(!dayPhotos[dayId]) dayPhotos[dayId]=[];
+      dayPhotos[dayId].push(dataURL);
+    });
+  });
+  Promise.all(promises).then(function(){
+    return dbSet(dayId, dayPhotos[dayId]);
+  }).then(function(){
+    renderGrid(dayId);
+    showToast('✓ Photo added');
+  });
+}
+
+function doSearch(input, engine){
+  var q = input.value.trim();
+  if(!q){ input.focus(); return; }
+  var urls = {
+    pinterest: 'https://www.pinterest.com/search/pins/?q='+encodeURIComponent(q+' outfit'),
+    google: 'https://www.google.com/search?tbm=shop&q='+encodeURIComponent(q),
+    depop: 'https://www.depop.com/search/?q='+encodeURIComponent(q),
+  };
+  window.open(urls[engine]||urls.pinterest, '_blank');
+}
+
 function renderDay(day){
   var notes=getNotes();
   var div=document.createElement('div');
   div.className='day-card';
-  div.id='card-'+day.id;
   div.innerHTML=
     '<div class="day-hdr '+day.cls+'">'+
       '<div><div class="day-hdr-title">'+day.title+'</div><div class="day-hdr-sub">'+day.sub+'</div></div>'+
@@ -237,146 +172,64 @@ function renderDay(day){
     '<div class="day-bdy">'+
       '<div class="day-ctx">'+day.ctx+'</div>'+
       '<div class="photo-grid" id="grid-'+day.id+'"></div>'+
-      '<div class="upload-zone" id="zone-'+day.id+'">'+
+      '<div class="upload-zone">'+
         '<input type="file" accept="image/*" multiple>'+
         '<div class="upload-ico">📷</div>'+
-        '<div class="upload-txt"><strong>Add item</strong><br>Tap or drag · background removed automatically</div>'+
+        '<div class="upload-txt"><strong>Add photo</strong><br>Tap or drag an image</div>'+
+      '</div>'+
+      '<div class="search-row">'+
+        '<input class="search-input" type="text" placeholder="Search for an item, e.g. linen trousers...">'+
+        '<button class="search-btn">Search</button>'+
+      '</div>'+
+      '<div class="search-options">'+
+        '<button class="search-opt" data-engine="pinterest">Pinterest</button>'+
+        '<button class="search-opt" data-engine="google">Google Shopping</button>'+
+        '<button class="search-opt" data-engine="depop">Depop</button>'+
       '</div>'+
       '<div class="note-lbl">Notes</div>'+
       '<textarea class="day-note" placeholder="Shoes, accessories, vibe...">'+(notes[day.id]||'')+'</textarea>'+
     '</div>';
+
+  // Upload
+  var input=div.querySelector('input[type=file]');
+  var zone=div.querySelector('.upload-zone');
+  input.onchange=function(e){ handleFiles(e.target.files, day.id); input.value=''; };
+  zone.addEventListener('dragover',function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave',function(){ zone.classList.remove('drag-over'); });
+  zone.addEventListener('drop',function(e){ e.preventDefault(); zone.classList.remove('drag-over'); handleFiles(e.dataTransfer.files,day.id); });
+
+  // Search
+  var sinput=div.querySelector('.search-input');
+  div.querySelector('.search-btn').onclick=function(){ doSearch(sinput,'pinterest'); };
+  sinput.addEventListener('keydown',function(e){ if(e.key==='Enter') doSearch(sinput,'pinterest'); });
+  div.querySelectorAll('.search-opt').forEach(function(btn){
+    btn.onclick=function(){ doSearch(sinput, btn.dataset.engine); };
+  });
+
+  // Note
+  div.querySelector('.day-note').oninput=function(){ saveNote(day.id,this.value); };
+
   return div;
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────
 function init(){
   var container=document.getElementById('days-container');
-  container.innerHTML='';
   openDB().then(function(){
-    var promises=DAYS.map(function(day){
-      return dbGet(day.id).then(function(photos){
-        dayPhotos[day.id]=photos||[];
-      });
+    return Promise.all(DAYS.map(function(day){
+      return dbGet(day.id).then(function(p){ dayPhotos[day.id]=p||[]; });
+    }));
+  }).then(function(){
+    DAYS.forEach(function(day){
+      var card=renderDay(day);
+      container.appendChild(card);
+      renderGrid(day.id);
     });
-    Promise.all(promises).then(function(){
-      DAYS.forEach(function(day){
-        var card=renderDay(day);
-        container.appendChild(card);
-        renderGrid(day.id);
-        // Upload input
-        var input=card.querySelector('input[type=file]');
-        var zone=card.querySelector('#zone-'+day.id);
-        input.addEventListener('change',function(e){
-          Array.from(e.target.files).forEach(function(f){ if(f.type.startsWith('image/')) processFile(f,day.id); });
-          input.value='';
-        });
-        zone.addEventListener('dragover',function(e){ e.preventDefault(); zone.classList.add('drag-over'); });
-        zone.addEventListener('dragleave',function(){ zone.classList.remove('drag-over'); });
-        zone.addEventListener('drop',function(e){
-          e.preventDefault(); zone.classList.remove('drag-over');
-          Array.from(e.dataTransfer.files).forEach(function(f){ if(f.type.startsWith('image/')) processFile(f,day.id); });
-        });
-        // Note
-        card.querySelector('.day-note').addEventListener('input',function(){ saveNote(day.id,this.value); });
-      });
-    });
-  }).catch(function(err){
-    console.error('DB open failed',err);
-    container.innerHTML='<div class="loading-msg">Storage unavailable. Try opening in Safari or Chrome directly.</div>';
+  }).catch(function(){
+    DAYS.forEach(function(day){ container.appendChild(renderDay(day)); });
   });
 }
 
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',init);
-} else {
-  init();
-}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',init); } else { init(); }
 </script>
-
-<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-<div class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <span class="sidebar-header-title">CDMX · Apr 2026</span>
-    <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
-  </div>
-  <div class="sidebar-links">
-    <div class="sidebar-section">Pages</div>
-    <a class="sidebar-link" href="CDMX_Itinerary.html">
-      <span class="dot" style="background:#185FA5;"></span>
-      <span>Itinerary<span class="link-sub">Full trip · Apr 21–27</span></span>
-    </a>
-    <a class="sidebar-link active" href="CDMX_Outfits.html">
-      <span class="dot" style="background:#854F0B;"></span>
-      <span>Outfits<span class="link-sub">Day-by-day looks</span></span>
-    </a>
-    <div class="sidebar-section">Jump to day</div>
-    <a class="sidebar-link" href="#card-d0" onclick="closeSidebarAndScroll('card-d0')">
-      <span class="dot" style="background:#444441;"></span>
-      <span>Arrival<span class="link-sub">Mon Apr 21</span></span>
-    </a>
-    <a class="sidebar-link" href="#card-d1" onclick="closeSidebarAndScroll('card-d1')">
-      <span class="dot" style="background:#0F6E56;"></span>
-      <span>Day 1 — Chapultepec<span class="link-sub">Wed Apr 22</span></span>
-    </a>
-    <a class="sidebar-link" href="#card-d2" onclick="closeSidebarAndScroll('card-d2')">
-      <span class="dot" style="background:#185FA5;"></span>
-      <span>Day 2 — Centro<span class="link-sub">Thu Apr 23</span></span>
-    </a>
-    <a class="sidebar-link" href="#card-d3" onclick="closeSidebarAndScroll('card-d3')">
-      <span class="dot" style="background:#854F0B;"></span>
-      <span>Day 3 — Roma + Lucha<span class="link-sub">Fri Apr 24</span></span>
-    </a>
-    <a class="sidebar-link" href="#card-d4" onclick="closeSidebarAndScroll('card-d4')">
-      <span class="dot" style="background:#993C1D;"></span>
-      <span>Day 4 — Pyramids<span class="link-sub">Sat Apr 25</span></span>
-    </a>
-    <a class="sidebar-link" href="#card-d5" onclick="closeSidebarAndScroll('card-d5')">
-      <span class="dot" style="background:#534AB7;"></span>
-      <span>Day 5 — Free Day<span class="link-sub">Sun Apr 26</span></span>
-    </a>
-    <a class="sidebar-link" href="#card-d6" onclick="closeSidebarAndScroll('card-d6')">
-      <span class="dot" style="background:#444441;"></span>
-      <span>Departure<span class="link-sub">Mon Apr 27</span></span>
-    </a>
-  </div>
-  <div class="sidebar-footer">
-    <a href="CDMX_Itinerary.html">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 3L5 8l5 5"/></svg>
-      Back to itinerary
-    </a>
-  </div>
-</div>
-
-<script>
-function toggleSidebar(){
-  var sidebar = document.getElementById('sidebar');
-  var overlay = document.getElementById('sidebar-overlay');
-  var burger = document.getElementById('burger-btn');
-  var isOpen = sidebar.classList.contains('open');
-  if(isOpen){
-    sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-    burger.classList.remove('open');
-  } else {
-    sidebar.classList.add('open');
-    overlay.classList.add('open');
-    burger.classList.add('open');
-  }
-}
-function closeSidebarAndScroll(id){
-  var sidebar = document.getElementById('sidebar');
-  var overlay = document.getElementById('sidebar-overlay');
-  var burger = document.getElementById('burger-btn');
-  sidebar.classList.remove('open');
-  overlay.classList.remove('open');
-  burger.classList.remove('open');
-  setTimeout(function(){
-    var el = document.getElementById(id);
-    if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
-  }, 280);
-  return false;
-}
-</script>
-
 </body>
 </html>
