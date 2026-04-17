@@ -595,6 +595,7 @@
         <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;" id="fav-f">
           <button class="fc active" data-f="fav" data-v="all">All</button>
           <button class="fc" data-f="fav" data-v="must">♥ must visit</button>
+          <button class="fc" data-f="fav" data-v="added">+ in itinerary</button>
         </div>
 
         <div style="font-size:10px;color:#888780;margin-bottom:6px;" id="fg-count">42 spots · tap name for Google Maps</div>
@@ -610,7 +611,8 @@
 <style>
 .fc { font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;border:0.5px solid #d3d1c7;background:#fff;color:#888780;cursor:pointer; }
 .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
-#fav-f .fc.active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
+#fav-f .fc[data-v="must"].active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
+#fav-f .fc[data-v="added"].active { background:#185FA5;color:#fff;border-color:#185FA5; }
 .fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px 28px 14px;display:flex;flex-direction:column;gap:6px;position:relative; }
 .fg-item.hearted { border-color:#E24B4A; }
 .fg-heart { background:none;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;color:#d3d1c7;flex-shrink:0;transition:color 0.15s; }
@@ -768,6 +770,11 @@ function render(){
     if(!ok) return;
     const sst = st[s.name] || {};
     if(fFav === "must" && !sst.heart) return;
+    if(fFav === "added"){
+      const dropped = getDropped();
+      const allDropped = Object.values(dropped).flat();
+      if(!allDropped.some(function(d){ return d.name === s.name; })) return;
+    }
     n++;
     const allBadges = s.cat.split(' ').map(b=>`<span class="${badgeClass(b)} fgb">${b}</span>`).join('');
     const priceBadge = `<span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span>`;
