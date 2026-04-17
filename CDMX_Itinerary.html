@@ -598,6 +598,14 @@
           <button class="fc" data-f="fav" data-v="added">+ in itinerary</button>
         </div>
 
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span style="font-size:10px;color:#888780;">sort</span>
+          <div style="display:flex;gap:5px;" id="sort-f">
+            <button class="fc active" data-sort="default">default</button>
+            <button class="fc" data-sort="desc">★ high → low</button>
+            <button class="fc" data-sort="asc">★ low → high</button>
+          </div>
+        </div>
         <div style="font-size:10px;color:#888780;margin-bottom:6px;" id="fg-count">42 spots · tap name for Google Maps</div>
 
         <div id="fg-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
@@ -613,6 +621,7 @@
 .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
 #fav-f .fc[data-v="must"].active { background:#E24B4A;color:#fff;border-color:#E24B4A; }
 #fav-f .fc[data-v="added"].active { background:#185FA5;color:#fff;border-color:#185FA5; }
+#sort-f .fc.active { background:#2c2c2a;color:#fff;border-color:#2c2c2a; }
 .fg-item { background:#fff;border:0.5px solid #e8e6df;border-radius:10px;padding:12px 14px 28px 14px;display:flex;flex-direction:column;gap:6px;position:relative; }
 .fg-item.hearted { border-color:#E24B4A; }
 .fg-heart { background:none;border:none;cursor:pointer;font-size:16px;padding:0;line-height:1;color:#d3d1c7;flex-shrink:0;transition:color 0.15s; }
@@ -711,7 +720,7 @@ const spots = [
   {name:"Cabuya Rooftop",note:"Condesa · Andaz hotel rooftop · skyline views",url:"ChIJnYvwmov_0YURucFuTwFl1sM",cat:"bar rooftop",price:"3",area:"condesa",rating:"4.1",badge:"rooftop"},
 ];
 
-let fCat='all', fPrice='all', fArea='all', fFav='all';
+let fCat='all', fPrice='all', fArea='all', fFav='all', fSort='default';
 
 function badgeClass(b){
   const m={cafe:'cafe',breakfast:'breakfast',tacos:'tacos',lunch:'lunch',dinner:'dinner',bar:'bar',rooftop:'rooftop'};
@@ -764,17 +773,25 @@ function render(){
   const count = document.getElementById('fg-count');
   const st = getState();
   list.innerHTML='';
-  let n=0;
-  spots.forEach(s=>{
+  // Build filtered list first for sorting
+  let filteredSpots = spots.filter(s=>{
     const ok=(fCat==='all'||s.cat.includes(fCat))&&(fPrice==='all'||s.price===fPrice)&&(fArea==='all'||s.area===fArea);
-    if(!ok) return;
+    if(!ok) return false;
     const sst = st[s.name] || {};
-    if(fFav === "must" && !sst.heart) return;
+    if(fFav === "must" && !sst.heart) return false;
     if(fFav === "added"){
       const dropped = getDropped();
       const allDropped = Object.values(dropped).flat();
-      if(!allDropped.some(function(d){ return d.name === s.name; })) return;
+      if(!allDropped.some(function(d){ return d.name === s.name; })) return false;
     }
+    return true;
+  });
+  if(fSort === 'desc') filteredSpots.sort((a,b)=>parseFloat(b.rating)-parseFloat(a.rating));
+  if(fSort === 'asc') filteredSpots.sort((a,b)=>parseFloat(a.rating)-parseFloat(b.rating));
+
+  let n=0;
+  filteredSpots.forEach(s=>{
+    const sst = st[s.name] || {};
     n++;
     const allBadges = s.cat.split(' ').map(b=>`<span class="${badgeClass(b)} fgb">${b}</span>`).join('');
     const priceBadge = `<span class="${priceClass(s.price)} fgb">${priceLabel(s.price)}</span>`;
@@ -820,6 +837,15 @@ function render(){
   none.style.display=n===0?'block':'none';
   count.textContent=n===spots.length?`${spots.length} spots · tap name for Google Maps`:`${n} of ${spots.length} spots`;
 }
+
+document.getElementById('sort-f').querySelectorAll('.fc').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.getElementById('sort-f').querySelectorAll('.fc').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    fSort = btn.dataset.sort;
+    render();
+  });
+});
 
 ['cat-f','price-f','area-f','fav-f'].forEach(id=>{
   document.getElementById(id).querySelectorAll('.fc').forEach(btn=>{
