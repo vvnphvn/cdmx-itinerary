@@ -722,6 +722,10 @@ const spots = [
 
 let fCat='all', fPrice='all', fArea='all', fFav='all', fSort='default';
 
+const ITINERARY_SPOTS = ["Panader\u00eda Rosetta", "Comal Oculto \u2014 Itacate", "Librer\u00eda Porr\u00faa", "Palacio de Bellas Artes", "Expendio de Maiz", "Taquer\u00eda Orinoco", "Licorer\u00eda Limantour", "Terraza Catedral"];
+
+
+
 function badgeClass(b){
   const m={cafe:'cafe',breakfast:'breakfast',tacos:'tacos',lunch:'lunch',dinner:'dinner',bar:'bar',rooftop:'rooftop'};
   return 'fgb fgb-'+(m[b]||'lunch');
@@ -782,7 +786,9 @@ function render(){
     if(fFav === "added"){
       const dropped = getDropped();
       const allDropped = Object.values(dropped).flat();
-      if(!allDropped.some(function(d){ return d.name === s.name; })) return false;
+      const inDropped = allDropped.some(function(d){ return d.name === s.name; });
+      const inHardcoded = ITINERARY_SPOTS.includes(s.name);
+      if(!inDropped && !inHardcoded) return false;
     }
     return true;
   });
