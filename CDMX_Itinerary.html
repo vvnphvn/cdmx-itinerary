@@ -656,7 +656,11 @@
     <!-- RIGHT: FOOD GUIDE -->
     <div class="right" id="tab-food">
       <div style="background:#fff;border-radius:12px;border:1px solid #e8e6df;padding:14px 16px;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#888780;margin-bottom:12px;">Food &amp; Drink Guide</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#888780;margin-bottom:10px;">Food &amp; Drink Guide</div>
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <input id="fg-search" type="text" placeholder="Search spots..." style="flex:1;border:0.5px solid #e8e6df;border-radius:8px;padding:7px 10px;font-size:12px;font-family:inherit;color:#2c2c2a;background:#fff;min-width:0;">
+          <button id="fg-search-clear" style="display:none;background:none;border:0.5px solid #d3d1c7;border-radius:8px;padding:7px 10px;font-size:11px;color:#888780;cursor:pointer;white-space:nowrap;">✕</button>
+        </div>
 
         <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;" id="cat-f">
           <button class="fc active" data-f="cat" data-v="all">All</button>
@@ -818,7 +822,7 @@ const spots = [
   {name:"Cabuya Rooftop",note:"Condesa · Andaz hotel rooftop · skyline views",url:"ChIJnYvwmov_0YURucFuTwFl1sM",cat:"bar rooftop",price:"3",area:"condesa",rating:"4.1",badge:"rooftop"},
 ];
 
-let fCat='all', fPrice='all', fArea='all', fFav='all', fSort='default';
+let fCat='all', fPrice='all', fArea='all', fFav='all', fSort='default', fSearch='';
 
 
 const ITINERARY_SPOTS = ["Panader\u00eda Rosetta", "Comal Oculto \u2014 Itacate", "Librer\u00eda Porr\u00faa", "Palacio de Bellas Artes", "Expendio de Maiz", "Taquer\u00eda Orinoco", "Licorer\u00eda Limantour", "Terraza Catedral"];
@@ -880,6 +884,7 @@ function render(){
   let filteredSpots = spots.filter(s=>{
     const ok=(fCat==='all'||s.cat.includes(fCat))&&(fPrice==='all'||s.price===fPrice)&&(fArea==='all'||s.area===fArea);
     if(!ok) return false;
+    if(fSearch && !s.name.toLowerCase().includes(fSearch) && !(s.note||'').toLowerCase().includes(fSearch)) return false;
     const sst = st[s.name] || {};
     if(fFav === "must" && !sst.heart) return false;
     if(fFav === "added"){
