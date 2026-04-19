@@ -138,7 +138,7 @@
   .ticket-pending { color: #854F0B; }
   .ticket-divider { height: 0.5px; background: #f0ede6; margin: 6px 0; }
 
-.fg-day-tag { display:inline-block; font-size:9px; font-weight:600; padding:2px 7px; border-radius:99px; background:#1a2e4a; color:#fff; margin-left:4px; vertical-align:middle; }
+.fg-day-tag { display:inline-block; font-size:9px; font-weight:600; padding:2px 7px; border-radius:99px; background:#1a2e4a; color:#fff; vertical-align:middle; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
@@ -924,7 +924,7 @@ function render(){
         </div>
       </div>
       <div class="fg-note">${s.note||''}</div>
-      <div class="fg-badges">${allBadges}${priceBadge}</div>
+      <div class="fg-badges">${allBadges}${priceBadge}${(function(){ const dm=ITINERARY_DAY_MAP[s.name]; if(dm) return '<span class=\"fg-day-tag\">'+dm+'</span>'; const dr=getDropped(); const found=Object.keys(dr).find(function(did){ return (dr[did]||[]).some(function(d){return d.name===s.name;}); }); if(found){ const idx=parseInt(found.replace('day-','')); const lbl=['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure'][idx]; return '<span class=\"fg-day-tag\">'+(lbl||found)+'</span>'; } return ''; })()}</div>
       <div class="fg-user-note">${noteHTML}</div>`;
 
     // Heart click
