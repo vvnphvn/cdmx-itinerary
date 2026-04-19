@@ -977,7 +977,17 @@ document.getElementById('sort-f').querySelectorAll('.fc').forEach(btn=>{
 
 render();
 
-
+document.getElementById('fg-search').addEventListener('input', function(){
+  fSearch = this.value.trim().toLowerCase();
+  document.getElementById('fg-search-clear').style.display = fSearch ? 'block' : 'none';
+  render();
+});
+document.getElementById('fg-search-clear').addEventListener('click', function(){
+  fSearch = '';
+  document.getElementById('fg-search').value = '';
+  this.style.display = 'none';
+  render();
+});
 
 function initOutfitNotes(){
   const saved = JSON.parse(localStorage.getItem('cdmx_outfits')||'{}');
