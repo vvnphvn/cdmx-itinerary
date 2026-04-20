@@ -1129,18 +1129,23 @@ function buildItineraryDayMap(){
       }
     });
   });
-  // Re-render food guide with updated map
-  if(typeof render === 'function') render();
 }
 // Also rebuild ITINERARY_SPOTS array for the "in itinerary" filter
 function rebuildItinerarySpots(){
   ITINERARY_SPOTS.length = 0;
   Object.keys(ITINERARY_DAY_MAP).forEach(function(name){ ITINERARY_SPOTS.push(name); });
 }
+// Build map immediately (DOM above this script is already parsed)
+buildItineraryDayMap();
+rebuildItinerarySpots();
+
+// Safety: rebuild once more after full DOMContentLoaded (handles any late elements)
 document.addEventListener('DOMContentLoaded', function(){
   buildItineraryDayMap();
   rebuildItinerarySpots();
+  if(typeof render === 'function') render();
 });
+
 
 
 
