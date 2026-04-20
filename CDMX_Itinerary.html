@@ -138,7 +138,7 @@
   .ticket-pending { color: #854F0B; }
   .ticket-divider { height: 0.5px; background: #f0ede6; margin: 6px 0; }
 
-.fg-day-tag { display:inline-block; font-size:9px; font-weight:700; padding:2px 8px; border-radius:99px; background:#854F0B; color:#fff; margin-left:6px; vertical-align:middle; letter-spacing:0.3px; }
+.fg-day-tag { display:inline-block; font-size:10px; font-weight:700; padding:3px 10px; border-radius:99px; background:#0F6E56; color:#fff; margin-left:6px; vertical-align:middle; letter-spacing:0.3px; text-transform:uppercase; }
 
 .fgb-brunch { background:#FDE4D5;color:#C24A1D; }
 
@@ -1259,20 +1259,22 @@ function render(){
     addDayBtn.addEventListener('click', function(e){ e.preventDefault(); showDayPicker(s); });
     div.appendChild(addDayBtn);
 
-    // Render day pills (all days this spot is in)
+    // Render day pills (all days this spot is in, chronological order)
     const pillsDiv = div.querySelector('.fg-day-pills');
     if(pillsDiv){
       const pills = [];
       // Skip hardcoded (shown as tag next to title) — only user-added in bottom pills
       const dr = getDropped();
+      const labels = ['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure'];
       Object.keys(dr).forEach(function(dayId){
         const dayArr = dr[dayId] || [];
         if(dayArr.some(function(d){ return d.name === s.name; })){
           const idx = parseInt(dayId.replace('day-',''));
-          const labels = ['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure'];
-          pills.push({label: labels[idx] || dayId, dayId: dayId, spotName: s.name});
+          pills.push({label: labels[idx] || dayId, dayId: dayId, spotName: s.name, idx: isNaN(idx) ? 99 : idx});
         }
       });
+      // Sort by day index: Arrival (0) → Day 1 (1) → Day 2 (2) → ... → Departure (6)
+      pills.sort(function(a, b){ return a.idx - b.idx; });
       pills.forEach(function(p){
         const pill = document.createElement('span');
         pill.className = 'fg-day-pill' + (p.hardcoded ? ' hardcoded' : '');
