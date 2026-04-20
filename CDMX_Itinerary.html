@@ -1098,13 +1098,49 @@ const spots = [
 let fCat='all', fPrice='all', fArea='all', fFav='all', fSort='default', fSearch='';
 
 
-const ITINERARY_DAY_MAP = {"Panader\u00eda Rosetta": "Day 1", "Comal Oculto \u2014 Itacate": "Day 1", "Librer\u00eda Porr\u00faa": "Day 1", "Churrer\u00eda El Moro": "Day 2", "La Esquina del Chilaquil": "Day 2", "Terraza Catedral": "Day 2", "Expendio de Maiz": "Day 3", "Taquer\u00eda Orinoco": "Day 3"};
-const ITINERARY_SPOTS = ["Panader\u00eda Rosetta", "Comal Oculto \u2014 Itacate", "Librer\u00eda Porr\u00faa", "Palacio de Bellas Artes", "Expendio de Maiz", "Taquer\u00eda Orinoco", "Licorer\u00eda Limantour", "Terraza Catedral"];
+const ITINERARY_DAY_MAP = {}; // Built dynamically from .day DOM at init
+let ITINERARY_SPOTS = ["Panader\u00eda Rosetta", "Comal Oculto \u2014 Itacate", "Librer\u00eda Porr\u00faa", "Palacio de Bellas Artes", "Expendio de Maiz", "Taquer\u00eda Orinoco", "Licorer\u00eda Limantour", "Terraza Catedral"];
+
+// Build ITINERARY_DAY_MAP dynamically from actual itinerary stops
+function buildItineraryDayMap(){
+  const dayLabels = ['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure'];
+  // Clear existing
+  Object.keys(ITINERARY_DAY_MAP).forEach(function(k){ delete ITINERARY_DAY_MAP[k]; });
+  document.querySelectorAll('.day[id^="day-"]').forEach(function(dayEl){
+    const dayIdx = parseInt(dayEl.id.replace('day-',''));
+    const label = dayLabels[dayIdx] || dayEl.id;
+    dayEl.querySelectorAll('.stop-name a[href*="place_id:"]').forEach(function(link){
+      const match = link.href.match(/place_id:([^&\s]+)/);
+      if(!match) return;
+      const pid = match[1];
+      // Find the food guide spot by place_id
+      const spot = spots.find(function(s){ return s.url === pid; });
+      if(spot){
+        // If not already mapped, add it
+        if(!ITINERARY_DAY_MAP[spot.name]){
+          ITINERARY_DAY_MAP[spot.name] = label;
+        }
+      }
+    });
+  });
+  // Re-render food guide with updated map
+  if(typeof render === 'function') render();
+}
+// Also rebuild ITINERARY_SPOTS array for the "in itinerary" filter
+function rebuildItinerarySpots(){
+  ITINERARY_SPOTS.length = 0;
+  Object.keys(ITINERARY_DAY_MAP).forEach(function(name){ ITINERARY_SPOTS.push(name); });
+}
+document.addEventListener('DOMContentLoaded', function(){
+  buildItineraryDayMap();
+  rebuildItinerarySpots();
+});
+
 
 
 
 function badgeClass(b){
-  const m={cafe:'cafe',breakfast:'breakfast',tacos:'tacos',lunch:'lunch',dinner:'dinner',bar:'bar',rooftop:'rooftop'};
+  const m={cafe:'cafe',breakfast:'breakfast',brunch:'brunch',tacos:'tacos',lunch:'lunch',dinner:'dinner',bar:'bar',rooftop:'rooftop'};
   return 'fgb fgb-'+(m[b]||'lunch');
 }
 function priceClass(p){ return 'fgb fgb-'+p; }
