@@ -138,7 +138,7 @@
   .ticket-pending { color: #854F0B; }
   .ticket-divider { height: 0.5px; background: #f0ede6; margin: 6px 0; }
 
-.fg-day-tag { display:inline-block; font-size:9px; font-weight:600; padding:2px 7px; border-radius:99px; background:#1a2e4a; color:#fff; vertical-align:middle; }
+.fg-day-tag { display:inline-block; font-size:9px; font-weight:700; padding:2px 8px; border-radius:99px; background:#854F0B; color:#fff; margin-left:6px; vertical-align:middle; letter-spacing:0.3px; }
 
 .fgb-brunch { background:#FDE4D5;color:#C24A1D; }
 
@@ -1230,7 +1230,7 @@ function render(){
     div.className='fg-item' + (isHearted ? ' hearted' : '');
     div.innerHTML=`
       <div class="fg-top">
-        <a class="fg-name" href="https://www.google.com/maps/place/?q=place_id:${s.url}" target="_blank">${s.name}</a>${ITINERARY_DAY_MAP[s.name] ? '<span class="fg-day-tag">'+ITINERARY_DAY_MAP[s.name]+'</span>' : (function(){ const dr=getDropped(); const allD=Object.values(dr).flat(); const found=Object.keys(dr).find(function(did){ return (dr[did]||[]).some(function(d){return d.name===s.name;}); }); if(found){ const dIdx=parseInt(found.replace('day-','')); const labels=['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure']; return found!==undefined ? '<span class="fg-day-tag">'+(labels[dIdx]||found)+'</span>' : ''; } return ''; })()}
+        <a class="fg-name" href="https://www.google.com/maps/place/?q=place_id:${s.url}" target="_blank">${s.name}</a>${ITINERARY_DAY_MAP[s.name] ? '<span class="fg-day-tag">'+ITINERARY_DAY_MAP[s.name]+'</span>' : ''}
         <div style="display:flex;align-items:center;gap:6px;">
           <div class="fg-rating-wrap"><span class="fg-stars">★</span><span class="fg-rating">${s.rating}</span></div>
           <button class="fg-heart ${isHearted?'on':''}" title="Must visit">♥</button>
@@ -1263,11 +1263,7 @@ function render(){
     const pillsDiv = div.querySelector('.fg-day-pills');
     if(pillsDiv){
       const pills = [];
-      // Hardcoded itinerary entries
-      if(ITINERARY_DAY_MAP[s.name]){
-        pills.push({label: ITINERARY_DAY_MAP[s.name], hardcoded: true});
-      }
-      // User-added days
+      // Skip hardcoded (shown as tag next to title) — only user-added in bottom pills
       const dr = getDropped();
       Object.keys(dr).forEach(function(dayId){
         const dayArr = dr[dayId] || [];
@@ -1324,6 +1320,18 @@ document.getElementById('sort-f').querySelectorAll('.fc').forEach(btn=>{
 });
 
 render();
+
+// Re-render food guide when crossing mobile/desktop breakpoint
+(function(){
+  var wasMobile = window.innerWidth <= 900;
+  window.addEventListener('resize', function(){
+    var isMobile = window.innerWidth <= 900;
+    if(isMobile !== wasMobile){
+      wasMobile = isMobile;
+      if(typeof render === 'function') render();
+    }
+  });
+})();
 
 document.getElementById('fg-search').addEventListener('input', function(){
   fSearch = this.value.trim().toLowerCase();
@@ -1513,6 +1521,8 @@ let dragSpot = null;
 let ghostEl = null;
 
 function makeDraggable(div, spot){
+  // Only enable drag-and-drop on desktop (3-col mode, >900px)
+  if(window.innerWidth <= 900) return;
   div.setAttribute('draggable', 'true');
   div.addEventListener('dragstart', function(e){
     dragSpot = spot;
@@ -1606,9 +1616,9 @@ document.addEventListener('DOMContentLoaded', function(){
     var layout = document.querySelector('.layout');
     var nav = document.createElement('div');
     nav.className = 'tab-nav';
-    nav.innerHTML = '<button class="tab-btn mob-active" data-tab="itinerary">Itinerary</button>' +
+    nav.innerHTML = '<button class="tab-btn" data-tab="food">Food</button>' +
+                    '<button class="tab-btn mob-active" data-tab="itinerary">Itinerary</button>' +
                     '<button class="tab-btn" data-tab="bookings">Bookings</button>' +
-                    '<button class="tab-btn" data-tab="food">Food</button>' +
                     '';
     layout.parentNode.insertBefore(nav, layout);
 
