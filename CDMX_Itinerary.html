@@ -147,7 +147,13 @@
 .fg-day-pill.hardcoded { padding:2px 7px; }
 .fg-day-x { background:rgba(255,255,255,0.25); border:none; color:#fff; width:14px; height:14px; border-radius:50%; font-size:9px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; font-weight:700; }
 .fg-day-x:hover { background:rgba(255,255,255,0.5); }
-.day-picker-option.selected { background:#185FA5;color:#fff;border-color:#185FA5; }
+.day-picker-option.selected { background:#f0f6fc; color:#185FA5; font-weight:600; }
+.dpo-label { flex:1; }
+.dpo-check { font-size:15px; color:#185FA5; font-weight:700; min-width:18px; text-align:right; }
+.day-picker-actions { display:flex; gap:10px; margin-top:16px; padding-top:10px; border-top:0.5px solid #f0ede6; }
+.day-picker-save { flex:2; background:#1a2e4a; color:#fff; border:none; border-radius:10px; padding:12px; font-size:14px; font-weight:600; cursor:pointer; }
+.day-picker-save:hover { background:#0f1d2e; }
+.day-picker-cancel { flex:1; background:none; border:0.5px solid #d3d1c7; border-radius:10px; padding:12px; font-size:13px; color:#888780; cursor:pointer; margin-top:0 !important; }
 .day-picker-option:disabled { opacity:0.6;cursor:not-allowed; }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -779,9 +785,9 @@
 .day-picker-overlay { position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);z-index:1000;display:flex;align-items:flex-end; }
 .day-picker-sheet { background:#fff;border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%; }
 .day-picker-sheet h3 { font-size:14px;font-weight:600;margin-bottom:16px;color:#2c2c2a; }
-.day-picker-option { display:block;width:100%;text-align:left;padding:12px 0;font-size:13px;color:#2c2c2a;background:none;border:none;border-bottom:0.5px solid #f0ede6;cursor:pointer; }
+.day-picker-option { display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;padding:12px 8px;font-size:13px;color:#2c2c2a;background:none;border:none;border-bottom:0.5px solid #f0ede6;cursor:pointer;border-radius:0; }
 .day-picker-option:last-child { border-bottom:none; }
-.day-picker-cancel { display:block;width:100%;text-align:center;padding:12px;font-size:13px;color:#888780;background:none;border:none;cursor:pointer;margin-top:8px; }
+
 
 .stop-note-text { font-size: 10px; color: #b4b2a9; font-style: italic; }
 
@@ -1423,32 +1429,80 @@ function showDayPicker(spot){
   overlay.className = 'day-picker-overlay';
   const sheet = document.createElement('div');
   sheet.className = 'day-picker-sheet';
-  sheet.innerHTML = `<h3>Add "${spot.name}" to days</h3><p style="font-size:11px;color:#888780;margin-bottom:10px;">Tap to toggle. Can add to multiple days.</p>`;
+  sheet.innerHTML = `<h3>Add "${spot.name}" to days</h3><p style="font-size:11px;color:#888780;margin-bottom:10px;">Tap days to toggle — tap Save when done.</p>`;
+
+  // Track current selection state locally (mutable)
+  const dropped = getDropped();
+  const labels = ['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure'];
+  const hardcodedLabel = ITINERARY_DAY_MAP[spot.name];
+
+  const selection = {}; // dayId -> bool
   DAY_OPTIONS.forEach(function(opt){
-    const dropped = getDropped();
-    const isAdded = (dropped[opt.id]||[]).some(function(s){ return s.name === spot.name; });
-    const isHardcoded = ITINERARY_DAY_MAP[spot.name] && opt.id === 'day-'+(['Arrival','Day 1','Day 2','Day 3','Day 4','Day 5','Departure'].indexOf(ITINERARY_DAY_MAP[spot.name]));
+    selection[opt.id] = (dropped[opt.id]||[]).some(function(s){ return s.name === spot.name; });
+  });
+
+  const optionEls = {};
+  DAY_OPTIONS.forEach(function(opt){
+    const idx = parseInt(opt.id.replace('day-',''));
+    const isHardcoded = hardcodedLabel === labels[idx];
     const btn = document.createElement('button');
-    btn.className = 'day-picker-option' + (isAdded || isHardcoded ? ' selected' : '');
-    btn.innerHTML = (isAdded || isHardcoded ? '✓ ' : '+ ') + opt.label;
+    btn.className = 'day-picker-option';
+    btn.dataset.dayId = opt.id;
     btn.disabled = isHardcoded;
+    btn.innerHTML = '<span class="dpo-label">'+opt.label+'</span><span class="dpo-check"></span>';
+    function refresh(){
+      const selected = isHardcoded || selection[opt.id];
+      btn.classList.toggle('selected', !!selected);
+      btn.querySelector('.dpo-check').textContent = selected ? '✓' : '';
+    }
+    refresh();
     btn.addEventListener('click', function(){
       if(isHardcoded) return;
-      if(isAdded){
-        removeFromDayByName(opt.id, spot.name);
-      } else {
-        addToDay(opt.id, spot);
-      }
-      document.body.removeChild(overlay);
-      showDayPicker(spot); // re-open to show updated state
+      selection[opt.id] = !selection[opt.id];
+      refresh();
     });
     sheet.appendChild(btn);
+    optionEls[opt.id] = btn;
   });
-  const cancel = document.createElement('button');
-  cancel.className = 'day-picker-cancel';
-  cancel.textContent = 'Cancel';
-  cancel.addEventListener('click', function(){ document.body.removeChild(overlay); });
-  sheet.appendChild(cancel);
+
+  // Save button
+  const actions = document.createElement('div');
+  actions.className = 'day-picker-actions';
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'day-picker-cancel';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', function(){ document.body.removeChild(overlay); });
+  const saveBtn = document.createElement('button');
+  saveBtn.className = 'day-picker-save';
+  saveBtn.textContent = 'Save';
+  saveBtn.addEventListener('click', function(){
+    const dropped2 = getDropped();
+    let changed = false;
+    DAY_OPTIONS.forEach(function(opt){
+      const idx = parseInt(opt.id.replace('day-',''));
+      if(hardcodedLabel === labels[idx]) return; // skip hardcoded
+      const wantSelected = !!selection[opt.id];
+      const isCurrentlyIn = (dropped2[opt.id]||[]).some(function(s){ return s.name === spot.name; });
+      if(wantSelected && !isCurrentlyIn){
+        if(!dropped2[opt.id]) dropped2[opt.id] = [];
+        dropped2[opt.id].push({name: spot.name, url: spot.url, note: spot.note});
+        changed = true;
+      } else if(!wantSelected && isCurrentlyIn){
+        dropped2[opt.id] = dropped2[opt.id].filter(function(s){ return s.name !== spot.name; });
+        changed = true;
+      }
+    });
+    if(changed){
+      saveDropped(dropped2);
+      renderDroppedStops();
+      render();
+    }
+    document.body.removeChild(overlay);
+  });
+  actions.appendChild(cancelBtn);
+  actions.appendChild(saveBtn);
+  sheet.appendChild(actions);
+
   overlay.appendChild(sheet);
   overlay.addEventListener('click', function(e){ if(e.target === overlay) document.body.removeChild(overlay); });
   document.body.appendChild(overlay);
